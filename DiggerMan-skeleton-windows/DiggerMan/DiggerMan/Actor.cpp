@@ -1,4 +1,18 @@
 #include "Actor.h"
 #include "StudentWorld.h"
 
-// Students:  Add code to this file (if you wish), Actor.h, StudentWorld.h, and StudentWorld.cpp
+
+Actor::Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0):GraphObject(imageID, startX, startY, dir, size, depth)
+{
+	setVisible(true);
+}
+
+Actor::~Actor()
+{
+	//destruct here
+}
+
+void Actor::doSomething()
+{
+
+}

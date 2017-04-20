@@ -3,6 +3,20 @@
 
 #include "GraphObject.h"
 
-// Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
+class Actor : public GraphObject
+{
+private:
+
+public:
+	Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
+	~Actor();
+
+	virtual void doSomething();
+
+};
+
+
+
+
 
 #endif // ACTOR_H_
