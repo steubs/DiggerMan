@@ -9,9 +9,21 @@ private:
 
 public:
 	Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
-	~Actor();
+	virtual ~Actor();
 
 	virtual void doSomething() = 0;
+
+};
+class Dirt : public Actor
+{
+	Dirt(int imageID, int startX, int startY, Direction dir = right, double size = .25, unsigned int depth = 3);
+	
+	virtual void doSomething();
+
+	virtual ~Dirt();
+
+
+
 
 };
 
