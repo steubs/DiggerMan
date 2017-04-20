@@ -11,7 +11,7 @@ public:
 	Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	~Actor();
 
-	virtual void doSomething();
+	virtual void doSomething() = 0;
 
 };
 
