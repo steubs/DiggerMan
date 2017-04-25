@@ -28,8 +28,6 @@ void Actor::doSomething()
 Dirt::Dirt(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(imageID, startX, startY, dir, size, depth)
 {
 	setVisible(true);
-	imageID = IMID_DIRT;
-
 }
 
 Dirt::~Dirt()

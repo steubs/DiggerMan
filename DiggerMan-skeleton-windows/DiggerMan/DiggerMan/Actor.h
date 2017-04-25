@@ -16,15 +16,12 @@ public:
 };
 class Dirt : public Actor
 {
-	Dirt(int imageID, int startX, int startY, Direction dir = right, double size = .25, unsigned int depth = 3);
+public:
+	Dirt(int imageID, int startX, int startY, Direction dir = none, double size = .25, unsigned int depth = 3);
 	
 	virtual void doSomething();
 
 	virtual ~Dirt();
-
-
-
-
 };
 
 
