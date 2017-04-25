@@ -15,6 +15,7 @@ class StudentWorld : public GameWorld
 {
 private:
 	vector<Dirt*> dirt;//(Sharon)create vector to contain dirt
+	vector<Actor*> actors_;
 public:
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)
@@ -35,6 +36,9 @@ public:
 				dirt.push_back(new Dirt(IMID_DIRT, i, j));
 			}
 		}
+		actors_.push_back(new DiggerMan(IMID_PLAYER, 30, 60));
+
+
 		return GWSTATUS_CONTINUE_GAME;
 	}
 
@@ -49,6 +53,7 @@ public:
 
 	virtual void cleanUp()
 	{
+
 	}
 
 private:

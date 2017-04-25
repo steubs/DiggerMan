@@ -39,3 +39,21 @@ void Dirt::doSomething()
 {
 	//doesn't do anything as said in specs.
 }
+
+//////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+DiggerMan::DiggerMan(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(imageID, startX, startY, dir, size, depth)
+{
+	setVisible(true);
+}
+
+DiggerMan::~DiggerMan()
+{
+	//destruct here
+}
+
+void DiggerMan::doSomething()
+{
+	//doesn't do anything as said in specs.
+}

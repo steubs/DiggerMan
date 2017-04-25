@@ -19,9 +19,19 @@ class Dirt : public Actor
 public:
 	Dirt(int imageID, int startX, int startY, Direction dir = none, double size = .25, unsigned int depth = 3);
 	
-	virtual void doSomething();
+	void doSomething();
 
-	virtual ~Dirt();
+	~Dirt();
+};
+
+class DiggerMan : public Actor
+{
+public:
+	DiggerMan(int imageID, int startX, int startY, Direction dir = none, double size = 1.0, unsigned int depth = 0);
+
+	void doSomething();
+
+	~DiggerMan();
 };
 
 
