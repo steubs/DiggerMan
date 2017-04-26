@@ -14,7 +14,7 @@ Actor::Actor(int imageID, int startX, int startY, Direction dir, double size, un
 
 Actor::~Actor()
 {
-	//destruct here
+	delete this;
 }
 
 void Actor::doSomething()
@@ -32,7 +32,7 @@ Dirt::Dirt(int imageID, int startX, int startY, Direction dir, double size, unsi
 
 Dirt::~Dirt()
 {
-	//destruct here
+	delete this;
 }
 
 void Dirt::doSomething()
@@ -50,7 +50,7 @@ DiggerMan::DiggerMan(int imageID, int startX, int startY, Direction dir, double 
 
 DiggerMan::~DiggerMan()
 {
-	//destruct here
+	delete this;
 }
 
 void DiggerMan::doSomething()
