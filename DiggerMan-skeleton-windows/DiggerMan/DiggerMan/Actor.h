@@ -17,7 +17,7 @@ public:
 class Dirt : public Actor
 {
 public:
-	Dirt(int imageID, int startX, int startY, Direction dir = none, double size = .25, unsigned int depth = 3);
+	Dirt(int imageID, int startX, int startY, Direction dir=right, double size = .25, unsigned int depth = 3);
 	
 	void doSomething();
 
@@ -27,7 +27,7 @@ public:
 class DiggerMan : public Actor
 {
 public:
-	DiggerMan(int imageID, int startX, int startY, Direction dir = none, double size = 1.0, unsigned int depth = 0);
+	DiggerMan(int imageID, int startX, int startY, Direction dir=right, double size = 1.0, unsigned int depth = 0);
 
 	void doSomething();
 
