@@ -27,6 +27,7 @@ public:
 
 	virtual int move()
 	{
+		actors_[0]->doSomething();
 		return GWSTATUS_CONTINUE_GAME;//(Sharon) chose continue game to see the dirt 
 		/*This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
 		Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.*/

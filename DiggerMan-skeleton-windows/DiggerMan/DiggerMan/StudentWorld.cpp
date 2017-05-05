@@ -13,7 +13,7 @@ int StudentWorld::init()
 	{
 		for (int j = 0; j < 60; j++)
 		{
-			if (i <= 33 && i >= 30 && j <= 59 && j >= 4)//(Sharon)this is the mine shaft around the middle (josh) changed size of mineshaft to fit with spec p16
+			if (i <= 33 && i >= 30 && j <= 59 && j >= 8)//(Sharon)this is the mine shaft around the middle (josh) changed size of mineshaft to fit with spec p16
 			{
 				continue;
 			}
