@@ -66,7 +66,7 @@ void DiggerMan::doSomething()
 	int y = getY();
 	int ch;
 	if (getAlive()) {
-		if (getWorld()->getKey == true) {
+		if (getWorld()->getKey(ch) == true) {
 			switch (ch) {
 			case KEY_PRESS_LEFT:
 				setDirection(left);
