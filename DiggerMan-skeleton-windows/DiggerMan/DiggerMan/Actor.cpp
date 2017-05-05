@@ -1,5 +1,4 @@
 #include "Actor.h"
-#include "StudentWorld.h"
 
 
 
@@ -7,43 +6,42 @@
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Actor::Actor(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :GraphObject(imageID, startX, startY, dir, size, depth)
+Actor::Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :GraphObject(imageID, startX, startY, dir, size, depth), isAlive(true), world(p)
 {
 	setVisible(true);
 }
 
+bool Actor::getAlive(){
+	return isAlive;
+}
+void Actor::setAlive(bool Is){
+	isAlive = Is;
+}
+StudentWorld *Actor::getWorld(){
+	return world;
+}
 Actor::~Actor()
 {
 	delete this;
 }
-
-
 void Actor::doSomething()
 {
-
-}
-
-
-StudentWorld* Actor::getWorld()
-{
-
-	return m_SW;
 
 }
 
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Dirt::Dirt(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(imageID, startX, startY, dir, size, depth)
+Dirt::Dirt(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
 	setVisible(true);
+	setAlive(true);
 }
 
 Dirt::~Dirt()
 {
 	delete this;
 }
-
 void Dirt::doSomething()
 {
 	//doesn't do anything as said in specs.
@@ -52,73 +50,59 @@ void Dirt::doSomething()
 //////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-DiggerMan::DiggerMan(int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(imageID, startX, startY, dir, size, depth)
+DiggerMan::DiggerMan(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), life(3), health(100)
 {
 	setVisible(true);
+	setAlive(true);
 }
 
 DiggerMan::~DiggerMan()
 {
 	delete this;
 }
-
 void DiggerMan::doSomething()
 {
-
-	//moveTo(getX() - 1, getY());
-	
-	int x;
-	if (getWorld()->getKey(x) == true) //this statement specifically is causing issues for me
-								 //if anyone has any ideas please let me know!
-	{
-		//// user hit a key this tick!
-		switch (x)
-		{
-		case KEY_PRESS_LEFT:                                      
-			moveTo(getX() - 1, getY());
-			break;
-	
-		//default:
-		//	break;
-		////case KEY_PRESS_RIGHT:
-		////	... move player to the right ...;
-		////	break;
-		////case KEY_PRESS_SPACE:
-		////	... add a Squirt in front of the player...;
-		////	break;
-		////	// etc…
+	int x = getX();
+	int y = getY();
+	int ch;
+	if (getAlive()) {
+		if (getWorld()->getKey == true) {
+			switch (ch) {
+			case KEY_PRESS_LEFT:
+				setDirection(left);
+				moveTo(x - 1, y);
+				break;
+			case KEY_PRESS_RIGHT:
+				setDirection(right);
+				moveTo(x + 1, y);
+				break;
+			case KEY_PRESS_UP:
+				setDirection(up);
+				moveTo(x, y + 1);
+				break;
+			case KEY_PRESS_DOWN:
+				setDirection(down);
+				moveTo(x, y - 1);
+			}
 		}
 	}
-
-
-	//Below is the pseudocode taken from the specs, which im trying to implement above (pg.30) (read hint also)
-	//getKey() is also talked about on pg 15
-
-
-	//...
-	//	int ch;
-	//if (getWorld()->getKey(ch) == true)
-	//{
-	//	// user hit a key this tick!
-	//	switch (ch)
-	//	{
-	//	case KEY_PRESS_LEFT:
-	//		... move player to the left ...;
-	//		break;
-	//	case KEY_PRESS_RIGHT:
-	//		... move player to the right ...;
-	//		break;
-	//	case KEY_PRESS_SPACE:
-	//		... add a Squirt in front of the player...;
-	//		break;
-	//		// etc…
-	//	}
-	//}
-	//...
-	
-
-
-	
-	
-	
+	else
+		return;
+	//doesn't do anything as said in specs.
+}
+//////////////////////////////////////////////////////////////  BOULDER  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Boulders::Boulders(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+	setVisible(true);
+	setAlive(true);
+}
+Boulders::~Boulders(){
+	delete this;
+}
+void Boulders::doSomething() {
+	if (getAlive()){
+		int x = getX();
+		int y = getY();
+	}
+	else
+		return;
 }
