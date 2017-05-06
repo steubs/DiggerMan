@@ -1,6 +1,8 @@
 #include "StudentWorld.h"
 #include <string>
+#include "Actor.h"
 using namespace std;
+
 
 GameWorld* createStudentWorld(string assetDir)
 {
@@ -25,6 +27,21 @@ int StudentWorld::init()
 
 
 	return GWSTATUS_CONTINUE_GAME;
+}
+
+int StudentWorld::move()
+{
+	actors_[0]->doSomething();
+	return GWSTATUS_CONTINUE_GAME;//(Sharon) chose continue game to see the dirt 
+	/*This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
+	Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.*/
+	/*decLives();*/
+	//return GWSTATUS_PLAYER_DIED;
+}
+
+void StudentWorld::cleanUp()
+{
+	delete this;
 }
 
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
