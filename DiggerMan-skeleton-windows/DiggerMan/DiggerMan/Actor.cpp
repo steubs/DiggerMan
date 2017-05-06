@@ -1,5 +1,5 @@
 #include "Actor.h"
-
+#include "StudentWorld.h"
 
 
 
@@ -9,6 +9,7 @@
 Actor::Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :GraphObject(imageID, startX, startY, dir, size, depth), isAlive(true), world(p)
 {
 	setVisible(true);
+	setAlive(true);
 }
 
 bool Actor::getAlive(){
@@ -32,10 +33,9 @@ void Actor::doSomething()
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Dirt::Dirt(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+Dirt::Dirt(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
-	setVisible(true);
-	setAlive(true);
+	
 }
 
 Dirt::~Dirt()
@@ -50,10 +50,9 @@ void Dirt::doSomething()
 //////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-DiggerMan::DiggerMan(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), life(3), health(100)
+DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), life(3), health(100)
 {
-	setVisible(true);
-	setAlive(true);
+	
 }
 
 DiggerMan::~DiggerMan()
@@ -85,15 +84,15 @@ void DiggerMan::doSomething()
 				moveTo(x, y - 1);
 			}
 		}
+	
 	}
 	else
 		return;
-	//doesn't do anything as said in specs.
+	
 }
 //////////////////////////////////////////////////////////////  BOULDER  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Boulders::Boulders(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
-	setVisible(true);
-	setAlive(true);
+	
 }
 Boulders::~Boulders(){
 	delete this;
@@ -106,3 +105,5 @@ void Boulders::doSomething() {
 	else
 		return;
 }
+
+//////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
