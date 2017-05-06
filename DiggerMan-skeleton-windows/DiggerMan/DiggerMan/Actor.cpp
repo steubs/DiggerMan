@@ -1,4 +1,5 @@
 #include "Actor.h"
+<<<<<<< HEAD
 #include <conio.h>
 #include "StudentWorld.h"
 //
@@ -10,12 +11,19 @@
 #define KEY_DOWN 2
 #define KEY_LEFT 4
 #define KEY_RIGHT 6
+=======
+#include "StudentWorld.h"
+
+
+
+>>>>>>> origin/master
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 Actor::Actor(/*StudentWorld *p, */int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :GraphObject(imageID, startX, startY, dir, size, depth), isAlive(true)/*, world(p)*/
 {
 	setVisible(true);
+	setAlive(true);
 }
 
 bool Actor::getAlive(){
@@ -40,10 +48,13 @@ void Actor::doSomething()
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+<<<<<<< HEAD
 Dirt::Dirt(/*StudentWorld*p, */int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(/*p, */imageID, startX, startY, dir, size, depth)
+=======
+Dirt::Dirt(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+>>>>>>> origin/master
 {
-	setVisible(true);
-	setAlive(true);
+	
 }
 
 Dirt::~Dirt()
@@ -58,10 +69,13 @@ void Dirt::doSomething()
 //////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+<<<<<<< HEAD
 DiggerMan::DiggerMan(/*StudentWorld*p, */int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(/*p, */imageID, startX, startY, dir, size, depth), life(3), health(100)
+=======
+DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), life(3), health(100)
+>>>>>>> origin/master
 {
-	setVisible(true);
-	setAlive(true);
+	
 }
 
 DiggerMan::~DiggerMan()
@@ -96,16 +110,28 @@ void DiggerMan::doSomething()
 				return;
 			}
 		}
+<<<<<<< HEAD
 		else
 		return;
 	}
+=======
+	
+	}
+	else
+		return;
+>>>>>>> origin/master
 	
 }
 	//doesn't do anything as said in specs.
 //////////////////////////////////////////////////////////////  BOULDER  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 Boulders::Boulders(/*StudentWorld*p, */int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(/*p, */imageID, startX, startY, dir, size, depth) {
 	setVisible(true);
 	setAlive(true);
+=======
+Boulders::Boulders(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+	
+>>>>>>> origin/master
 }
 Boulders::~Boulders(){
 	delete this;
@@ -118,3 +144,5 @@ void Boulders::doSomething() {
 	else
 		return;
 }
+
+//////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

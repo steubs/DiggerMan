@@ -34,7 +34,6 @@ private:
 public:
 	DiggerMan(/*StudentWorld *p,*/int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
-
 	~DiggerMan();
 };
 class Boulders : public Actor
@@ -46,6 +45,32 @@ public:
 	~Boulders();
 };
 
+class Protestor : public Actor
+{
+private://reminder: we should make a bases class for diggerman and protestors since all three have hitpoint values 
+public:
+	Protestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
+	void doSomething() = 0;
+	~Protestor();
+};
+
+class RegularProtestor : public Protestor
+{
+private:
+public:
+	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+	void doSomething();
+	~RegularProtestor();
+};
+
+class HardcoreProtestor : public Protestor
+{
+private:
+public:
+	HardcoreProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth);
+	void doSomething();
+	~HardcoreProtestor();
+};
 
 
 
