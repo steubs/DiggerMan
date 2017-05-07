@@ -9,7 +9,7 @@ private:
 	bool isAlive;
 	StudentWorld *world;
 public:
-	Actor(/*StudentWorld *p, */int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
+	Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void setAlive(bool Is);
 	bool getAlive();
 	StudentWorld * getWorld();
@@ -21,7 +21,7 @@ class Dirt : public Actor
 {
 private:
 public:
-	Dirt(/*StudentWorld *p,*/ int imageID, int startX, int startY, Direction dir = right, double size = .25, unsigned int depth = 3);
+	Dirt(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = .25, unsigned int depth = 3);
 	void doSomething();
 	~Dirt();
 };
@@ -32,7 +32,7 @@ private:
 	int life;
 	int health;
 public:
-	DiggerMan(/*StudentWorld *p,*/int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
+	DiggerMan(StudentWorld *p,int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
 	~DiggerMan();
 };
@@ -40,7 +40,7 @@ class Boulders : public Actor
 {
 private:
 public:
-	Boulders(/*StudentWorld *p, */int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 1);
+	Boulders(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 1);
 	void doSomething();
 	~Boulders();
 };

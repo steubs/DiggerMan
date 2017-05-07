@@ -20,10 +20,10 @@ int StudentWorld::init()
 				continue;
 			}
 			//(Sharon)create and put dirt objects in a container.
-			dirt.push_back(new Dirt(IMID_DIRT, i, j));
+			dirt.push_back(new Dirt(this, IMID_DIRT, i, j));
 		}
 	}
-	actors_.push_back(new DiggerMan(IMID_PLAYER, 30, 60));
+	actors_.push_back(new DiggerMan(this, IMID_PLAYER, 30, 60));
 
 
 	return GWSTATUS_CONTINUE_GAME;
