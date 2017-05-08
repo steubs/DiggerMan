@@ -67,20 +67,46 @@ void DiggerMan::doSomething()
 		if (getWorld()->getKey(ch) == true) {
 			switch (ch) {
 			case KEY_PRESS_LEFT:
-				setDirection(left);
-				moveTo(x - 1, y);
-				break;
+                    if(getDirection() != left){
+                        setDirection(left);
+                        break;
+                        
+                    }
+                    else{
+                        setDirection(left);
+                        moveTo(x - 1, y);
+                        break;
+                    }
 			case KEY_PRESS_RIGHT:
-				setDirection(right);
-				moveTo(x + 1, y);
-				break;
+                    if (getDirection() != right){
+                        setDirection(right);
+                        break;
+                    }
+                    else{
+                        setDirection(right);
+                        moveTo(x + 1, y);
+                        break;
+                    }
 			case KEY_PRESS_UP:
-				setDirection(up);
-				moveTo(x, y + 1);
-				break;
+                    if(getDirection() != up){
+                        setDirection(up);
+                        break;
+                    }
+                    else{
+                        setDirection(up);
+                        moveTo(x, y + 1);
+                        break;
+                    }
 			case KEY_PRESS_DOWN:
-				setDirection(down);
-				moveTo(x, y - 1);
+                    if(getDirection() != down){
+                        setDirection(down);
+                        break;
+                    }
+                    else{
+                        setDirection(down);
+                        moveTo(x, y - 1);
+                        break;
+                    }
 			}
 		}
 	
