@@ -1,6 +1,5 @@
 #include "StudentWorld.h"
 #include <string>
-#include "Actor.h"
 using namespace std;
 
 
