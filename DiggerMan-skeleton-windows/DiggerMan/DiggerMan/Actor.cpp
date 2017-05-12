@@ -113,15 +113,52 @@ void DiggerMan::doSomething()
 					moveTo(x - 1, y);
 					/*if (x <= 33 && x >= 30 && y <= 59 && y >= 8)
 						break;*///moving left and right through the mine shaft makes gaps if we keep this
-					getWorld()->dirtarr[x-1][y]->setVisible(false);
-					//i thought it would be easier to do this after move instead of in a seperate place
-					getWorld()->dirtarr[x-1][y + 1]->setVisible(false);
-					getWorld()->dirtarr[x-1][y + 2]->setVisible(false);
-					getWorld()->dirtarr[x - 1][y + 3]->setVisible(false);
-					getWorld()->dirtarr[x-1][y]->setAlive(false);
-					getWorld()->dirtarr[x-1][y + 1]->setAlive(false);
-					getWorld()->dirtarr[x-1][y + 2]->setAlive(false);
-					getWorld()->dirtarr[x-1][y + 3]->setAlive(false);
+                    for (int i = 0; i < 64; i++)
+                        	{
+                        		for (int j = 0; j < 60; j++)
+                        		{
+                        			
+                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                                        if (y == 59){
+                                            
+                                            getWorld()->dirtarr[x-1][y]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y]->setAlive(false);
+                                            
+                                            
+                                        }
+                                        else if(y == 58){
+                                            
+                                            getWorld()->dirtarr[x-1][y]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setAlive(false);
+                                            
+                                        }
+                                        else if(y == 57){
+                                            
+                                            getWorld()->dirtarr[x-1][y]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+2]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+2]->setAlive(false);
+                                            
+                                        }
+                                        else if (y <57){
+                                        
+                                            getWorld()->dirtarr[x-1][y]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+2]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y+3]->setVisible(false);
+                                            getWorld()->dirtarr[x-1][y]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+1]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+2]->setAlive(false);
+                                            getWorld()->dirtarr[x-1][y+3]->setAlive(false);
+                                        
+                                        }
+                                }
+                            }
+                            }
 					break;
 				}
 			case KEY_PRESS_RIGHT:
@@ -134,18 +171,54 @@ void DiggerMan::doSomething()
 					if (x > 59)
 						break;
 					moveTo(x + 1, y);
-					/*if (x <= 33 && x >= 30 && y <= 59 && y >= 8)
-						break;*/
-					getWorld()->dirtarr[x+4][y]->setVisible(false);
-					// trying to figure out how to set all 4x4 dirt invisible
-					getWorld()->dirtarr[x+4][y + 1]->setVisible(false);
-					getWorld()->dirtarr[x+4][y + 2]->setVisible(false);
-					getWorld()->dirtarr[x+4][y + 3]->setVisible(false);
+					
+                    for (int i = 0; i < 64; i++)
+                        	{
+                        		for (int j = 0; j < 60; j++)
+                        		{
+                        			
+                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                                        if (y == 59){
+                                            
+                                            getWorld()->dirtarr[x+4][y]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y]->setAlive(false);
+                                            
+                                            
+                                        }
+                                        else if(y == 58){
+                                            
+                                            getWorld()->dirtarr[x+4][y]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setAlive(false);
+                                            
+                                        }
+                                        else if(y == 57){
+                                            
+                                            getWorld()->dirtarr[x+4][y]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+2]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+2]->setAlive(false);
+                                            
+                                        }
+                                        else if (y <57){
+                                            
+                                            getWorld()->dirtarr[x+4][y]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+2]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y+3]->setVisible(false);
+                                            getWorld()->dirtarr[x+4][y]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+1]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+2]->setAlive(false);
+                                            getWorld()->dirtarr[x+4][y+3]->setAlive(false);
+                                            
+                                        }
 
-					getWorld()->dirtarr[x+4][y]->setAlive(false);
-					getWorld()->dirtarr[x+4][y + 1]->setAlive(false);
-					getWorld()->dirtarr[x+4][y + 2]->setAlive(false);
-					getWorld()->dirtarr[x+4][y + 3]->setAlive(false);
+                                }
+                            }
+                            }
 					break;
 				}
 			case KEY_PRESS_UP:
@@ -158,10 +231,19 @@ void DiggerMan::doSomething()
 					if (y > 59)
 						break;
 					moveTo(x, y + 1);
-					if (x <= 33 && x >= 30 && y <= 59 && y >= 8)
-						break;//i was too lazy to figure out if we needed these for up and down
+					//if (x <= 33 && x >= 30 && y <= 59 && y >= 8)
+					//	break;//i was too lazy to figure out if we needed these for up and down
+                    for (int i = 0; i < 64; i++)
+                    {
+                        for (int j = 0; j < 60; j++)
+                        {
+                            //if (i <= 33 && i >= 30 && j <= 60 && j >= 8)
+                            //{
+                              //  continue;
+                            //}
+                            if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                                if (y < 56){
 					getWorld()->dirtarr[x][y+4]->setVisible(false);
-					// trying to figure out how to set all 4x4 dirt invisible
 					getWorld()->dirtarr[x+1][y+4]->setVisible(false);
 					getWorld()->dirtarr[x+2][y+4]->setVisible(false);
 					getWorld()->dirtarr[x+3][y+4]->setVisible(false);
@@ -170,6 +252,10 @@ void DiggerMan::doSomething()
 					getWorld()->dirtarr[x+1][y+4]->setAlive(false);
 					getWorld()->dirtarr[x+2][y+4]->setAlive(false);
 					getWorld()->dirtarr[x+3][y+4]->setAlive(false);
+                            }
+                        }
+                    }
+                    }
 					break;
 				}
 			case KEY_PRESS_DOWN:
@@ -182,8 +268,8 @@ void DiggerMan::doSomething()
 					if (y < 1)
 						break;
 					moveTo(x, y - 1);
-					if (x <= 33 && x >= 30 && y <= 60 && y >= 8)
-						break;
+					//if (x <= 33 && x >= 30 && y <= 60 && y > 8)
+					//	break;
 					getWorld()->dirtarr[x][y-1]->setVisible(false);
 					// trying to figure out how to set all 4x4 dirt invisible
 					getWorld()->dirtarr[x + 1][y-1]->setVisible(false);
