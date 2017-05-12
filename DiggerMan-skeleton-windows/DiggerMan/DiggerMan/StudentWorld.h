@@ -15,13 +15,7 @@ class Dirt;
 class StudentWorld : public GameWorld
 {
 private:
-<<<<<<< HEAD
-	
-	
-=======
-	vector<vector<Dirt*>> dirt;//(Sharon)create vector to contain dirt
-	vector<Actor*> actors_;
->>>>>>> origin/master
+
 public:
     
     Actor* m_diggerman;
@@ -38,7 +32,7 @@ public:
 
 	virtual void cleanUp();
 
-	vector<vector<Dirt*>> getDirt();
+	
 
 };
 
