@@ -7,7 +7,6 @@
 #include <vector>
 using namespace std;
 
-
 class Actor;
 class Dirt;
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
@@ -20,6 +19,7 @@ public:
     
     Actor* m_diggerman;
     Dirt* dirtarr[64][64];
+	vector<Actor*> actors;
     
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)

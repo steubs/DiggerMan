@@ -36,13 +36,13 @@ public:
 	void doSomething();
 	~DiggerMan();
 };
-class Boulders : public Actor
+class Boulder : public Actor
 {
 private:
 public:
-	Boulders(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 1);
+	Boulder(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 1);
 	void doSomething();
-	~Boulders();
+	~Boulder();
 };
 
 class Protestor : public Actor
