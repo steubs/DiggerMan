@@ -1,5 +1,5 @@
 #include "StudentWorld.h"
-
+#include "Actor.h"
 
 
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,6 +60,34 @@ DiggerMan::~DiggerMan()
 }
 void DiggerMan::doSomething()
 {
+    
+  
+    
+    
+    for (int i = 0; i < 64; i++)
+    {
+        for (int j = 0; j < 60; j++)
+        {
+            if (i <= 33 && i >= 30 && j <= 59 && j >= 8)
+            {
+                continue;
+            }
+            if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                
+                getWorld()->dirtarr[i][j]->setVisible(false);
+                
+                // trying to figure out how to set all 4x4 dirt invisible
+                //getWorld()->dirtarr[i+1][j]->setVisible(false);
+                //getWorld()->dirtarr[i+2][j]->setVisible(false);
+                //getWorld()->dirtarr[i+3][j]->setVisible(false);
+                }
+            }
+        }
+    
+
+        
+        
+
 	int x = getX();
 	int y = getY();
 	int ch;

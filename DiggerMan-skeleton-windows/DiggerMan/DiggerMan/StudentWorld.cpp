@@ -1,5 +1,6 @@
 #include "StudentWorld.h"
 #include <string>
+#include "Actor.h"
 using namespace std;
 
 
@@ -19,28 +20,21 @@ int StudentWorld::init()
 				continue;
 			}
 			//(Sharon)create and put dirt objects in a container.
-			dirt.push_back(new Dirt(this, IMID_DIRT, i, j));
+			dirtarr[i][j] = new Dirt(this, IMID_DIRT, i, j);
 		}
 	}
+    
 	//DiggerMan MUST be first object in actors_
-	actors_.push_back(new DiggerMan(this, IMID_PLAYER, 30, 60));
-
+    m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
 
 	return GWSTATUS_CONTINUE_GAME;
 }
 
 int StudentWorld::move()
 {
-	actors_[0]->doSomething();
-	int index = 0;
-	for (std::vector<Dirt*>::iterator it = dirt.begin(); it != dirt.end(); ++it,index++)
-	{ 
-		if (actors_[0]->getX() == dirt[index]->getX() &&
-			actors_[0]->getY() == dirt[index]->getY())
-			
-			dirt[index]->setVisible(false);
-	}
-	return GWSTATUS_CONTINUE_GAME;//(Sharon) chose continue game to see the dirt 
+	m_diggerman->doSomething();
+	
+	return GWSTATUS_CONTINUE_GAME;//(Sharon) chose continue game to see the dirt
 	/*This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
 	Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.*/
 	/*decLives();*/
