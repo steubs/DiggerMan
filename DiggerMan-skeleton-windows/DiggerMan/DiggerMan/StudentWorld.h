@@ -12,7 +12,7 @@ using namespace std;
 class StudentWorld : public GameWorld
 {
 private:
-	vector<Dirt*> dirt;//(Sharon)create vector to contain dirt
+	vector<vector<Dirt*>> dirt;//(Sharon)create vector to contain dirt
 	vector<Actor*> actors_;
 public:
 	StudentWorld(std::string assetDir)
@@ -26,7 +26,8 @@ public:
 
 	virtual void cleanUp();
 
-private:
+	vector<vector<Dirt*>> getDirt();
+
 };
 
 #endif // STUDENTWORLD_H_
