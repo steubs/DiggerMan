@@ -40,7 +40,9 @@ class Boulder : public Actor
 {
 private:
 public:
-	Boulder(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 1);
+	Boulder(StudentWorld *p, int imageID, int startX, int startY, Direction dir = down, double size = 1.0, unsigned int depth = 1);
+	int count = 0;
+	bool fell = false;
 	void doSomething();
 	~Boulder();
 };

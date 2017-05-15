@@ -118,7 +118,8 @@ void DiggerMan::doSomething()
                         		for (int j = 0; j < 60; j++)
                         		{
                         			
-                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && 
+										getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
                                         if (y == 59){
                                             
                                             getWorld()->dirtarr[x-1][y]->setVisible(false);
@@ -177,7 +178,8 @@ void DiggerMan::doSomething()
                         		for (int j = 0; j < 60; j++)
                         		{
                         			
-                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                                    if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && 
+										getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
                                         if (y == 59){
                                             
                                             getWorld()->dirtarr[x+4][y]->setVisible(false);
@@ -241,7 +243,8 @@ void DiggerMan::doSomething()
                             //{
                               //  continue;
                             //}
-                            if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
+                            if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && 
+								getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()){
                                 if (y < 56){
 					getWorld()->dirtarr[x][y+4]->setVisible(false);
 					getWorld()->dirtarr[x+1][y+4]->setVisible(false);
@@ -297,14 +300,27 @@ Boulder::~Boulder(){
 	delete this;
 }
 void Boulder::doSomething() {
-	if (getAlive()){
+
+	if (getAlive()) {
 		int x = getX();
 		int y = getY();
-		if (!getWorld()->dirtarr[x][y-1]->getAlive() && !getWorld()->dirtarr[x+3][y-1]->getAlive()) {
-			moveTo(x, y - 1);
-			//after however many seconds
-			/*setVisible(false);
-			setAlive(false);*/
+		if (y < 60 && y>0)
+		{
+			if (!getWorld()->dirtarr[x][y - 1]->getAlive() && !getWorld()->dirtarr[x + 1][y - 1]->getAlive() &&
+				!getWorld()->dirtarr[x + 2][y - 1]->getAlive() && !getWorld()->dirtarr[x + 3][y - 1]->getAlive()) {
+				count++;
+				if (count >= 30)
+				{
+					getWorld()->playSound(SOUND_FALLING_ROCK);
+					moveTo(x, y - 1);
+					fell = true;
+				}
+			}
+
+		}
+		else if (fell || y == 0) {
+			setVisible(false);
+			setAlive(false);
 		}
 	}
 	else

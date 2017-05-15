@@ -32,7 +32,7 @@ int StudentWorld::init()
 		int y=60;
 		while (x <= 33 && x >= 30 && y <= 60 && y >= 8)//if the values are in the original mine shaft, generate more numbers
 		{
-			x = rand() % 64;
+			x = rand() % 60;
 			y = rand() % 60;
 			//should probably check if theres already a boulder here
 		}
