@@ -29,6 +29,10 @@ public:
 	
 	void removeDirt();
 
+	bool checkUnder(Boulder * b);
+
+	
+
 };
 
 #endif // STUDENTWORLD_H_

@@ -60,45 +60,8 @@ DiggerMan::~DiggerMan()
 }
 void DiggerMan::doSomething()
 {
-	//	for (int i = 0; i < 64; i++)
-	//	{
-	//		for (int j = 0; j < 60; j++)
-	//		{
-	//			if (i <= 33 && i >= 30 && j <= 60 && j >= 8)
-	//			{
-	//				continue;
-	//			}
-	//			if (getWorld()->dirtarr[i][j]->getX() == getWorld()->m_diggerman->getX() && getWorld()->dirtarr[i][j]->getY() == getWorld()->m_diggerman->getY()) {
-	//				getWorld()->dirtarr[i][j]->setVisible(false);
-	//				getWorld()->dirtarr[i][j]->setAlive(false);
-	//				if (getWorld()->m_diggerman->getDirection() == left || getWorld()->m_diggerman->getDirection() == right)
-	//				{
-	//					getWorld()->dirtarr[i][j + 1]->setVisible(false);
-	//					getWorld()->dirtarr[i][j + 2]->setVisible(false);
-	//					getWorld()->dirtarr[i][j + 3]->setVisible(false);
-
-	//					getWorld()->dirtarr[i][j + 1]->setAlive(false);
-	//					getWorld()->dirtarr[i][j + 2]->setAlive(false);
-	//					getWorld()->dirtarr[i][j + 3]->setAlive(false);
-	//				}
-	//				else if (getWorld()->m_diggerman->getDirection() == left || getWorld()->m_diggerman->getDirection() == right)
-	//				{
-	//					// trying to figure out how to set all 4x4 dirt invisible
-	//					getWorld()->dirtarr[i + 1][j]->setVisible(false);
-	//					getWorld()->dirtarr[i + 2][j]->setVisible(false);
-	//					getWorld()->dirtarr[i + 3][j]->setVisible(false);
-
-	//					getWorld()->dirtarr[i + 1][j]->setAlive(false);
-	//					getWorld()->dirtarr[i + 2][j]->setAlive(false);
-	//					getWorld()->dirtarr[i + 3][j]->setAlive(false);
-	//				}
-	//			}
-	//		}
-	//	}
+	
 	int x = getX();
-	int y = getY();
-	int ch;
-		int x = getX();
 	int y = getY();
 	int ch;
 	if (getAlive()) {
@@ -177,25 +140,14 @@ void Boulder::doSomething() {
 		int y = getY();
 		if (y < 60 && y>0)
 		{
-			if (!getWorld()->dirtarr[x][y - 1]->getAlive() && !getWorld()->dirtarr[x + 1][y - 1]->getAlive() &&
-				!getWorld()->dirtarr[x + 2][y - 1]->getAlive() && !getWorld()->dirtarr[x + 3][y - 1]->getAlive()) {
-				count++;
-				if (count >= 30)
-				{
-					getWorld()->playSound(SOUND_FALLING_ROCK);
-					moveTo(x, y - 1);
-					fell = true;
-				}
-			}
+			if (getWorld()->checkUnder(this)) {
+						
+				moveTo(x, y - 1);
+				getWorld()->playSound(SOUND_FALLING_ROCK); // this doesnt work properly, plays repeatedly if boulder falls more than one space.
+														 
 
-		}
-		else if (fell || y == 0) {
-			setVisible(false);
-			setAlive(false);
+			}
 		}
 	}
-	else
-		return;
 }
-
 //////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
