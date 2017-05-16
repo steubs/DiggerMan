@@ -1,5 +1,4 @@
 #include "StudentWorld.h"
-#include <string>
 #include <cstdlib>
 #include "Actor.h"
 using namespace std;
@@ -27,35 +26,44 @@ int StudentWorld::init()
         }
     }
     m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-	int i = 0;
+		int i = 0;
 	int CHECKX = -1;
 	int CHECKY = -1;
-	while (i < 3) {
+	double SR = 6.0;
+	while (i < 3)
+	{
 		int x = rand() % 60;
 		int y = rand() % 56;
-		if (x != CHECKX && y != CHECKY) {
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))
+		if (x != CHECKX && y != CHECKY)
+		{
+			if (CHECKX != -1 && CHECKY != 1) {
+				double S = pow(abs(CHECKX - x), 2) + pow(abs(CHECKY - y), 2);
+				SR = pow(S, 0.5);
+			}
+			if (SR >= 6.0)
 			{
-				actors.push_back(new Boulder(this, IMID_BOULDER, x, y));
-				for (int j = 0; j < 4; j++)
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))
 				{
-					dirtarr[x + j][y]->setVisible(false);
-					dirtarr[x + j][y + 1]->setVisible(false);
-					dirtarr[x + j][y + 2]->setVisible(false);
-					dirtarr[x + j][y + 3]->setVisible(false);
-
-					dirtarr[x + j][y]->setAlive(false);
-					dirtarr[x + j][y + 1]->setAlive(false);
-					dirtarr[x + j][y + 2]->setAlive(false);
-					dirtarr[x + j][y + 3]->setAlive(false);
+					actors.push_back(new Boulder(this, IMID_BOULDER, x, y));
+					for (int j = 0; j < 4; j++)
+					{
+						dirtarr[x + j][y]->setVisible(false);
+						dirtarr[x + j][y + 1]->setVisible(false);
+						dirtarr[x + j][y + 2]->setVisible(false);
+						dirtarr[x + j][y + 3]->setVisible(false);
+						dirtarr[x + j][y]->setAlive(false);
+						dirtarr[x + j][y + 1]->setAlive(false);
+						dirtarr[x + j][y + 2]->setAlive(false);
+						dirtarr[x + j][y + 3]->setAlive(false);
+					}
+					CHECKX = x;
+					CHECKY = y;
+					i++;
 				}
-				CHECKX = x;
-				CHECKY = y;
-				i++;
+				else
+					continue;
 			}
 		}
-		else
-			continue;
 	}
 	return GWSTATUS_CONTINUE_GAME;
 }
