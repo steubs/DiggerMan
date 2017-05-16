@@ -3,24 +3,19 @@
 
 #include "GameWorld.h"
 #include "GameConstants.h"
+#include "Actor.h"
 #include <string>
 #include <vector>
 using namespace std;
-
-class Actor;
-class Dirt;
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
-
 class StudentWorld : public GameWorld
 {
 private:
-
-public:
-    
-    Actor* m_diggerman;
-    Dirt* dirtarr[64][64];
+	Actor* m_diggerman;
+	Dirt* dirtarr[64][60];
 	vector<Actor*> actors;
-    
+public:
+
 	StudentWorld(std::string assetDir)
 		: GameWorld(assetDir)
 	{
@@ -31,8 +26,8 @@ public:
 	virtual int move();
 
 	virtual void cleanUp();
-
 	
+	void removeDirt();
 
 };
 
