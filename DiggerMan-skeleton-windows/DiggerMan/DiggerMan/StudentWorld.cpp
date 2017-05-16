@@ -28,15 +28,31 @@ int StudentWorld::init()
     }
     m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
 	for (int i = 0; i < 3/*(however many boulders per level)*/; i++) {
-		int x=33;//make these in the mine shaft just to get into the while loop
-		int y=60;
-		while (x <= 33 && x >= 30 && y <= 60 && y >= 8)//if the values are in the original mine shaft, generate more numbers
+		int x=34;//make these in the mine shaft just to get into the while loop
+		int y=56;
+		while (x <= 34 && x >= 26 && y <= 56 && y >= 4)//if the values are in the original mine shaft, generate more numbers
 		{
 			x = rand() % 60;
-			y = rand() % 60;
+			y = rand() % 56;
 			//should probably check if theres already a boulder here
+			if (!dirtarr[x][y]->getAlive()) {//this doesnt quite work yet
+				x = 34;
+				y = 56;
+			}
 		}
 		actors.push_back(new Boulder(this, IMID_BOULDER, x, y));//randomly placed boulders
+		for (int j = 0;j < 4;j++)//i believe the dirt around the boulder should be gone 
+		{
+			dirtarr[x+j][y]->setVisible(false);
+			dirtarr[x + j][y + 1]->setVisible(false);
+			dirtarr[x + j][y + 2]->setVisible(false);
+			dirtarr[x + j][y + 3]->setVisible(false);
+
+			dirtarr[x + j][y]->setAlive(false);
+			dirtarr[x + j][y + 1]->setAlive(false);
+			dirtarr[x + j][y + 2]->setAlive(false);
+			dirtarr[x + j][y + 3]->setAlive(false);
+		}
 	}
 	return GWSTATUS_CONTINUE_GAME;
 }
@@ -68,11 +84,11 @@ bool StudentWorld::checkUnder(Boulder* b){
 	if (typeid(*b) == typeid(Boulder)){
 		int x = b->getX();
 		int y = b->getY();
-		if (!dirtarr[x][y - 1]->getAlive() && !dirtarr[x + 1][y - 1]->getAlive() && !dirtarr[x + 2][y - 1]->getAlive() && !dirtarr[x + 3][y - 1]->getAlive())
+		if (!dirtarr[x][y - 1]->getAlive() && !dirtarr[x + 1][y - 1]->getAlive() && 
+			!dirtarr[x + 2][y - 1]->getAlive() && !dirtarr[x + 3][y - 1]->getAlive())
 			return true;
 		else
 			return false;
-
 	}
 	else
 		return false;

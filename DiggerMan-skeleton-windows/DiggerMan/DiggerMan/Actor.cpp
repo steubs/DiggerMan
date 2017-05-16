@@ -76,6 +76,20 @@ void DiggerMan::doSomething()
 					setDirection(left);
 					if (x < 1)
 						break;
+					bool isThere = false;//started making the diggerman not run into boulders
+					for (int i = 0;i < getWorld()->getActors().size(); i++) {
+						if (x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
+							y == getWorld()->getActors()[i]->getY() ||
+							x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
+							y == getWorld()->getActors()[i]->getY() + 1 ||
+							x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
+							y == getWorld()->getActors()[i]->getY() + 2 ||
+							x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
+							y == getWorld()->getActors()[i]->getY() + 3)
+							isThere = true;
+						}
+					if (isThere == true)
+						break;
 					moveTo(x - 1, y);
 					getWorld()->removeDirt();
 					break;
@@ -138,16 +152,26 @@ void Boulder::doSomething() {
 	if (getAlive()) {
 		int x = getX();
 		int y = getY();
-		if (y < 60 && y>0)
+		if (y < 60 && y>0)//check under the boulder only if it's inside the map
 		{
 			if (getWorld()->checkUnder(this)) {
-						
-				moveTo(x, y - 1);
-				getWorld()->playSound(SOUND_FALLING_ROCK); // this doesnt work properly, plays repeatedly if boulder falls more than one space.
-														 
-
+				count++;//this was what counted the ticks so removing made it not work
+				//idk if these variables i made have to be private or not
+				if (count >= 30) {//30 ticks have to pass before the boulder falls
+					if (fell==false)//if this is the first time the boulder has moved at all
+						getWorld()->playSound(SOUND_FALLING_ROCK);//play the sound once
+					moveTo(x, y - 1);
+					fell = true;//this also helps get rid of the boulder
+				}
 			}
+			else if (fell == true || y == 0)
+			{//if the boulder has fallen or if it's at the bottom of the map
+				setVisible(false);//make it go away and set alive to false
+				setAlive(false);
+			}
+
 		}
 	}
+	else return;//gotta return if the boulder is dead
 }
 //////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

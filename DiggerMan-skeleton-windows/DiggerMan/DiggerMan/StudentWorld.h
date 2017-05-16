@@ -31,7 +31,9 @@ public:
 
 	bool checkUnder(Boulder * b);
 
-	
+	vector<Actor*> getActors() {
+		return actors;
+	}
 
 };
 
