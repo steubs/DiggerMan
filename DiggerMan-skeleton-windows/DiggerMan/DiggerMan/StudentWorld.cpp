@@ -27,32 +27,35 @@ int StudentWorld::init()
         }
     }
     m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-	for (int i = 0; i < 3/*(however many boulders per level)*/; i++) {
-		int x=34;//make these in the mine shaft just to get into the while loop
-		int y=56;
-		while (x <= 34 && x >= 26 && y <= 56 && y >= 4)//if the values are in the original mine shaft, generate more numbers
-		{
-			x = rand() % 60;
-			y = rand() % 56;
-			//should probably check if theres already a boulder here
-			if (!dirtarr[x][y]->getAlive()) {//this doesnt quite work yet
-				x = 34;
-				y = 56;
+	int i = 0;
+	int CHECKX = -1;
+	int CHECKY = -1;
+	while (i < 3) {
+		int x = rand() % 60;
+		int y = rand() % 56;
+		if (x != CHECKX && y != CHECKY) {
+			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))
+			{
+				actors.push_back(new Boulder(this, IMID_BOULDER, x, y));
+				for (int j = 0; j < 4; j++)
+				{
+					dirtarr[x + j][y]->setVisible(false);
+					dirtarr[x + j][y + 1]->setVisible(false);
+					dirtarr[x + j][y + 2]->setVisible(false);
+					dirtarr[x + j][y + 3]->setVisible(false);
+
+					dirtarr[x + j][y]->setAlive(false);
+					dirtarr[x + j][y + 1]->setAlive(false);
+					dirtarr[x + j][y + 2]->setAlive(false);
+					dirtarr[x + j][y + 3]->setAlive(false);
+				}
+				CHECKX = x;
+				CHECKY = y;
+				i++;
 			}
 		}
-		actors.push_back(new Boulder(this, IMID_BOULDER, x, y));//randomly placed boulders
-		for (int j = 0;j < 4;j++)//i believe the dirt around the boulder should be gone 
-		{
-			dirtarr[x+j][y]->setVisible(false);
-			dirtarr[x + j][y + 1]->setVisible(false);
-			dirtarr[x + j][y + 2]->setVisible(false);
-			dirtarr[x + j][y + 3]->setVisible(false);
-
-			dirtarr[x + j][y]->setAlive(false);
-			dirtarr[x + j][y + 1]->setAlive(false);
-			dirtarr[x + j][y + 2]->setAlive(false);
-			dirtarr[x + j][y + 3]->setAlive(false);
-		}
+		else
+			continue;
 	}
 	return GWSTATUS_CONTINUE_GAME;
 }
