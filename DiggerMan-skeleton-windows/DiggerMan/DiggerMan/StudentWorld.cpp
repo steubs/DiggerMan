@@ -60,5 +60,98 @@ void StudentWorld::cleanUp()
 {
 	delete this;
 }
+void StudentWorld::removeDirt(){
+	int x = m_diggerman->getX();
+	int y = m_diggerman->getY();
+	if (m_diggerman->getDirection() == GraphObject::Direction::left) {
+		if (y == 59) {
+			dirtarr[x][y]->setVisible(false);
+			dirtarr[x][y]->setAlive(false);
+		}
+		else if (y == 58) {
 
+			dirtarr[x][y]->setVisible(false);
+			dirtarr[x][y + 1]->setVisible(false);
+			dirtarr[x][y]->setAlive(false);
+			dirtarr[x][y + 1]->setAlive(false);
+
+		}
+		else if (y == 57) {
+			dirtarr[x][y]->setVisible(false);
+			dirtarr[x][y + 1]->setVisible(false);
+			dirtarr[x][y + 2]->setVisible(false);
+			dirtarr[x][y]->setAlive(false);
+			dirtarr[x][y + 1]->setAlive(false);
+			dirtarr[x][y + 2]->setAlive(false);
+
+		}
+		else if (y < 57) {
+			dirtarr[x][y]->setVisible(false);
+			dirtarr[x][y + 1]->setVisible(false);
+			dirtarr[x][y + 2]->setVisible(false);
+			dirtarr[x][y + 3]->setVisible(false);
+			dirtarr[x][y]->setAlive(false);
+			dirtarr[x][y + 1]->setAlive(false);
+			dirtarr[x][y + 2]->setAlive(false);
+			dirtarr[x][y + 3]->setAlive(false);
+		}
+	}
+	else if (m_diggerman->getDirection() == GraphObject::Direction::right)
+	{
+		if (y == 59) {
+			dirtarr[x + 3][y]->setVisible(false);
+			dirtarr[x + 3][y]->setAlive(false);
+		}
+		else if (y == 58) {
+			dirtarr[x + 3][y]->setVisible(false);
+			dirtarr[x + 3][y + 1]->setVisible(false);
+			dirtarr[x + 3][y]->setAlive(false);
+			dirtarr[x + 3][y + 1]->setAlive(false);
+		}
+		else if (y == 57) {
+			dirtarr[x + 3][y]->setVisible(false);
+			dirtarr[x + 3][y + 1]->setVisible(false);
+			dirtarr[x + 3][y + 2]->setVisible(false);
+			dirtarr[x + 3][y]->setAlive(false);
+			dirtarr[x + 3][y + 1]->setAlive(false);
+			dirtarr[x + 3][y + 2]->setAlive(false);
+
+		}
+		else if (y < 57) {
+			dirtarr[x + 3][y]->setVisible(false);
+			dirtarr[x + 3][y + 1]->setVisible(false);
+			dirtarr[x + 3][y + 2]->setVisible(false);
+			dirtarr[x + 3][y + 3]->setVisible(false);
+			dirtarr[x + 3][y]->setAlive(false);
+			dirtarr[x + 3][y + 1]->setAlive(false);
+			dirtarr[x + 3][y + 2]->setAlive(false);
+			dirtarr[x + 3][y + 3]->setAlive(false);
+		}
+	}
+	else if (m_diggerman->getDirection() == GraphObject::Direction::up) {
+		if (y < 57)
+		{
+			dirtarr[x][y + 3]->setVisible(false);
+			dirtarr[x + 1][y + 3]->setVisible(false);
+			dirtarr[x + 2][y + 3]->setVisible(false);
+			dirtarr[x + 3][y + 3]->setVisible(false);
+
+			dirtarr[x][y + 3]->setAlive(false);
+			dirtarr[x + 1][y + 3]->setAlive(false);
+			dirtarr[x + 2][y + 3]->setAlive(false);
+			dirtarr[x + 3][y + 3]->setAlive(false);
+		}
+	}
+	else if (m_diggerman->getDirection() == GraphObject::Direction::down) {
+		dirtarr[x][y]->setVisible(false);
+		dirtarr[x + 1][y]->setVisible(false);
+		dirtarr[x + 2][y]->setVisible(false);
+		dirtarr[x + 3][y]->setVisible(false);
+
+		dirtarr[x][y]->setAlive(false);
+		dirtarr[x + 1][y]->setAlive(false);
+		dirtarr[x + 2][y]->setAlive(false);
+		dirtarr[x + 3][y]->setAlive(false);
+
+	}
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
