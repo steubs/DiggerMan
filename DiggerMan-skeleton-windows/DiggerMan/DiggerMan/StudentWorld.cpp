@@ -25,11 +25,16 @@ int StudentWorld::init()
 			//(Sharon)create and put dirt objects in a container.
         }
     }
-    m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-		int i = 0;
+    
+	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
+	//actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 40, 60));
+	//actors.push_back(new HardcoreProtestor(this, IMID_HARD_CORE_PROTESTER, 45, 60));
+	
+	int i = 0;
 	int CHECKX = -1;
 	int CHECKY = -1;
 	double SR = 6.0;
+	
 	while (i < 3)
 	{
 		int x = rand() % 60;
@@ -65,6 +70,7 @@ int StudentWorld::init()
 			}
 		}
 	}
+	
 	return GWSTATUS_CONTINUE_GAME;
 }
 

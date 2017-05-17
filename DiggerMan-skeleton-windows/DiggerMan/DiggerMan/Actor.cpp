@@ -77,7 +77,7 @@ void DiggerMan::doSomething()
 					if (x < 1)
 						break;
 					bool isThere = false;//started making the diggerman not run into boulders
-					for (int i = 0;i < getWorld()->getActors().size(); i++) {
+					for (unsigned int i = 0;i < getWorld()->getActors().size(); i++) {
 						if ((x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
 							y == getWorld()->getActors()[i]->getY()) ||
 							(x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
@@ -175,3 +175,51 @@ void Boulder::doSomething() {
 	else return;//gotta return if the boulder is dead
 }
 //////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	leaveOilFieldState = false;
+}
+
+void Protestor::setLeaveOilFieldState(bool state)
+{
+	leaveOilFieldState = state;
+}
+void Protestor::setHealth(int health_)
+{
+	health = health_;
+}
+
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	setHealth(5);
+}
+
+HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	setHealth(20);
+}
+
+void RegularProtestor::doSomething()
+{
+
+}
+
+void HardcoreProtestor::doSomething()
+{
+
+}
+
+RegularProtestor::~RegularProtestor()
+{
+	delete this;
+}
+
+Protestor::~Protestor()
+{
+	delete this;
+}
+
+HardcoreProtestor::~HardcoreProtestor()
+{
+	delete this;
+}
