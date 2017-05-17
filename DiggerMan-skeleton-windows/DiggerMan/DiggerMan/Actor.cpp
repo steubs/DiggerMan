@@ -175,3 +175,42 @@ void Boulder::doSomething() {
 	else return;//gotta return if the boulder is dead
 }
 //////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	leaveOilFieldState = false;
+}
+
+void Protestor::setLeaveOilFieldState(bool state)
+{
+	leaveOilFieldState = state;
+}
+void Protestor::setHealth(int health_)
+{
+	health = health_;
+}
+
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	
+	setHealth(5);
+}
+
+HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : Protestor(p, imageID, startX, startY, dir, size, depth)
+{
+	setHealth(20);
+}
+
+RegularProtestor::~RegularProtestor()
+{
+	delete this;
+}
+
+Protestor::~Protestor()
+{
+	delete this;
+}
+
+HardcoreProtestor::~HardcoreProtestor()
+{
+	delete this;
+}

@@ -1,21 +1,24 @@
-﻿Build started 4/25/2017 9:11:50 PM.
-     1>Project "C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\DiggerMan\DiggerMan.vcxproj" on node 2 (Build target(s)).
+﻿Build started 5/16/2017 8:50:12 PM.
+     1>Project "C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\DiggerMan\DiggerMan.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IirrKlang /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D GLUT_BUILDING_LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Actor.cpp StudentWorld.cpp
-         Actor.cpp
-         Generating Code...
-         Compiling...
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IirrKlang /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D GLUT_BUILDING_LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Actor.cpp GameController.cpp GameWorld.cpp main.cpp StudentWorld.cpp
          StudentWorld.cpp
+         main.cpp
+         GameWorld.cpp
+         GameController.cpp
+         Actor.cpp
+     1>c:\users\joshua_steubs\documents\diggerman\diggerman-skeleton-windows\diggerman\diggerman\actor.cpp(80): warning C4018: '<' : signed/unsigned mismatch
          Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe" /INCREMENTAL /NOLOGO freeglut.lib dsound.lib winmm.lib opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.lib" /MACHINE:X86 Debug\Actor.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe" /INCREMENTAL /NOLOGO freeglut.lib dsound.lib winmm.lib opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.lib" /MACHINE:X86 Debug\Actor.obj
          Debug\GameController.obj
          Debug\GameWorld.obj
          Debug\main.obj
          Debug\StudentWorld.obj
-         DiggerMan.vcxproj -> C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe
-     1>Done Building Project "C:\Users\joshua_steubs\Desktop\DiggerMan\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\DiggerMan\DiggerMan.vcxproj" (Build target(s)).
+         LINK : C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe not found or not built by the last incremental link; performing full link
+         DiggerMan.vcxproj -> C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\Debug\DiggerMan.exe
+     1>Done Building Project "C:\Users\joshua_steubs\Documents\DiggerMan\DiggerMan-skeleton-windows\DiggerMan\DiggerMan\DiggerMan.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.68
+Time Elapsed 00:00:07.18
