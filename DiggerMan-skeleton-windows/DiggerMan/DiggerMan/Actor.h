@@ -49,17 +49,12 @@ public:
 
 class Protestor : public Actor
 {
-private:
-	bool leaveOilFieldState;
-	int health;
+private://reminder: we should make a bases class for diggerman and protestors since all three have hitpoint values 
 public:
 	Protestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 	void doSomething() = 0;
-	void setLeaveOilFieldState(bool);
-	void setHealth(int);
 	~Protestor();
 };
-
 
 class RegularProtestor : public Protestor
 {
