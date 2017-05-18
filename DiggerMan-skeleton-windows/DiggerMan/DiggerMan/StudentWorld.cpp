@@ -76,12 +76,16 @@ int StudentWorld::init()
 
 int StudentWorld::move()
 {
+	removeDead(actors);
+
     m_diggerman->doSomething();
+	
 	for (unsigned int i = 0; i < actors.size();i++)
 	{
 		actors[i]->doSomething();
 		//i think in theory if all the different actors have different dosomethings this should work but idk
 	}
+	
     return GWSTATUS_CONTINUE_GAME;
 	/*This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
 	Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.*/
@@ -111,7 +115,18 @@ bool StudentWorld::checkUnder(Boulder* b){
 		return false;
 }
 
+void StudentWorld::removeDead(vector<Actor*>& actor){
 
+	for (auto it = actor.begin(); it != actor.end() ; ){
+
+		if (!(*it)->getAlive())
+			it = actor.erase(it);
+		else
+			++it;
+
+	}
+
+}
 
 void StudentWorld::removeDirt(){
 	int x = m_diggerman->getX();

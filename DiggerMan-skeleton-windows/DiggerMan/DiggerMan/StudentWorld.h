@@ -36,6 +36,8 @@ public:
 		return actors;
 	}
 
+	void removeDead(vector<Actor*>& actor);
+
 };
 
 #endif // STUDENTWORLD_H_
