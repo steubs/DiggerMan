@@ -128,6 +128,105 @@ void StudentWorld::removeDead(vector<Actor*>& actor){
 
 }
 
+bool StudentWorld::isThere(){
+
+	int x = m_diggerman->getX();
+	int y = m_diggerman->getY();
+
+	for (unsigned int i = 0; i < actors.size(); i++){
+		if (typeid(*(actors[i])) == typeid(Boulder)){
+			if (m_diggerman->getDirection() == GraphObject::Direction::left){
+				if ((x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY()) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() + 1) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() + 2) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() + 3) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() - 1) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() - 2) ||
+					(x - 1 == actors[i]->getX() + 3 &&
+					y == actors[i]->getY() - 3))
+					return true;
+
+				else
+					continue;
+			}
+			else if (m_diggerman->getDirection() == GraphObject::Direction::right){
+				if ((x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY()) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() + 1) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() + 2) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() + 3) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() - 1) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() - 2) ||
+					(x + 4 == actors[i]->getX()  &&
+					y == actors[i]->getY() - 3))
+					return true;
+
+				else
+					continue;
+
+			}
+			else if (m_diggerman->getDirection() == GraphObject::Direction::down){
+				if ((x - 3 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x - 2 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x - 1 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x  == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x + 1 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x + 2 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4) ||
+					(x + 3 == actors[i]->getX() &&
+					y == actors[i]->getY() + 4))
+					return true;
+
+				else
+					continue;
+		
+			}
+			else if(m_diggerman->getDirection() == GraphObject::Direction::up){
+				if ((x - 3 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x - 2 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x - 1 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x + 1 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x + 2 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()) ||
+					(x + 3 == actors[i]->getX() &&
+					y + 4 == actors[i]->getY()))
+					return true;
+
+				else
+					continue;
+
+			}
+		}
+
+		else
+			continue;
+	}
+
+	return false;
+}
+
 void StudentWorld::removeDirt(){
 	int x = m_diggerman->getX();
 	int y = m_diggerman->getY();

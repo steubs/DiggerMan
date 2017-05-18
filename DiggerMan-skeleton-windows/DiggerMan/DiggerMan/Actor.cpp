@@ -76,21 +76,8 @@ void DiggerMan::doSomething()
 					setDirection(left);
 					if (x < 1)
 						break;
-					bool isThere = false;//started making the diggerman not run into boulders
-					for (unsigned int i = 0;i < getWorld()->getActors().size(); i++) {
-						if ((x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
-							y == getWorld()->getActors()[i]->getY()) ||
-							(x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
-							y == getWorld()->getActors()[i]->getY() + 1) ||
-							(x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
-							y == getWorld()->getActors()[i]->getY() + 2 )||
-							(x - 1 == getWorld()->getActors()[i]->getX() + 3 &&
-                             y == getWorld()->getActors()[i]->getY() + 3) || (x - 1 == getWorld()->getActors()[i]->getX() + 3 && y == getWorld()->getActors()[i]->getY() - 1) || (x - 1 == getWorld()->getActors()[i]->getX() + 3 && y == getWorld()->getActors()[i]->getY()-2) || (x - 1 == getWorld()->getActors()[i]->getX() + 3 && y == getWorld()->getActors()[i]->getY()-3))
-							isThere = true;
-						}
-					if (isThere == true)
-						break;
-					moveTo(x - 1, y);
+					if (!getWorld()->isThere())
+						moveTo(x - 1, y);
 					getWorld()->removeDirt();
 					break;
 				}
@@ -103,7 +90,8 @@ void DiggerMan::doSomething()
 					setDirection(right);
 					if (x > 59)
 						break;
-					moveTo(x + 1, y);
+					if (!getWorld()->isThere())
+						moveTo(x + 1, y);
 					getWorld()->removeDirt();
 					break;
 				}
@@ -116,7 +104,8 @@ void DiggerMan::doSomething()
 					setDirection(up);
 					if (y > 59)
 						break;
-					moveTo(x, y + 1);
+					if (!getWorld()->isThere())
+						moveTo(x, y + 1);
 					getWorld()->removeDirt();
 					break;
 				}
@@ -129,7 +118,8 @@ void DiggerMan::doSomething()
 					setDirection(down);
 					if (y < 1)
 						break;
-					moveTo(x, y - 1);
+					if (!getWorld()->isThere())
+						moveTo(x, y - 1);
 					getWorld()->removeDirt();
 					break;
 				}
