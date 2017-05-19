@@ -8,15 +8,18 @@ class Actor : public GraphObject
 private:
 	bool isAlive;
 	StudentWorld *world;
+	int health;
 public:
 	Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void setAlive(bool Is);
 	bool getAlive();
+	int getHealth() { return health; }
 	StudentWorld * getWorld();
 	virtual ~Actor();
 	virtual void doSomething() = 0;
 
 };
+
 class Dirt : public Actor
 {
 private:
@@ -29,13 +32,14 @@ public:
 class DiggerMan : public Actor
 {
 private:
-	int life;
-	int health;
+	
 public:
 	DiggerMan(StudentWorld *p,int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
+	
 	~DiggerMan();
 };
+
 class Boulder : public Actor
 {
 private:
@@ -60,14 +64,6 @@ public:
 	~Protestor();
 };
 
-class RegularProtestor : public Protestor
-{
-private:
-public:
-	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
-	void doSomething();
-	~RegularProtestor();
-};
 
 class HardcoreProtestor : public Protestor
 {

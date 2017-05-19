@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include <string>
 #include <vector>
+#include <algorithm>
 #include<cmath>
 using namespace std;
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
@@ -27,6 +28,10 @@ public:
 	virtual int move();
 
 	virtual void cleanUp();
+
+	void addBoulders();
+
+	void addDirt();
 	
 	void removeDirt();
 
@@ -39,6 +44,8 @@ public:
 	}
 
 	void removeDead(vector<Actor*>& actor);
+
+	void setDisplayText();
 
 };
 

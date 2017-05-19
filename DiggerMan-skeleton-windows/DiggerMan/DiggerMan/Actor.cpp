@@ -9,6 +9,7 @@ Actor::Actor(StudentWorld *p, int imageID, int startX, int startY, Direction dir
 {
 	setVisible(true);
 	setAlive(true);
+	health = 100;
 }
 
 bool Actor::getAlive(){
@@ -49,7 +50,7 @@ void Dirt::doSomething()
 //////////////////////////////////////////////////////////////  DIGGERMAN  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), life(3), health(100)
+DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
 	
 }
@@ -142,8 +143,15 @@ void Boulder::doSomething() {
 	if (getAlive()) {
 		int x = getX();
 		int y = getY();
+		if (y == 0){
+
+			setVisible(false);
+			setAlive(false);
+
+		}
 		if (y < 60 && y>0)//check under the boulder only if it's inside the map
 		{
+		
 			if (getWorld()->checkUnder(this)) {
 				count++;//this was what counted the ticks so removing made it not work
 				//idk if these variables i made have to be private or not
@@ -154,60 +162,64 @@ void Boulder::doSomething() {
 					fell = true;//this also helps get rid of the boulder
 				}
 			}
-			else if (fell == true || y == 0)
-			{//if the boulder has fallen or if it's at the bottom of the map
-				setVisible(false);//make it go away and set alive to false
+			else if (fell == true){ //if the boulder has fallen
+
+				setVisible(false);
 				setAlive(false);
 			}
-
+			else
+				return;
 		}
 	}
-	else return;//gotta return if the boulder is dead
+	else 
+		return;
 }
-//////////////////////////////////////////////////////////////  Protestor  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
 	leaveOilFieldState = false;
+	setHealth(5);
 }
 
 void Protestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
 }
+
 void Protestor::setHealth(int health_)
 {
 	health = health_;
 }
 
-RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Protestor(p, imageID, startX, startY, dir, size, depth)
+
+void Protestor::doSomething()
 {
-	setHealth(5);
+
 }
+
+
+
+Protestor::~Protestor()
+{
+	delete this;
+}
+
+
+
+////////////////////////////////////////////////////////////// HARDCORE PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : Protestor(p, imageID, startX, startY, dir, size, depth)
 {
 	setHealth(20);
 }
 
-void RegularProtestor::doSomething()
-{
-
-}
 
 void HardcoreProtestor::doSomething()
 {
 
 }
 
-RegularProtestor::~RegularProtestor()
-{
-	delete this;
-}
-
-Protestor::~Protestor()
-{
-	delete this;
-}
 
 HardcoreProtestor::~HardcoreProtestor()
 {
