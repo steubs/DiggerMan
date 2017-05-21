@@ -153,8 +153,7 @@ void Boulder::doSomething() {
 		{
 		
 			if (getWorld()->checkUnder(this)) {
-				count++;//this was what counted the ticks so removing made it not work
-				//idk if these variables i made have to be private or not
+				count++;
 				if (count >= 30) {//30 ticks have to pass before the boulder falls
 					if (fell==false)//if this is the first time the boulder has moved at all
 						getWorld()->playSound(SOUND_FALLING_ROCK);//play the sound once
@@ -174,6 +173,40 @@ void Boulder::doSomething() {
 	else 
 		return;
 }
+//////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+	setVisible(true);//setVisible(false);
+	setAlive(true);
+}
+
+void Oil::doSomething() {
+	if (getAlive())
+	{
+		//if (getWorld()->isClose())
+		//	//return;
+		//getWorld()->isTouching();
+	}
+	else return;
+}
+
+Oil::~Oil() {
+	delete this;
+}
+
+//////////////////////////////////////////////////////////////  SQUIRT  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Squirt::Squirt(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+
+}
+
+void Squirt::doSomething() {
+
+}
+
+Squirt::~Squirt() {
+	delete this;
+}
+
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)

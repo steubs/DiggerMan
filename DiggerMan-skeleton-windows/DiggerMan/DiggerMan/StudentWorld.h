@@ -31,6 +31,12 @@ public:
 
 	void addBoulders();
 
+	void addActors(Actor* actor);
+	
+	bool isClose();
+
+	void isTouching();
+
 	void addDirt();
 	
 	void removeDirt();

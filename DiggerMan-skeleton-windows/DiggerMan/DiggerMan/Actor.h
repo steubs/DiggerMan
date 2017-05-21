@@ -51,6 +51,24 @@ public:
 	~Boulder();
 };
 
+class Oil : public Actor
+{
+private:
+public:
+	Oil(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
+	void doSomething();
+	~Oil();
+};
+
+class Squirt : public Actor
+{
+private:
+public:
+	Squirt(StudentWorld *p, int imageID, int startX, int startY, Direction dir = down, double size = 1.0, unsigned int depth = 1);
+	void doSomething();
+	~Squirt();
+};
+
 class Protestor : public Actor
 {
 private:
