@@ -16,6 +16,7 @@ private:
 	Actor* m_diggerman;
 	Dirt* dirtarr[64][60];
 	vector<Actor*> actors;
+	int m_barrels = 0;
 public:
 
 	StudentWorld(std::string assetDir)
@@ -52,6 +53,13 @@ public:
 	void removeDead(vector<Actor*>& actor);
 
 	void setDisplayText();
+
+	Actor* getDiggerman();
+
+	int getBarrels();
+
+	void decBarrels() { m_barrels--; return; }
+
 
 };
 

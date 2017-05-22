@@ -22,7 +22,7 @@ int StudentWorld::init()
 	//Gold*gold = new Gold(this, IMID_GOLD,0,0);
 	addActors(oil);
 	//addActors(gold);
-
+	
 	return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -30,26 +30,40 @@ int StudentWorld::move()
 {
 	setDisplayText();
 
-	removeDead(actors);
-
     m_diggerman->doSomething();
 
 	for (unsigned int i = 0; i < actors.size();i++)
 	{
 		actors[i]->doSomething();
+		if (getBarrels() == 0)
+			return GWSTATUS_FINISHED_LEVEL;
 		
 	}
+
+	removeDead(actors);
 	
     return GWSTATUS_CONTINUE_GAME;
-	/*This code is here merely to allow the game to build, run, and terminate after you hit enter a few times.
-	Notice that the return value GWSTATUS_PLAYER_DIED will cause our framework to end the current level.*/
-	/*decLives();*/
-	//return GWSTATUS_PLAYER_DIED;
+
 }
 
 void StudentWorld::cleanUp()
+
 {
-	delete this;
+	for (int i = 0; i < 64; i++)
+	{
+		for (int j = 0; j < 60; j++)
+		{
+			delete dirtarr[i][j];
+		}
+	}
+
+	
+	delete getDiggerman();
+
+	for (auto it = actors.begin(); it != actors.end(); ++it){
+		delete *it;
+	}
+	actors.clear();
 }
 
 void StudentWorld::addBoulders() {
@@ -86,7 +100,7 @@ void StudentWorld::addBoulders() {
 	}
 	for (int n = 0; n < i; )//(Sharon) I really hope this works the same as before!
 	{
-		for (int j = 0; j < actors.size();j++) {//checking all the other actors before creating
+		for (unsigned int j = 0; j < actors.size();j++) {//checking all the other actors before creating
 			CHECKX = actors[j]->getX();
 			CHECKY = actors[j]->getY();
 			if (x != CHECKX && y != CHECKY)
@@ -146,6 +160,12 @@ bool StudentWorld::checkUnder(Boulder* b){
 }
 
 void StudentWorld::addActors(Actor *actor) {
+
+	
+	if (actor->getX() == 0 && actor->getY() == 0){
+		actor->setAlive(false);
+		actor->setVisible(false);
+	}
 	int current_level = getLevel();
 	int i; //number of items
 	double SR = 0;
@@ -162,7 +182,7 @@ void StudentWorld::addActors(Actor *actor) {
 	//}
 	for (int n = 0; n < i; )
 	{
-		for (int j = 1; j < actors.size();j++) {//checking all the other actors before creating
+		for (unsigned int j = 1; j < actors.size();j++) {//checking all the other actors before creating
 			CHECKX = actors[j]->getX();
 			CHECKY = actors[j]->getY();
 			if (x != CHECKX && y != CHECKY)
@@ -187,6 +207,7 @@ void StudentWorld::addActors(Actor *actor) {
 			{
 				if (typeid(*actor) == typeid(Oil)) {
 					actors.push_back(new Oil(this, IMID_BARREL,x, y));
+					m_barrels++;
 				}
 				/*if (typeid(*actor) == typeid(Gold)) {  this is to make this function viable for gold when its created
 				actors.push_back(new Gold(this, IMID_GOLD, x, y));
@@ -197,12 +218,13 @@ void StudentWorld::addActors(Actor *actor) {
 		x = rand() % 60;
 		y = rand() % 56;
 	}
+
 }
 
 bool StudentWorld::isClose() {
 	int x;
 	int y;
-	for (int i = 0; i < actors.size();i++) {
+	for (unsigned int i = 0; i < actors.size();i++) {
 		if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
 			x = actors[i]->getX();
 			y = actors[i]->getY();
@@ -221,7 +243,7 @@ bool StudentWorld::isClose() {
 void StudentWorld::isTouching() {
 	int x;
 	int y;
-	for (int i = 0; i < actors.size();i++) {
+	for (unsigned int i = 0; i < actors.size();i++) {
 		if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
 			x = actors[i]->getX();
 			y = actors[i]->getY();
@@ -508,7 +530,7 @@ void StudentWorld::setDisplayText(){
 	//int barrelsLeft = getNumberOfBarrelsRemainingToBePickedUp();
 	int score = getScore();
 
-	string s = "Lvl: " + to_string(level) + " " + "Lives: " + to_string(lives) + " " + "Hlth: " + to_string(health) + "%";
+	string s = "Lvl: " + to_string(level) + " " + "Lives: " + to_string(lives) + " " + "Hlth: " + to_string(health) + "%" + " Scr: " + to_string(score);
 	setGameStatText(s);
 
 }
@@ -519,9 +541,22 @@ void StudentWorld::removeDead(vector<Actor*>& actor){
 
 		if (!(*it)->getAlive())
 			it = actor.erase(it);
+
 		else
 			++it;
 	}
+
+}
+
+Actor* StudentWorld::getDiggerman(){
+
+	return m_diggerman;
+
+}
+
+int StudentWorld::getBarrels(){
+	
+	return m_barrels;
 
 }
 

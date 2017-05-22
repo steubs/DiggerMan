@@ -23,7 +23,7 @@ StudentWorld *Actor::getWorld(){
 }
 Actor::~Actor()
 {
-	delete this;
+	
 }
 void Actor::doSomething()
 {
@@ -40,7 +40,7 @@ Dirt::Dirt(StudentWorld* p, int imageID, int startX, int startY, Direction dir, 
 
 Dirt::~Dirt()
 {
-	delete this;
+	
 }
 void Dirt::doSomething()
 {
@@ -57,7 +57,7 @@ DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direc
 
 DiggerMan::~DiggerMan()
 {
-	delete this;
+	//delete getWorld()->m_diggerman;
 }
 void DiggerMan::doSomething()
 {
@@ -136,7 +136,7 @@ Boulder::Boulder(StudentWorld*p, int imageID, int startX, int startY, Direction 
 	
 }
 Boulder::~Boulder(){
-	delete this;
+	
 }
 void Boulder::doSomething() {
 
@@ -183,15 +183,19 @@ Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, dou
 void Oil::doSomething() {
 	if (getAlive())
 	{
-		//if (getWorld()->isClose())
-		//	//return;
-		//getWorld()->isTouching();
+		if (getX() == getWorld()->getDiggerman()->getX() && getY() == getWorld()->getDiggerman()->getY()){
+		
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decBarrels();
+			getWorld()->increaseScore(1000);
+		}
 	}
 	else return;
 }
 
 Oil::~Oil() {
-	delete this;
+	
 }
 
 //////////////////////////////////////////////////////////////  SQUIRT  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
