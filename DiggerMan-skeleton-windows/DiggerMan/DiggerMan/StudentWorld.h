@@ -17,6 +17,8 @@ private:
 	Dirt* dirtarr[64][60];
 	vector<Actor*> actors;
 	int m_barrels = 0;
+	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
+	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 public:
 
 	StudentWorld(std::string assetDir)

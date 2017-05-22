@@ -15,7 +15,8 @@ int StudentWorld::init()
 	addDirt();
     
 	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-
+	//m_protestorTest = new HardcoreProtestor(this, IMID_HARD_CORE_PROTESTER, 55, 60);//just for testing protestor functions, will be deleted later
+	//m_protestorTest2 = new RegularProtestor(this, IMID_PROTESTER, 50, 60);//just for testing protestor functions, will be deleted later
 	addBoulders();
 
 	Oil*oil = new Oil(this, IMID_BARREL, 0, 0);//create to use in function call

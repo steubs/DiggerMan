@@ -69,21 +69,22 @@ public:
 	~Squirt();
 };
 
-class Protestor : public Actor
+class RegularProtestor : public Actor
 {
 private:
 	bool leaveOilFieldState;
-	int health; 
+	int health;
+	int numSquaresToMoveInCurrentDirection;
 public:
-	Protestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
-	void doSomething() = 0;
+	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
+	void doSomething();
+	bool getLeaveOilFieldState();
 	void setLeaveOilFieldState(bool);
 	void setHealth(int);
-	~Protestor();
+	~RegularProtestor();
 };
 
-
-class HardcoreProtestor : public Protestor
+class HardcoreProtestor : public RegularProtestor
 {
 private:
 public:
@@ -91,7 +92,5 @@ public:
 	void doSomething();
 	~HardcoreProtestor();
 };
-
-
 
 #endif // ACTOR_H_

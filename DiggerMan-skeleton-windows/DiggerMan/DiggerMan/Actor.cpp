@@ -213,31 +213,108 @@ Squirt::~Squirt() {
 
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Protestor::Protestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
 	leaveOilFieldState = false;
 	setHealth(5);
 }
 
-void Protestor::setLeaveOilFieldState(bool state)
+void RegularProtestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
 }
 
-void Protestor::setHealth(int health_)
+void RegularProtestor::setHealth(int health_)
 {
 	health = health_;
 }
-
-
-void Protestor::doSomething()
+bool RegularProtestor::getLeaveOilFieldState()
 {
+	return leaveOilFieldState;
+}
+
+void RegularProtestor::doSomething()
+{
+	if (!getAlive()) return;//return if not alive
+	/*if (isResting())
+	{
+		updateRestState();
+		return;
+	}*/
+	if (getLeaveOilFieldState())
+	{
+		//code taken from DiggerMan but will be changed to work for RegularProtestor, differences are adding randMove instead of getKey(), wait(), etc.... Not finished
+		//will keep code to check for walls, etc.
+		int x = getX();
+		int y = getY();
+		int ch;
+		if (getAlive()) {
+			if (getWorld()->getKey(ch) == true) {
+				switch (ch) {
+				case KEY_PRESS_LEFT:
+					if (getDirection() != left) {
+						setDirection(left);
+						break;
+					}
+					else {
+						setDirection(left);
+						if (x < 1)
+							break;
+						if (!getWorld()->isThere())
+							moveTo(x - 1, y);
+						break;
+					}
+				case KEY_PRESS_RIGHT:
+					if (getDirection() != right) {
+						setDirection(right);
+						break;
+					}
+					else {
+						setDirection(right);
+						if (x > 59)
+							break;
+						if (!getWorld()->isThere())
+							moveTo(x + 1, y);
+						break;
+					}
+				case KEY_PRESS_UP:
+					if (getDirection() != up) {
+						setDirection(up);
+						break;
+					}
+					else {
+						setDirection(up);
+						if (y > 59)
+							break;
+						if (!getWorld()->isThere())
+							moveTo(x, y + 1);
+						break;
+					}
+				case KEY_PRESS_DOWN:
+					if (getDirection() != down) {
+						setDirection(down);
+						break;
+					}
+					else {
+						setDirection(down);
+						if (y < 1)
+							break;
+						if (!getWorld()->isThere())
+							moveTo(x, y - 1);
+						break;
+					}
+				}
+			}
+		}
+	}
+	else
+		return;
 
 }
 
 
 
-Protestor::~Protestor()
+RegularProtestor::~RegularProtestor()
 {
 	delete this;
 }
@@ -246,7 +323,7 @@ Protestor::~Protestor()
 
 ////////////////////////////////////////////////////////////// HARDCORE PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : Protestor(p, imageID, startX, startY, dir, size, depth)
+HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) : RegularProtestor(p, imageID, startX, startY, dir, size, depth)
 {
 	setHealth(20);
 }
@@ -254,7 +331,7 @@ HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, i
 
 void HardcoreProtestor::doSomething()
 {
-
+	
 }
 
 
