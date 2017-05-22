@@ -182,7 +182,7 @@ void StudentWorld::addActors(Actor *actor) {
 	//}
 	for (int n = 0; n < i; )
 	{
-		for (unsigned int j = 1; j < actors.size();j++) {//checking all the other actors before creating
+		for (unsigned int j = 0; j < actors.size();j++) {//checking all the other actors before creating
 			CHECKX = actors[j]->getX();
 			CHECKY = actors[j]->getY();
 			if (x != CHECKX && y != CHECKY)
