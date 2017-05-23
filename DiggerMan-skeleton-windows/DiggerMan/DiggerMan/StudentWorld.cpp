@@ -1,7 +1,5 @@
 #include "StudentWorld.h"
 #include <cstdlib>
-#include "Actor.h"
-#include <algorithm>
 using namespace std;
 
 
@@ -37,7 +35,7 @@ int StudentWorld::move()
 		
 	}
 
-	removeDead(actors);
+	removeDead();
 	
     return GWSTATUS_CONTINUE_GAME;
 
@@ -87,23 +85,23 @@ void StudentWorld::addBoulders() {
 					dirtarr[x + j][y + 3]->setAlive(false);
 				}
 			}
-			else
-			{
-				if (checkDistance(x, y) && y > 20) {
-					if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
-					{
-						actors.push_back(new Boulder(this, IMID_BOULDER, x, y));
-						c++;
-						for (int j = 0; j < 4; j++) {
-							dirtarr[x + j][y]->setVisible(false);
-							dirtarr[x + j][y + 1]->setVisible(false);
-							dirtarr[x + j][y + 2]->setVisible(false);
-							dirtarr[x + j][y + 3]->setVisible(false);
-							dirtarr[x + j][y]->setAlive(false);
-							dirtarr[x + j][y + 1]->setAlive(false);
-							dirtarr[x + j][y + 2]->setAlive(false);
-							dirtarr[x + j][y + 3]->setAlive(false);
-						}
+		}
+		else
+		{
+			if (checkDistance(x, y) && y > 20) {
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+				{
+					actors.push_back(new Boulder(this, IMID_BOULDER, x, y));
+					c++;
+					for (int j = 0; j < 4; j++) {
+						dirtarr[x + j][y]->setVisible(false);
+						dirtarr[x + j][y + 1]->setVisible(false);
+						dirtarr[x + j][y + 2]->setVisible(false);
+						dirtarr[x + j][y + 3]->setVisible(false);
+						dirtarr[x + j][y]->setAlive(false);
+						dirtarr[x + j][y + 1]->setAlive(false);
+						dirtarr[x + j][y + 2]->setAlive(false);
+						dirtarr[x + j][y + 3]->setAlive(false);
 					}
 				}
 			}
@@ -503,9 +501,9 @@ void StudentWorld::setDisplayText(){
 }
 
 void StudentWorld::removeDead(){
-	for (auto it = actor.begin(); it != actor.end() ; ){
+	for (auto it = actors.begin(); it != actors.end() ; ){
 		if (!(*it)->getAlive())
-			it = actor.erase(it);
+			it = actors.erase(it);
 		else
 			++it;
 	}
@@ -526,23 +524,25 @@ void StudentWorld::addGoldNuggets() {
 	int current_level = getLevel();
 	int G = max(5 - current_level / 2, 2);
 	int c = 0;
-	while (c < G) {
+	while (c < G)
+	{
 		int x = rand() % 60;
 		int y = rand() % 56;
-		if (actors.empty()) {
+		if (actors.empty())
+		{
 			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
 			{
 				actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
 				c++;
 			}
-			else
-			{
-				if (checkDistance(x, y) && y > 20) {
-					if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
-					{
-						actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
-						c++;
-					}
+		}
+		else
+		{
+			if (checkDistance(x, y) && y > 20) {
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+				{
+					actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
+					c++;
 				}
 			}
 		}
@@ -550,7 +550,7 @@ void StudentWorld::addGoldNuggets() {
 }
 void StudentWorld::addBarrel() {
 	int current_level = getLevel();
-	int i = min(5 - current_level + 2, 18);
+	int i = min(current_level + 2, 18);
 	int c = 0;
 	while (c < i) {
 		int x = rand() % 60;
@@ -562,15 +562,15 @@ void StudentWorld::addBarrel() {
 				m_barrels++;
 				c++;
 			}
-			else
-			{
-				if (checkDistance(x, y) && y > 20) {
-					if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
-					{
-						actors.push_back(new Oil(this, IMID_BARREL, x, y));
-						m_barrels++;
-						c++;
-					}
+		}
+		else
+		{
+			if (checkDistance(x, y) && y > 20) {
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+				{
+					actors.push_back(new Oil(this, IMID_BARREL, x, y));
+					m_barrels++;
+					c++;
 				}
 			}
 		}
@@ -580,11 +580,12 @@ bool StudentWorld::checkDistance(int x, int y) {
 	bool flag = false;
 	for (auto it = actors.begin(); it != actors.end(); it++)
 	{
-		double S = pow(abs((*it)->getX - x), 2) + pow(abs((*it)->getY - y), 2);
+		double S = pow(abs((*it)->getX() - x), 2) + pow(abs((*it)->getY() - y), 2);
 		double SR = pow(S, 0.5);
 		if (SR >= 6.0)
 			flag = true;
-		else {
+		else 
+		{
 			flag = false;
 			break;
 		}
