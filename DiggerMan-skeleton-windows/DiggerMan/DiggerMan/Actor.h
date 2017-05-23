@@ -14,6 +14,7 @@ public:
 	void setAlive(bool Is);
 	bool getAlive();
 	int getHealth() { return health; }
+	void setHealth(int health_);
 	StudentWorld * getWorld();
 	virtual ~Actor();
 	virtual void doSomething() = 0;
@@ -79,7 +80,6 @@ public:
 	void doSomething();
 	bool getLeaveOilFieldState();
 	void setLeaveOilFieldState(bool);
-	void setHealth(int);
 	~RegularProtestor();
 };
 
@@ -99,5 +99,4 @@ class GoldNugget :public Actor {
 		void doSomething();
 		~GoldNugget();
 };
-
 #endif // ACTOR_H_
