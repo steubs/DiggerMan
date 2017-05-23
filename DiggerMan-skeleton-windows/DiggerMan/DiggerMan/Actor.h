@@ -43,10 +43,10 @@ public:
 class Boulder : public Actor
 {
 private:
+	int count ;
+	bool fell ;
 public:
 	Boulder(StudentWorld *p, int imageID, int startX, int startY, Direction dir = down, double size = 1.0, unsigned int depth = 1);
-	int count = 0;
-	bool fell = false;
 	void doSomething();
 	~Boulder();
 };
@@ -73,7 +73,6 @@ class RegularProtestor : public Actor
 {
 private:
 	bool leaveOilFieldState;
-	int health;
 	int numSquaresToMoveInCurrentDirection;
 public:
 	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
