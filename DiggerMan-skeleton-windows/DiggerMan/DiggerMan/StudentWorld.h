@@ -17,6 +17,7 @@ private:
 	Dirt* dirtarr[64][60];
 	vector<Actor*> actors;
 	int m_barrels;
+    int m_gold;
 	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
 	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 public:
@@ -56,10 +57,13 @@ public:
 
 	void setDisplayText();
 
-	Actor* getDiggerman();
+    Actor* getDiggerman(){ return m_diggerman; }
 
-	int getBarrels();
-
+    int getBarrels() { return m_barrels; }
+    
+    int getGold(){ return m_gold; }
+    
+    void decGold(){ m_gold--; return; }
 	void decBarrels() { m_barrels--; return; }
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();

@@ -80,7 +80,7 @@ void DiggerMan::doSomething()
 					setDirection(left);
 					if (x < 1)
 						break;
-					if (!getWorld()->isThere())
+                    if (!getWorld()->isThere())
 						moveTo(x - 1, y);
 					getWorld()->removeDirt();
 					break;
@@ -187,7 +187,7 @@ void Oil::doSomething() {
 	if (getAlive())
 	{
 		if (getX() == getWorld()->getDiggerman()->getX() && getY() == getWorld()->getDiggerman()->getY()){
-		
+            getWorld()->playSound(SOUND_FOUND_OIL);
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decBarrels();
@@ -338,15 +338,23 @@ HardcoreProtestor::~HardcoreProtestor()
 	
 }
 ////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
 {
 	setVisible(true);
 }
 void GoldNugget::doSomething()
 {
-	if (!getAlive()) 
+	if (getAlive())
 	{
-	
+        if (getX() == getWorld()->getDiggerman()->getX() && getY() == getWorld()->getDiggerman()->getY()){
+            
+            setVisible(false);
+            setAlive(false);
+            getWorld()->decGold();
+            getWorld()->increaseScore(10);
+        }
+        
 	}
 	else
 		return;

@@ -490,12 +490,12 @@ void StudentWorld::setDisplayText(){
 	int lives = getLives();
 	int health = m_diggerman->getHealth();
 	//int squirts = getSquirtsLeftInSquirtGun();
-	//int gold = getPlayerGoldCount();
+	int gold = getGold();
 	//int sonar = getPlayerSonarChargeCount();
-	//int barrelsLeft = getNumberOfBarrelsRemainingToBePickedUp();
+	int barrelsLeft = getBarrels();
 	int score = getScore();
 
-	string s = "Lvl: " + to_string(level) + " " + "Lives: " + to_string(lives) + " " + "Hlth: " + to_string(health) + "%" + " Scr: " + to_string(score);
+    string s = "Lvl: " + to_string(level) + " " + "Lives: " + to_string(lives) + " " + "Hlth: " + to_string(health) + "%" + " Gld: " + to_string(gold) + " Oil Left: " + to_string(barrelsLeft) + " Scr: " + to_string(score);
 	setGameStatText(s);
 
 }
@@ -509,17 +509,9 @@ void StudentWorld::removeDead(){
 	}
 }
 
-Actor* StudentWorld::getDiggerman(){
 
-	return m_diggerman;
 
-}
 
-int StudentWorld::getBarrels(){
-	
-	return m_barrels;
-
-}
 void StudentWorld::addGoldNuggets() {
 	int current_level = getLevel();
 	int G = max(5 - current_level / 2, 2);
@@ -530,18 +522,20 @@ void StudentWorld::addGoldNuggets() {
 		int y = rand() % 56;
 		if (actors.empty())
 		{
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 			{
 				actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
+                m_gold++;
 				c++;
 			}
 		}
 		else
 		{
-			if (checkDistance(x, y) && y > 20) {
-				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 				{
 					actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
+                    m_gold++;
 					c++;
 				}
 			}
@@ -556,7 +550,7 @@ void StudentWorld::addBarrel() {
 		int x = rand() % 60;
 		int y = rand() % 56;
 		if (actors.empty()) {
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 			{
 				actors.push_back(new Oil(this, IMID_BARREL, x, y));
 				m_barrels++;
@@ -565,8 +559,8 @@ void StudentWorld::addBarrel() {
 		}
 		else
 		{
-			if (checkDistance(x, y) && y > 20) {
-				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4) && y > 20)
+			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 				{
 					actors.push_back(new Oil(this, IMID_BARREL, x, y));
 					m_barrels++;
