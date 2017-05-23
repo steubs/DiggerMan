@@ -16,13 +16,13 @@ private:
 	Actor* m_diggerman;
 	Dirt* dirtarr[64][60];
 	vector<Actor*> actors;
-	int m_barrels = 0;
+	int m_barrels;
 	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
 	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 public:
 
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir)
+		: GameWorld(assetDir),m_barrels(0)
 	{
 	}
 
@@ -52,7 +52,7 @@ public:
 		return actors;
 	}
 
-	void removeDead(vector<Actor*>& actor);
+	void removeDead();
 
 	void setDisplayText();
 
@@ -61,7 +61,9 @@ public:
 	int getBarrels();
 
 	void decBarrels() { m_barrels--; return; }
-
+	bool checkDistance(int x, int y);
+	void addGoldNuggets();
+	void addBarrel();
 
 };
 
