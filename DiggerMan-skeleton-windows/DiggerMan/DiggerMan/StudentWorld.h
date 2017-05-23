@@ -23,7 +23,7 @@ private:
 public:
 
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0)
+		: GameWorld(assetDir),m_barrels(0),m_gold(0)
 	{
 	}
 
