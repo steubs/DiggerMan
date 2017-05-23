@@ -335,7 +335,7 @@ void HardcoreProtestor::doSomething()
 
 HardcoreProtestor::~HardcoreProtestor()
 {
-	delete this;
+	
 }
 ////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
@@ -353,5 +353,5 @@ void GoldNugget::doSomething()
 }
 GoldNugget::~GoldNugget()
 {
-	delete this;
+	
 }

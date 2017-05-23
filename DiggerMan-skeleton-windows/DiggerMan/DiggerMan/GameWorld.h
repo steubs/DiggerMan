@@ -1,70 +1,94 @@
-#ifndef STUDENTWORLD_H_
-#define STUDENTWORLD_H_
+#ifndef GAMEWORLD_H_
+#define GAMEWORLD_H_
 
-#include "GameWorld.h"
 #include "GameConstants.h"
-#include "Actor.h"
 #include <string>
-#include <vector>
-#include <algorithm>
-#include<cmath>
-using namespace std;
-// Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
-class StudentWorld : public GameWorld
+
+const int START_PLAYER_LIVES = 3;
+
+class GameController;
+
+class GameWorld
 {
-private:
-	Actor* m_diggerman;
-	Dirt* dirtarr[64][60];
-	vector<Actor*> actors;
-	int m_barrels;
-	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
-	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 public:
 
-	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0)
+	GameWorld(std::string assetDir)
+	 : m_lives(START_PLAYER_LIVES), m_score(0), m_level(0),
+	   m_controller(nullptr), m_assetDir(assetDir)
 	{
 	}
 
-	virtual int init();
+	virtual ~GameWorld()
+	{
+	}
 	
-	virtual int move();
+	virtual int init() = 0;
+	virtual int move() = 0;
+	virtual void cleanUp() = 0;
 
-	virtual void cleanUp();
+	void setGameStatText(std::string text);
 
-	void addBoulders();
+	bool getKey(int& value);
+	void playSound(int soundID);
 
-	void addActors(Actor* actor);
-	
-	bool isClose();
-
-	void isTouching();
-
-	void addDirt();
-	
-	void removeDirt();
-
-	bool checkUnder(Boulder * b);
-
-	bool isThere();
-
-	vector<Actor*> getActors() {
-		return actors;
+	unsigned int getLevel() const
+	{
+		return m_level;
 	}
 
-	void removeDead();
+	unsigned int getLives() const
+	{
+		return m_lives;
+	}
+	
+	void decLives()
+	{
+		m_lives--;
+	}
+	
+	void incLives()
+    {
+		m_lives++;
+	}
 
-	void setDisplayText();
+	unsigned int getScore() const
+	{
+		return m_score;
+	}
+	
+	void increaseScore(unsigned int howMuch)
+	{
+		m_score += howMuch;
+	}
+	
+	  // The following should be used by only the framework, not the student
 
-	Actor* getDiggerman();
+	bool isGameOver() const
+	{
+		return m_lives == 0;
+	}
 
-	int getBarrels();
+	void advanceToNextLevel() 
+	{
+		++m_level;
+	}
+   
+	void setController(GameController* controller)
+	{
+		m_controller = controller;
+	}
 
-	void decBarrels() { m_barrels--; return; }
-	bool checkDistance(int x, int y);
-	void addGoldNuggets();
-	void addBarrel();
-
+	std::string assetDirectory() const
+	{
+		return m_assetDir;
+	}
+	
+private:
+	unsigned int	m_lives;
+	unsigned int	m_score;
+	unsigned int	m_level;
+	GameController* m_controller;
+	std::string		m_assetDir;
 };
 
 #endif // GAMEWORLD_H_
