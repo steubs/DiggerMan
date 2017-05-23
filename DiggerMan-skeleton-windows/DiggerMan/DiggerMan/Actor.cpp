@@ -28,6 +28,10 @@ void Actor::doSomething()
 {
 
 }
+void Actor::setHealth(int health_)
+{
+	health = health_;
+}
 
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -221,11 +225,6 @@ RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int
 void RegularProtestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
-}
-
-void RegularProtestor::setHealth(int health_)
-{
-	health = health_;
 }
 bool RegularProtestor::getLeaveOilFieldState()
 {
