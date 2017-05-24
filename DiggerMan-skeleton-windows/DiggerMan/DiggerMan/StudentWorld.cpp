@@ -186,23 +186,41 @@ void StudentWorld::addActors(Actor *actor) {
 
 }
 
-bool StudentWorld::isClose() {
+void StudentWorld::isClose(int key) {
 	int x;
 	int y;
-	for (unsigned int i = 0; i < actors.size();i++) {
-		if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-			int digX = m_diggerman->getX();
-			int digY = m_diggerman->getY();
-			if (x=digX) {//the parameter for when the diggerman is next to this is too big for me to write cause im tired
-				//no matter the direction, if the diggerman is next to it
-				actors[i]->setVisible(true);
-				return true;
+	if (key == 1) {
+		for (unsigned int i = 0; i < actors.size(); i++) {
+			if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
+				x = actors[i]->getX();
+				y = actors[i]->getY();
+				int digX = m_diggerman->getX();
+				int digY = m_diggerman->getY();
+				if (x = digX) {//the parameter for when the diggerman is next to this is too big for me to write cause im tired
+					//no matter the direction, if the diggerman is next to it
+					actors[i]->setVisible(true);
+					//return true;
+				}
 			}
 		}
 	}
-	return false;
+	else if (key == 2) {
+		for (unsigned int i = 0; i < actors.size(); i++) {
+			if (typeid(*actors[i]) == typeid(GoldNugget)) {
+				x = actors[i]->getX();
+				y = actors[i]->getY();
+				int digX = m_diggerman->getX();
+				int digY = m_diggerman->getY();
+				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+				if (SR <= 4.0) {
+					actors[i]->setVisible(true);
+				}
+				else if (SR > 4.0) {
+					actors[i]->setVisible(false);
+				}
+			}
+		}
+	}
 }
 
 void StudentWorld::isTouching() {
@@ -586,5 +604,23 @@ bool StudentWorld::checkDistance(int x, int y) {
 	}
 	return flag;
 }
-
+void StudentWorld::pickGold_diggerman() {
+	int x;
+	int y;
+	for (unsigned int i = 0; i < actors.size(); i++) {
+		if (typeid(*actors[i]) == typeid(GoldNugget)) {
+			x = actors[i]->getX();
+			y = actors[i]->getY();
+			int digX = m_diggerman->getX();
+			int digY = m_diggerman->getY();
+			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+			if (SR <= 3.0) {
+				actors[i]->setVisible(false);
+				actors[i]->setAlive(false);
+				increaseScore(10);
+				playSound(SOUND_GOT_GOODIE);
+			}
+		}
+	}
+}
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
