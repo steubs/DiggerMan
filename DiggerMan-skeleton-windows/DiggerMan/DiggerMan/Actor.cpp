@@ -271,6 +271,12 @@ void RegularProtestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
 }
+
+void RegularProtestor::setHealth(int health_)
+{
+	health = health_;
+}
+
 bool RegularProtestor::getLeaveOilFieldState()
 {
 	return leaveOilFieldState;
@@ -279,87 +285,96 @@ bool RegularProtestor::getLeaveOilFieldState()
 void RegularProtestor::doSomething()
 {
 	if (!getAlive()) return;//return if not alive
-	/*if (isResting())
+	else if (getTickCounter() > 0)
 	{
-		updateRestState();
+		setTickCounter(getTickCounter() - 1);//decriment tick
 		return;
-	}*/
-	if (getLeaveOilFieldState())
+	}
+	//protestor is alive and able to move, therefore tick countrer should be set back to the level's correct value max(0,3-lvl)
+	setTickCounter(max(0, 3 - 0));//placehold value
+	if (!getLeaveOilFieldState())//protester moving freely
 	{
-		//code taken from DiggerMan but will be changed to work for RegularProtestor, differences are adding randMove instead of getKey(), wait(), etc.... Not finished
-		//will keep code to check for walls, etc.
-		int x = getX();
-		int y = getY();
-		int ch;
-		if (getAlive()) {
-			if (getWorld()->getKey(ch) == true) {
-				switch (ch) {
-				case KEY_PRESS_LEFT:
-					if (getDirection() != left) {
-						setDirection(left);
-						break;
-					}
-					else {
-						setDirection(left);
-						if (x < 1)
-							break;
-						if (!getWorld()->isThere())
-							moveTo(x - 1, y);
-						break;
-					}
-				case KEY_PRESS_RIGHT:
-					if (getDirection() != right) {
-						setDirection(right);
-						break;
-					}
-					else {
-						setDirection(right);
-						if (x > 59)
-							break;
-						if (!getWorld()->isThere())
-							moveTo(x + 1, y);
-						break;
-					}
-				case KEY_PRESS_UP:
-					if (getDirection() != up) {
-						setDirection(up);
-						break;
-					}
-					else {
-						setDirection(up);
-						if (y > 59)
-							break;
-						if (!getWorld()->isThere())
-							moveTo(x, y + 1);
-						break;
-					}
-				case KEY_PRESS_DOWN:
-					if (getDirection() != down) {
-						setDirection(down);
-						break;
-					}
-					else {
-						setDirection(down);
-						if (y < 1)
-							break;
-						if (!getWorld()->isThere())
-							moveTo(x, y - 1);
-						break;
-					}
-				}
-			}
-		}
+		wander();
 	}
 	else
 		return;
 
 }
 
+void RegularProtestor::wander()
+{
+	//code taken from DiggerMan but will be changed to work for RegularProtestor, differences are adding randMove instead of getKey(), wait(), etc.... Not finished
+	//will keep code to check for walls, etc.
+	int x = getX();
+	int y = getY();
 
+	int ch = 0;//PLACEHOLDER
+	if (/*getWorld()->getKey(ch) == true*/1) {
+		switch (ch) {
+		case KEY_PRESS_LEFT:
+			if (getDirection() != left) {
+				setDirection(left);
+				break;
+			}
+			else {
+				setDirection(left);
+				if (x < 1)
+					break;
+				if (!getWorld()->isThere())
+					moveTo(x - 1, y);
+				break;
+			}
+		case KEY_PRESS_RIGHT:
+			if (getDirection() != right) {
+				setDirection(right);
+				break;
+			}
+			else {
+				setDirection(right);
+				if (x > 59)
+					break;
+				if (!getWorld()->isThere())
+					moveTo(x + 1, y);
+				break;
+			}
+		case KEY_PRESS_UP:
+			if (getDirection() != up) {
+				setDirection(up);
+				break;
+			}
+			else {
+				setDirection(up);
+				if (y > 59)
+					break;
+				if (!getWorld()->isThere())
+					moveTo(x, y + 1);
+				break;
+			}
+		case KEY_PRESS_DOWN:
+			if (getDirection() != down) {
+				setDirection(down);
+				break;
+			}
+			else {
+				setDirection(down);
+				if (y < 1)
+					break;
+				if (!getWorld()->isThere())
+					moveTo(x, y - 1);
+				break;
+			}
+		}
+	}
+}
+
+void RegularProtestor::setTickCounter(int newTickCounter)
+{
+	tickCounter = newTickCounter;
+}
 
 RegularProtestor::~RegularProtestor()
 {
-	delete this;
+
 }
 
 
@@ -374,11 +389,11 @@ HardcoreProtestor::HardcoreProtestor(StudentWorld* p, int imageID, int startX, i
 
 void HardcoreProtestor::doSomething()
 {
-	
+
 }
 
 
 HardcoreProtestor::~HardcoreProtestor()
 {
-	
+
 }

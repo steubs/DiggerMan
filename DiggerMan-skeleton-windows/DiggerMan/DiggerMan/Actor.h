@@ -2,6 +2,7 @@
 #define ACTOR_H_
 
 #include "GraphObject.h"
+#include <algorithm>
 class StudentWorld;
 class Actor : public GraphObject
 {
@@ -81,12 +82,19 @@ class RegularProtestor : public Actor
 {
 private:
 	bool leaveOilFieldState;
+	int health;
 	int numSquaresToMoveInCurrentDirection;
+	int tickCounter = 0;
 public:
 	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
 	bool getLeaveOilFieldState();
 	void setLeaveOilFieldState(bool);
+	void setHealth(int);
+	int getTickCounter() { return tickCounter; }
+	void incTickCounter() { tickCounter++; }
+	void setTickCounter(int);
+	void wander();
 	~RegularProtestor();
 };
 
