@@ -338,28 +338,28 @@ HardcoreProtestor::~HardcoreProtestor()
 	
 }
 ////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), pickUpProtestor(false),pickUpDiggerman(false)
 {
 	setVisible(true);
 }
 void GoldNugget::doSomething()
 {
-	if (getAlive())
+	if (getAlive()) 
 	{
-        if (getX() == getWorld()->getDiggerman()->getX() && getY() == getWorld()->getDiggerman()->getY()){
-            
-            setVisible(false);
-            setAlive(false);
-            getWorld()->decGold();
-            getWorld()->increaseScore(10);
-        }
-        
+		if (!pickUpDiggerman&&!pickUpProtestor){
+			getWorld()->isClose(2);
+			pickUpDiggerman = true;
+			return;
+		}
+		else if(pickUpDiggerman&&(!pickUpProtestor)) {
+			getWorld()->isClose(2);
+			getWorld()->pickGold_diggerman();
+			pickUpDiggerman = false;
+		}
 	}
 	else
 		return;
 }
 GoldNugget::~GoldNugget()
 {
-	
 }
