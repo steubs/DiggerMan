@@ -37,7 +37,7 @@ public:
 
 	void addActors(Actor* actor);
 	
-	bool isClose();
+	void isClose(int key);
 
 	void isTouching();
 
@@ -68,6 +68,7 @@ public:
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();
 	void addBarrel();
+	void pickGold_diggerman();
 
 };
 
