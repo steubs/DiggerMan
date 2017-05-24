@@ -18,7 +18,6 @@ public:
 	StudentWorld * getWorld();
 	virtual ~Actor();
 	virtual void doSomething() = 0;
-
 };
 
 class Dirt : public Actor
@@ -33,11 +32,9 @@ public:
 class DiggerMan : public Actor
 {
 private:
-	
 public:
 	DiggerMan(StudentWorld *p,int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
-	
 	~DiggerMan();
 };
 
@@ -59,6 +56,16 @@ public:
 	Oil(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
 	void doSomething();
 	~Oil();
+};
+
+class Sonar :public Actor
+{
+private:
+	int count = 0;
+public:
+	Sonar(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
+	void doSomething();
+	~Sonar();
 };
 
 class Squirt : public Actor
@@ -91,6 +98,7 @@ public:
 	void doSomething();
 	~HardcoreProtestor();
 };
+
 class GoldNugget :public Actor {
 	private:
 		bool pickUpProtestor;

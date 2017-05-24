@@ -1,5 +1,6 @@
 #include "StudentWorld.h"
 #include "Actor.h"
+#include <cstdlib>
 
 
 //////////////////////////////////////////////////////////////  ACTOR    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,6 @@ void Actor::setHealth(int health_)
 {
 	health = health_;
 }
-
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -60,7 +60,6 @@ DiggerMan::DiggerMan(StudentWorld* p, int imageID, int startX, int startY, Direc
 
 DiggerMan::~DiggerMan()
 {
-	//delete getWorld()->m_diggerman;
 }
 void DiggerMan::doSomething()
 {
@@ -80,8 +79,10 @@ void DiggerMan::doSomething()
 					setDirection(left);
 					if (x < 1)
 						break;
-                    if (!getWorld()->isThere())
+					if (!getWorld()->isThere()) {
+						//getWorld()->playSound(SOUND_DIG); have to play this when digging through dirt
 						moveTo(x - 1, y);
+					}
 					getWorld()->removeDirt();
 					break;
 				}
@@ -94,8 +95,10 @@ void DiggerMan::doSomething()
 					setDirection(right);
 					if (x > 59)
 						break;
-					if (!getWorld()->isThere())
+					if (!getWorld()->isThere()) {
+						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x + 1, y);
+					}
 					getWorld()->removeDirt();
 					break;
 				}
@@ -108,8 +111,10 @@ void DiggerMan::doSomething()
 					setDirection(up);
 					if (y > 59)
 						break;
-					if (!getWorld()->isThere())
+					if (!getWorld()->isThere()) {
+						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x, y + 1);
+					}
 					getWorld()->removeDirt();
 					break;
 				}
@@ -122,8 +127,10 @@ void DiggerMan::doSomething()
 					setDirection(down);
 					if (y < 1)
 						break;
-					if (!getWorld()->isThere())
+					if (!getWorld()->isThere()) {
+						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x, y - 1);
+					}
 					getWorld()->removeDirt();
 					break;
 				}
@@ -146,15 +153,8 @@ void Boulder::doSomething() {
 	if (getAlive()) {
 		int x = getX();
 		int y = getY();
-		if (y == 0){
-
-			setVisible(false);
-			setAlive(false);
-
-		}
 		if (y < 60 && y>0)//check under the boulder only if it's inside the map
 		{
-		
 			if (getWorld()->checkUnder(this)) {
 				count++;
 				if (count >= 30) {//30 ticks have to pass before the boulder falls
@@ -176,29 +176,74 @@ void Boulder::doSomething() {
 	else 
 		return;
 }
+
+////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), pickUpProtestor(false), pickUpDiggerman(false)
+{
+	setVisible(true);
+}
+void GoldNugget::doSomething()
+{
+	if (getAlive())
+	{
+		if (!pickUpDiggerman && !pickUpProtestor) {
+			getWorld()->isClose();
+			pickUpDiggerman = true;
+			return;
+		}
+		else if (pickUpDiggerman && (!pickUpProtestor)) {
+			getWorld()->isClose();
+			getWorld()->isTouching(2);
+			pickUpDiggerman = false;
+		}
+	}
+	else
+		return;
+}
+GoldNugget::~GoldNugget()
+{
+}
+
+
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
-	setVisible(true);//setVisible(false);
-	setAlive(true);
+	setVisible(true);
 }
 
 void Oil::doSomething() {
 	if (getAlive())
 	{
-		if (getX() == getWorld()->getDiggerman()->getX() && getY() == getWorld()->getDiggerman()->getY()){
-            getWorld()->playSound(SOUND_FOUND_OIL);
-			setVisible(false);
-			setAlive(false);
-			getWorld()->decBarrels();
-			getWorld()->increaseScore(1000);
-		}
+		getWorld()->isClose();
+		getWorld()->isTouching(1);
 	}
 	else return;
 }
 
 Oil::~Oil() {
 	
+}
+//////////////////////////////////////////////////////////////  SONAR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+	
+}
+void Sonar::doSomething() {
+	if (getAlive()) {
+		count++;
+		int num = 300 - 10 * getWorld()->getLevel();
+		int max = std::max(10,0);
+		if (count == max) {
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decSonarInMap();
+		}
+		getWorld()->isTouching(3);
+	}
+	else return;
+}
+
+Sonar::~Sonar() {
+
 }
 
 //////////////////////////////////////////////////////////////  SQUIRT  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +256,7 @@ void Squirt::doSomething() {
 }
 
 Squirt::~Squirt() {
-	delete this;
+	
 }
 
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -336,30 +381,4 @@ void HardcoreProtestor::doSomething()
 HardcoreProtestor::~HardcoreProtestor()
 {
 	
-}
-////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), pickUpProtestor(false),pickUpDiggerman(false)
-{
-	setVisible(true);
-}
-void GoldNugget::doSomething()
-{
-	if (getAlive()) 
-	{
-		if (!pickUpDiggerman&&!pickUpProtestor){
-			getWorld()->isClose(2);
-			pickUpDiggerman = true;
-			return;
-		}
-		else if(pickUpDiggerman&&(!pickUpProtestor)) {
-			getWorld()->isClose(2);
-			getWorld()->pickGold_diggerman();
-			pickUpDiggerman = false;
-		}
-	}
-	else
-		return;
-}
-GoldNugget::~GoldNugget()
-{
 }

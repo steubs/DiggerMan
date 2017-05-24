@@ -18,12 +18,14 @@ private:
 	vector<Actor*> actors;
 	int m_barrels;
     int m_gold;
+	int m_sonar;
+	int sonarInMap = 0;
 	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
 	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 public:
 
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0),m_gold(0)
+		: GameWorld(assetDir),m_barrels(0),m_gold(0),m_sonar(0)
 	{
 	}
 
@@ -35,11 +37,11 @@ public:
 
 	void addBoulders();
 
-	void addActors(Actor* actor);
+	void addSonarKit();
 	
-	void isClose(int key);
+	void isClose();
 
-	void isTouching();
+	void isTouching(int key);
 
 	void addDirt();
 	
@@ -62,13 +64,16 @@ public:
     int getBarrels() { return m_barrels; }
     
     int getGold(){ return m_gold; }
+
+	int getSonar() { return m_sonar; }
     
     void decGold(){ m_gold--; return; }
 	void decBarrels() { m_barrels--; return; }
+	void decSonar() { m_sonar--; }
+	void decSonarInMap() { sonarInMap--; }
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();
 	void addBarrel();
-	void pickGold_diggerman();
 
 };
 

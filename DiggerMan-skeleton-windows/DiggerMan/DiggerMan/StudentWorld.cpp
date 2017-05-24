@@ -11,7 +11,7 @@ GameWorld* createStudentWorld(string assetDir)
 int StudentWorld::init()
 {
 	addDirt();
-    
+
 	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
 	//m_protestorTest = new HardcoreProtestor(this, IMID_HARD_CORE_PROTESTER, 55, 60);//just for testing protestor functions, will be deleted later
 	//m_protestorTest2 = new RegularProtestor(this, IMID_PROTESTER, 50, 60);//just for testing protestor functions, will be deleted later
@@ -36,13 +36,27 @@ int StudentWorld::move()
 	}
 
 	removeDead();
+
+	int j = getLevel() + 3;//for some reason doesn't work when multiplying 
+	//reduced to + 3 because takes forever to show up otherwise
+	int random = rand() % j;
+	if (1 == random) {//one in getLevel() * 25 + 300 chance to add these
+		int add = rand() % 5;
+		if (1 == add && sonarInMap == 0)//one in 5 chance
+		{
+			addSonarKit();
+			sonarInMap++;//create one sonar kit at a time
+		}
+		else if (add > 1) {// four in 5 chance
+						   //add Water
+		}
+	}
 	
     return GWSTATUS_CONTINUE_GAME;
 
 }
 
 void StudentWorld::cleanUp()
-
 {
 	for (int i = 0; i < 64; i++)
 	{
@@ -51,8 +65,6 @@ void StudentWorld::cleanUp()
 			delete dirtarr[i][j];
 		}
 	}
-
-	
 	delete getDiggerman();
 
 	for (auto it = actors.begin(); it != actors.end(); ++it){
@@ -109,6 +121,70 @@ void StudentWorld::addBoulders() {
 	}
 }
 
+void StudentWorld::addGoldNuggets() {
+	int current_level = getLevel();
+	int G = max(5 - current_level / 2, 2);
+	int c = 0;
+	while (c < G)
+	{
+		int x = rand() % 60;
+		int y = rand() % 56;
+		if (actors.empty())
+		{
+			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
+			{
+				actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
+				c++;
+			}
+		}
+		else
+		{
+			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
+				{
+					actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
+					c++;
+				}
+			}
+		}
+	}
+}
+
+void StudentWorld::addBarrel() {
+	int current_level = getLevel();
+	int i = min(current_level + 2, 18);
+	int c = 0;
+	while (c < i) {
+		int x = rand() % 60;
+		int y = rand() % 56;
+		if (actors.empty()) {
+			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
+			{
+				actors.push_back(new Oil(this, IMID_BARREL, x, y));
+				m_barrels++;
+				c++;
+			}
+		}
+		else
+		{
+			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
+				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
+				{
+					actors.push_back(new Oil(this, IMID_BARREL, x, y));
+					m_barrels++;
+					c++;
+				}
+			}
+		}
+	}
+}
+
+void StudentWorld::addSonarKit() {
+	actors.push_back(new Sonar(this, IMID_SONAR, 0, 60));//sonar kits are always added to 0,60
+}
+
+
+
 bool StudentWorld::checkUnder(Boulder* b){
 		
 	if (typeid(*b) == typeid(Boulder)){
@@ -124,120 +200,94 @@ bool StudentWorld::checkUnder(Boulder* b){
 		return false;
 }
 
-void StudentWorld::addActors(Actor *actor) {
-
-	
-	if (actor->getX() == 0 && actor->getY() == 0){
-		actor->setAlive(false);
-		actor->setVisible(false);
-	}
-	int current_level = getLevel();
-	int i; //number of items
-	double SR = 0;
-	int x = rand() % 60;
-	int y = rand() % 56;
-	int CHECKX;
-	int CHECKY;
-	bool isThere = false;
-	if (typeid(*actor) == typeid(Oil)) {
-		i = min(current_level + 2, 18);
-	}
-	//if (typeid(*actor) == typeid(Gold)) {  this is to make this function viable for gold once its created
-	//	i = max(5 - current_level / 2, 2);
-	//}
-	for (int n = 0; n < i; )
+bool StudentWorld::checkDistance(int x, int y) {
+	bool flag = false;
+	for (auto it = actors.begin(); it != actors.end(); it++)
 	{
-		for (unsigned int j = 0; j < actors.size();j++) {//checking all the other actors before creating
-			CHECKX = actors[j]->getX();
-			CHECKY = actors[j]->getY();
-			if (x != CHECKX && y != CHECKY)
-			{
-				if (CHECKX != -1 && CHECKY != 1) {
-					double S = pow(abs(CHECKX - x), 2) + pow(abs(CHECKY - y), 2);
-					SR = pow(S, 0.5);
-				}
-				if (SR >= 6)
-					isThere = false;
-				else {
-					isThere = true;
-					break;
-				}
-			}
-			else
-				isThere = true;
-		}
-		if (isThere == false && y > 0)
+		double S = pow(abs((*it)->getX() - x), 2) + pow(abs((*it)->getY() - y), 2);
+		double SR = pow(S, 0.5);
+		if (SR >= 6.0)
+			flag = true;
+		else
 		{
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))
-			{
-				if (typeid(*actor) == typeid(Oil)) {
-					actors.push_back(new Oil(this, IMID_BARREL,x, y));
-					m_barrels++;
-				}
-				/*if (typeid(*actor) == typeid(Gold)) {  this is to make this function viable for gold when its created
-				actors.push_back(new Gold(this, IMID_GOLD, x, y));
-				}*/
-				n++;
-			}
+			flag = false;
+			break;
 		}
-		x = rand() % 60;
-		y = rand() % 56;
 	}
-
+	return flag;
 }
 
-void StudentWorld::isClose(int key) {
+void StudentWorld::isClose() {
+	int x;
+	int y;
+	for (unsigned int i = 0; i < actors.size(); i++) {
+		if (typeid(*actors[i]) == typeid(Oil) || typeid(*actors[i]) == typeid(GoldNugget)) {
+			x = actors[i]->getX();
+			y = actors[i]->getY();
+			int digX = m_diggerman->getX();
+			int digY = m_diggerman->getY();
+			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+			if (SR <= 4.0) {
+				actors[i]->setVisible(true);
+			}//took out the else because it makes the object go away after its been discovered
+		}
+	}
+}
+
+void StudentWorld::isTouching(int key) {//moved pickGold_diggerman here
 	int x;
 	int y;
 	if (key == 1) {
-		for (unsigned int i = 0; i < actors.size(); i++) {
-			if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
+		for (unsigned int i = 0; i < actors.size();i++) {
+			if (typeid(*actors[i]) == typeid(Oil)) {
 				x = actors[i]->getX();
 				y = actors[i]->getY();
 				int digX = m_diggerman->getX();
 				int digY = m_diggerman->getY();
-				if (x = digX) {//the parameter for when the diggerman is next to this is too big for me to write cause im tired
-					//no matter the direction, if the diggerman is next to it
-					actors[i]->setVisible(true);
-					//return true;
+				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+				if (SR <= 3.0) {
+					actors[i]->setVisible(false);
+					actors[i]->setAlive(false);
+					decBarrels();
+					increaseScore(1000);
+					playSound(SOUND_FOUND_OIL);
 				}
 			}
 		}
 	}
 	else if (key == 2) {
-		for (unsigned int i = 0; i < actors.size(); i++) {
+		for (unsigned int i = 0; i < actors.size();i++) {
 			if (typeid(*actors[i]) == typeid(GoldNugget)) {
 				x = actors[i]->getX();
 				y = actors[i]->getY();
 				int digX = m_diggerman->getX();
 				int digY = m_diggerman->getY();
 				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-				if (SR <= 4.0) {
-					actors[i]->setVisible(true);
-				}
-				else if (SR > 4.0) {
+				if (SR <= 3.0) {
 					actors[i]->setVisible(false);
+					actors[i]->setAlive(false);
+					increaseScore(10);
+					playSound(SOUND_GOT_GOODIE);
+					m_gold++;//this should actually be how many diggerman has in inventory not how many on map
 				}
 			}
 		}
 	}
-}
-
-void StudentWorld::isTouching() {
-	int x;
-	int y;
-	for (unsigned int i = 0; i < actors.size();i++) {
-		if (typeid(*actors[i]) == typeid(Oil) /* || typeid(*actors[i]) == typeid(Gold)*/) {
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-			int digX = m_diggerman->getX();
-			int digY = m_diggerman->getY();
-			if (x = digX) {//no matter the direction, if diggerman is 3 spaces away
-				actors[i]->setVisible(false);
-				actors[i]->setAlive(false);
-				playSound(SOUND_FOUND_OIL);
-				//increase player's points by 1000
-				//if barrels left == 0 then level ends and go to the next lvl
+	else if (key == 3) {
+		for (unsigned int i = 0; i < actors.size();i++) {
+			if (typeid(*actors[i]) == typeid(Sonar)) {
+				x = actors[i]->getX();
+				y = actors[i]->getY();
+				int digX = m_diggerman->getX();
+				int digY = m_diggerman->getY();
+				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+				if (SR <= 3.0) {
+					actors[i]->setVisible(false);
+					actors[i]->setAlive(false);
+					increaseScore(75);
+					playSound(SOUND_GOT_GOODIE);
+					m_sonar++;
+				}
 			}
 		}
 	}
@@ -327,69 +377,6 @@ bool StudentWorld::isThere(){
 				else
 					continue;
 			}
-		}
-		if (typeid(*(actors[i])) == typeid(Oil)) //|| gold
-		{
-				if ((x - 1 == actors[i]->getX() + 3 &&
-					y == actors[i]->getY()) ||
-					(x - 1 == actors[i]->getX() + 3 &&
-						y == actors[i]->getY() + 1) ||
-						(x - 1 == actors[i]->getX() + 3 &&
-							y == actors[i]->getY() + 2) ||
-							(x - 1 == actors[i]->getX() + 3 &&
-								y == actors[i]->getY() + 3) ||
-								(x - 1 == actors[i]->getX() + 3 &&
-									y == actors[i]->getY() - 1) ||
-									(x - 1 == actors[i]->getX() + 3 &&
-										y == actors[i]->getY() - 2) ||
-										(x - 1 == actors[i]->getX() + 3 &&
-											y == actors[i]->getY() - 3))
-					return false;
-				if ((x + 4 == actors[i]->getX() &&
-					y == actors[i]->getY()) ||
-					(x + 4 == actors[i]->getX() &&
-						y == actors[i]->getY() + 1) ||
-						(x + 4 == actors[i]->getX() &&
-							y == actors[i]->getY() + 2) ||
-							(x + 4 == actors[i]->getX() &&
-								y == actors[i]->getY() + 3) ||
-								(x + 4 == actors[i]->getX() &&
-									y == actors[i]->getY() - 1) ||
-									(x + 4 == actors[i]->getX() &&
-										y == actors[i]->getY() - 2) ||
-										(x + 4 == actors[i]->getX() &&
-											y == actors[i]->getY() - 3))
-					return false;
-				if ((x - 3 == actors[i]->getX() &&
-					y == actors[i]->getY() + 4) ||
-					(x - 2 == actors[i]->getX() &&
-						y == actors[i]->getY() + 4) ||
-						(x - 1 == actors[i]->getX() &&
-							y == actors[i]->getY() + 4) ||
-							(x == actors[i]->getX() &&
-								y == actors[i]->getY() + 4) ||
-								(x + 1 == actors[i]->getX() &&
-									y == actors[i]->getY() + 4) ||
-									(x + 2 == actors[i]->getX() &&
-										y == actors[i]->getY() + 4) ||
-										(x + 3 == actors[i]->getX() &&
-											y == actors[i]->getY() + 4))
-					return false;
-				if ((x - 3 == actors[i]->getX() &&
-					y + 4 == actors[i]->getY()) ||
-					(x - 2 == actors[i]->getX() &&
-						y + 4 == actors[i]->getY()) ||
-						(x - 1 == actors[i]->getX() &&
-							y + 4 == actors[i]->getY()) ||
-							(x == actors[i]->getX() &&
-								y + 4 == actors[i]->getY()) ||
-								(x + 1 == actors[i]->getX() &&
-									y + 4 == actors[i]->getY()) ||
-									(x + 2 == actors[i]->getX() &&
-										y + 4 == actors[i]->getY()) ||
-										(x + 3 == actors[i]->getX() &&
-											y + 4 == actors[i]->getY()))
-					return false;
 		}
 	}
 	return false;
@@ -509,11 +496,13 @@ void StudentWorld::setDisplayText(){
 	int health = m_diggerman->getHealth();
 	//int squirts = getSquirtsLeftInSquirtGun();
 	int gold = getGold();
-	//int sonar = getPlayerSonarChargeCount();
+	int sonar = getSonar();
 	int barrelsLeft = getBarrels();
 	int score = getScore();
 
-    string s = "Lvl: " + to_string(level) + " " + "Lives: " + to_string(lives) + " " + "Hlth: " + to_string(health) + "%" + " Gld: " + to_string(gold) + " Oil Left: " + to_string(barrelsLeft) + " Scr: " + to_string(score);
+    string s = "Lvl: " + to_string(level) + " Lives: " + to_string(lives) + " Hlth: " 
+		+ to_string(health) + "%" + " Gld: " + to_string(gold) + " Sonar: " + to_string(sonar)
+		+ " Oil Left: " + to_string(barrelsLeft) + " Scr: " + to_string(score);
 	setGameStatText(s);
 
 }
@@ -524,103 +513,6 @@ void StudentWorld::removeDead(){
 			it = actors.erase(it);
 		else
 			++it;
-	}
-}
-
-
-
-
-void StudentWorld::addGoldNuggets() {
-	int current_level = getLevel();
-	int G = max(5 - current_level / 2, 2);
-	int c = 0;
-	while (c < G)
-	{
-		int x = rand() % 60;
-		int y = rand() % 56;
-		if (actors.empty())
-		{
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
-			{
-				actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
-                m_gold++;
-				c++;
-			}
-		}
-		else
-		{
-			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
-				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
-				{
-					actors.push_back(new GoldNugget(this, IMID_GOLD, x, y));
-                    m_gold++;
-					c++;
-				}
-			}
-		}
-	}
-}
-void StudentWorld::addBarrel() {
-	int current_level = getLevel();
-	int i = min(current_level + 2, 18);
-	int c = 0;
-	while (c < i) {
-		int x = rand() % 60;
-		int y = rand() % 56;
-		if (actors.empty()) {
-			if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
-			{
-				actors.push_back(new Oil(this, IMID_BARREL, x, y));
-				m_barrels++;
-				c++;
-			}
-		}
-		else
-		{
-			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
-				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
-				{
-					actors.push_back(new Oil(this, IMID_BARREL, x, y));
-					m_barrels++;
-					c++;
-				}
-			}
-		}
-	}
-}
-bool StudentWorld::checkDistance(int x, int y) {
-	bool flag = false;
-	for (auto it = actors.begin(); it != actors.end(); it++)
-	{
-		double S = pow(abs((*it)->getX() - x), 2) + pow(abs((*it)->getY() - y), 2);
-		double SR = pow(S, 0.5);
-		if (SR >= 6.0)
-			flag = true;
-		else 
-		{
-			flag = false;
-			break;
-		}
-	}
-	return flag;
-}
-void StudentWorld::pickGold_diggerman() {
-	int x;
-	int y;
-	for (unsigned int i = 0; i < actors.size(); i++) {
-		if (typeid(*actors[i]) == typeid(GoldNugget)) {
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-			int digX = m_diggerman->getX();
-			int digY = m_diggerman->getY();
-			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-			if (SR <= 3.0) {
-				actors[i]->setVisible(false);
-				actors[i]->setAlive(false);
-				increaseScore(10);
-				playSound(SOUND_GOT_GOODIE);
-			}
-		}
 	}
 }
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
