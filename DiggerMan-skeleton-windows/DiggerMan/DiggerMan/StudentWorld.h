@@ -25,7 +25,7 @@ private:
 public:
 
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0),m_gold(0),m_sonar(0)
+		: GameWorld(assetDir),m_barrels(0),m_gold(0),m_sonar(1)//starts with one sonar, specs
 	{
 	}
 
@@ -60,6 +60,8 @@ public:
 	void removeDead();
 
 	void setDisplayText();
+    
+    void setallVisible();
 
     Actor* getDiggerman(){ return m_diggerman; }
 

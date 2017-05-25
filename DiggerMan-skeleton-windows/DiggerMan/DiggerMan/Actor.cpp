@@ -1,5 +1,7 @@
 #include "StudentWorld.h"
 #include "Actor.h"
+#include <algorithm>
+#include <cmath>
 #include <cstdlib>
 
 
@@ -134,6 +136,18 @@ void DiggerMan::doSomething()
 					getWorld()->removeDirt();
 					break;
 				}
+            case 'z':
+                if(getWorld()->getSonar() > 0){
+                    getWorld()->setallVisible();
+                    getWorld()->decSonar();
+                }
+                    break;
+            case 'Z':
+                if(getWorld()->getSonar() > 0){
+                    getWorld()->setallVisible();
+                    getWorld()->decSonar();
+                }
+                    break;
 			}
 		}
 	}
@@ -186,24 +200,26 @@ void Boulder::doSomething() {
 ////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), pickUpProtestor(false), pickUpDiggerman(false)
 {
-	setVisible(true);
+	setVisible(false);
 }
 void GoldNugget::doSomething()
 {
 	if (getAlive())
 	{
 		if (!pickUpDiggerman && !pickUpProtestor) {
-			getWorld()->isClose();
+			//getWorld()->isClose();
 			pickUpDiggerman = true;
 			return;
 		}
 		else if (pickUpDiggerman && (!pickUpProtestor)) {
-			getWorld()->isClose();
+			//getWorld()->isClose();
 			int x = getX();
 			int y = getY();
 			int digX = getWorld()->getDiggerman()->getX();
 			int digY = getWorld()->getDiggerman()->getY();
 			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+            if (SR <= 10)
+                setVisible(true);
 			if (SR <= 3.0) {
 				setVisible(false);
 				setAlive(false);
@@ -231,12 +247,14 @@ Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, dou
 void Oil::doSomething() {
 	if (getAlive())
 	{
-		getWorld()->isClose();
+		//getWorld()->isClose();
 		int x = getX();
 		int y = getY();
 		int digX = getWorld()->getDiggerman()->getX();
 		int digY = getWorld()->getDiggerman()->getY();
 		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+        if (SR <= 10)
+            setVisible(true);
 		if (SR <= 3.0) {
 
 			setVisible(false);
@@ -259,9 +277,17 @@ Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir,
 void Sonar::doSomething() {
 	if (getAlive()) {
 		count++;
-		int num = 300 - 10 * getWorld()->getLevel();
-		int max = std::max(10,0);
-		if (count == max) {
+        int x = getX();
+        int y = getY();
+        int digX = getWorld()->getDiggerman()->getX();
+        int digY = getWorld()->getDiggerman()->getY();
+        double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+        int current_level = getWorld()->getLevel();
+		int a = max(100, 300 - 10 * current_level);
+		//int max = std::max(10,0);
+        if(SR <= 3)
+            
+		if (count == a) {
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decSonarInMap();

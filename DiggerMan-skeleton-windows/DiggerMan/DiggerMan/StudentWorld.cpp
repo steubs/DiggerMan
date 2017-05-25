@@ -11,6 +11,9 @@ GameWorld* createStudentWorld(string assetDir)
 int StudentWorld::init()
 {
 	addDirt();
+    
+    if(getLevel() > 0 && m_sonar == 0) // start each level with 1 sonar for every level
+        m_sonar++;
 
 	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
 	//m_protestorTest = new HardcoreProtestor(this, IMID_HARD_CORE_PROTESTER, 55, 60);//just for testing protestor functions, will be deleted later
@@ -27,7 +30,7 @@ int StudentWorld::move()
 
     m_diggerman->doSomething();
 
-	for (unsigned int i = 0; i < actors.size();i++)
+	for (unsigned int i = 0; i < actors.size(); i++)
 	{
 		actors[i]->doSomething();
 		if (getBarrels() == 0)
@@ -151,6 +154,7 @@ void StudentWorld::addGoldNuggets() {
 }
 
 void StudentWorld::addBarrel() {
+    
 	int current_level = getLevel();
 	int i = min(current_level + 2, 18);
 	int c = 0;
@@ -170,7 +174,7 @@ void StudentWorld::addBarrel() {
 			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
 				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 				{
-					actors.push_back(new Oil(this, IMID_BARREL, 34, 50));
+					actors.push_back(new Oil(this, IMID_BARREL, x, y));
 					m_barrels++;
 					c++;
 				}
@@ -218,22 +222,22 @@ bool StudentWorld::checkDistance(int x, int y) {
 	return flag;
 }
 
-void StudentWorld::isClose() {
-	int x;
-	int y;
-	for (unsigned int i = 0; i < actors.size(); i++) {
-		if (typeid(*actors[i]) == typeid(Oil) || typeid(*actors[i]) == typeid(GoldNugget)) {
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-			int digX = m_diggerman->getX();
-			int digY = m_diggerman->getY();
-			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-			if (SR == 4.0) {
-				actors[i]->setVisible(true);
-			}
-		}
-	}
-}
+//void StudentWorld::isClose() {
+//	int x;
+//	int y;
+//	for (unsigned int i = 0; i < actors.size(); i++) {
+//		if (typeid(*actors[i]) == typeid(Oil) || typeid(*actors[i]) == typeid(GoldNugget)) {
+//			x = actors[i]->getX();
+//			y = actors[i]->getY();
+//			int digX = m_diggerman->getX();
+//			int digY = m_diggerman->getY();
+//			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+//			if (SR == 4.0) {
+//				actors[i]->setVisible(true);
+//			}
+//		}
+//	}
+//}
 
 bool StudentWorld::isThere(){
 
@@ -457,4 +461,33 @@ void StudentWorld::removeDead(){
 			++it;
 	}
 }
+
+
+void StudentWorld::setallVisible(){
+
+    for(int i = 0; i < actors.size(); i++){
+        int x = actors[i]->getX();
+        int y = actors[i]->getY();
+        int digX = getDiggerman()->getX();
+        int digY = getDiggerman()->getY();
+        double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+
+        if(actors[i]->getAlive()){
+            //if(SR <= 30)// not sure what radius should be, value not listed in specs
+                actors[i]->setVisible(true);
+    
+    
+        }
+    }
+    return;
+}
+
+
+
+
+
+
+
+
+
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
