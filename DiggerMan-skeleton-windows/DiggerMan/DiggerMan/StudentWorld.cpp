@@ -170,7 +170,7 @@ void StudentWorld::addBarrel() {
 			if (checkDistance(x, y)) { // y only has to be > 20 for boulders
 				if (!(x <= 34 && x >= 26 && y <= 56 && y >= 4))// y only has to be > 20 for boulders
 				{
-					actors.push_back(new Oil(this, IMID_BARREL, x, y));
+					actors.push_back(new Oil(this, IMID_BARREL, 34, 50));
 					m_barrels++;
 					c++;
 				}
@@ -204,7 +204,8 @@ bool StudentWorld::checkDistance(int x, int y) {
 	bool flag = false;
 	for (auto it = actors.begin(); it != actors.end(); it++)
 	{
-		double S = pow(abs((*it)->getX() - x), 2) + pow(abs((*it)->getY() - y), 2);
+		double S = pow(abs((*it)->getX() - x), 2) 
+			+ pow(abs((*it)->getY() - y), 2);
 		double SR = pow(S, 0.5);
 		if (SR >= 6.0)
 			flag = true;
@@ -227,67 +228,8 @@ void StudentWorld::isClose() {
 			int digX = m_diggerman->getX();
 			int digY = m_diggerman->getY();
 			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-			if (SR <= 4.0) {
+			if (SR == 4.0) {
 				actors[i]->setVisible(true);
-			}//took out the else because it makes the object go away after its been discovered
-		}
-	}
-}
-
-void StudentWorld::isTouching(int key) {//moved pickGold_diggerman here
-	int x;
-	int y;
-	if (key == 1) {
-		for (unsigned int i = 0; i < actors.size();i++) {
-			if (typeid(*actors[i]) == typeid(Oil)) {
-				x = actors[i]->getX();
-				y = actors[i]->getY();
-				int digX = m_diggerman->getX();
-				int digY = m_diggerman->getY();
-				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-				if (SR <= 3.0) {
-					actors[i]->setVisible(false);
-					actors[i]->setAlive(false);
-					decBarrels();
-					increaseScore(1000);
-					playSound(SOUND_FOUND_OIL);
-				}
-			}
-		}
-	}
-	else if (key == 2) {
-		for (unsigned int i = 0; i < actors.size();i++) {
-			if (typeid(*actors[i]) == typeid(GoldNugget)) {
-				x = actors[i]->getX();
-				y = actors[i]->getY();
-				int digX = m_diggerman->getX();
-				int digY = m_diggerman->getY();
-				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-				if (SR <= 3.0) {
-					actors[i]->setVisible(false);
-					actors[i]->setAlive(false);
-					increaseScore(10);
-					playSound(SOUND_GOT_GOODIE);
-					m_gold++;//this should actually be how many diggerman has in inventory not how many on map
-				}
-			}
-		}
-	}
-	else if (key == 3) {
-		for (unsigned int i = 0; i < actors.size();i++) {
-			if (typeid(*actors[i]) == typeid(Sonar)) {
-				x = actors[i]->getX();
-				y = actors[i]->getY();
-				int digX = m_diggerman->getX();
-				int digY = m_diggerman->getY();
-				double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-				if (SR <= 3.0) {
-					actors[i]->setVisible(false);
-					actors[i]->setAlive(false);
-					increaseScore(75);
-					playSound(SOUND_GOT_GOODIE);
-					m_sonar++;
-				}
 			}
 		}
 	}

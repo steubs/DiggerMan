@@ -152,7 +152,13 @@ void Boulder::doSomething() {
 
 	if (getAlive()) {
 		int x = getX();
-		int y = getY();
+		int y = getY(); 
+		if (y == 0) {
+
+			setVisible(false);
+			setAlive(false);
+
+		}
 		if (y < 60 && y>0)//check under the boulder only if it's inside the map
 		{
 			if (getWorld()->checkUnder(this)) {
@@ -193,7 +199,18 @@ void GoldNugget::doSomething()
 		}
 		else if (pickUpDiggerman && (!pickUpProtestor)) {
 			getWorld()->isClose();
-			getWorld()->isTouching(2);
+			int x = getX();
+			int y = getY();
+			int digX = getWorld()->getDiggerman()->getX();
+			int digY = getWorld()->getDiggerman()->getY();
+			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+			if (SR <= 3.0) {
+				setVisible(false);
+				setAlive(false);
+				getWorld()->increaseScore(10);
+				getWorld()->playSound(SOUND_GOT_GOODIE);
+				getWorld()->incGold();
+			}
 			pickUpDiggerman = false;
 		}
 	}
@@ -208,14 +225,26 @@ GoldNugget::~GoldNugget()
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
-	setVisible(true);
+	setVisible(false);
 }
 
 void Oil::doSomething() {
 	if (getAlive())
 	{
 		getWorld()->isClose();
-		getWorld()->isTouching(1);
+		int x = getX();
+		int y = getY();
+		int digX = getWorld()->getDiggerman()->getX();
+		int digY = getWorld()->getDiggerman()->getY();
+		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+		if (SR <= 3.0) {
+
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decBarrels();
+			getWorld()->playSound(SOUND_FOUND_OIL);
+			getWorld()->increaseScore(1000);
+		}
 	}
 	else return;
 }
@@ -237,7 +266,6 @@ void Sonar::doSomething() {
 			setAlive(false);
 			getWorld()->decSonarInMap();
 		}
-		getWorld()->isTouching(3);
 	}
 	else return;
 }

@@ -41,7 +41,9 @@ public:
 	
 	void isClose();
 
-	void isTouching(int key);
+	void pickBarrel();
+	void pickGold();
+	void pickSonar();
 
 	void addDirt();
 	
@@ -67,8 +69,8 @@ public:
 
 	int getSonar() { return m_sonar; }
     
-    void decGold(){ m_gold--; return; }
-	void decBarrels() { m_barrels--; return; }
+    void incGold(){ m_gold++; return; }
+	void decBarrels() { m_barrels-=1; return; }
 	void decSonar() { m_sonar--; }
 	void decSonarInMap() { sonarInMap--; }
 	bool checkDistance(int x, int y);
