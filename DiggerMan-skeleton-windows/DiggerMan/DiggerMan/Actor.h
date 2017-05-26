@@ -85,16 +85,18 @@ private:
 	int health;
 	int numSquaresToMoveInCurrentDirection;
 	int tickCounter = 0;
+	int direction_integer = 1;
 public:
 	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
 	bool getLeaveOilFieldState();
 	void setLeaveOilFieldState(bool);
 	void setHealth(int);
-	int getTickCounter() { return tickCounter; }
-	void incTickCounter() { tickCounter++; }
 	void setTickCounter(int);
+	int getTickCounter() { return tickCounter; }
 	void wander();
+	void switchDirection(int);
+	void returnHome();
 	~RegularProtestor();
 };
 

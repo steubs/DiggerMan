@@ -16,20 +16,24 @@ int StudentWorld::init()
         m_sonar++;
 
 	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-	//m_protestorTest = new HardcoreProtestor(this, IMID_HARD_CORE_PROTESTER, 55, 60);//just for testing protestor functions, will be deleted later
-	//m_protestorTest2 = new RegularProtestor(this, IMID_PROTESTER, 50, 60);//just for testing protestor functions, will be deleted later
+	m_protestorTest = new RegularProtestor(this, IMID_PROTESTER, 40, 60);//just for testing protestor functions, will be deleted later
+	m_protestorTest2 = new RegularProtestor(this, IMID_PROTESTER, 50, 60);//just for testing protestor functions, will be deleted later
+	
 	addBoulders();
 	addGoldNuggets();
 	addBarrel();
+	//addRegularProtestors();
+	
 	return GWSTATUS_CONTINUE_GAME;
 }
 
 int StudentWorld::move()
 {
 	setDisplayText();
-
+	
     m_diggerman->doSomething();
-
+	m_protestorTest->doSomething();
+	m_protestorTest2->doSomething();
 	for (unsigned int i = 0; i < actors.size(); i++)
 	{
 		actors[i]->doSomething();
@@ -69,7 +73,8 @@ void StudentWorld::cleanUp()
 		}
 	}
 	delete getDiggerman();
-
+	delete m_protestorTest;
+	delete m_protestorTest2;
 	for (auto it = actors.begin(); it != actors.end(); ++it){
 		delete *it;
 	}
@@ -124,6 +129,14 @@ void StudentWorld::addBoulders() {
 	}
 }
 
+void StudentWorld::addRegularProtestors()
+{
+	int current_level = getLevel();
+	int numProtestors = max(0, current_level - 3);
+
+	actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 40, 60));
+
+}
 void StudentWorld::addGoldNuggets() {
 	int current_level = getLevel();
 	int G = max(5 - current_level / 2, 2);
@@ -239,6 +252,7 @@ bool StudentWorld::checkDistance(int x, int y) {
 //	}
 //}
 
+
 bool StudentWorld::isThere(){
 
 	int x = m_diggerman->getX();
@@ -328,6 +342,113 @@ bool StudentWorld::isThere(){
 	return false;
 }
 
+bool StudentWorld::isThereProtestors() 
+{
+	int x, y;
+	std::cout << "reached 4 loop";
+	for (unsigned int i = 0; i < actors.size(); i++)
+	{
+		if (typeid(*(actors[i])) == typeid(RegularProtestor))
+		{
+			std::cout << "reached 1 loop";
+			x = actors[i]->getX();
+			y = actors[i]->getY();
+			
+			for (unsigned int j = 0; j < actors.size(); j++) 
+			{
+				if (typeid(*(actors[j])) == typeid(Dirt))
+				{
+					std::cout << "reached 2 loop";
+					if (actors[i]->getDirection() == GraphObject::Direction::left) {
+						if (   (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY()) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 1) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 2) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 3) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 1) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 2) 
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 3)) return true;
+						else continue;
+					}
+					else if (actors[i]->getDirection() == GraphObject::Direction::right) {
+						if (   (x + 4 == actors[j]->getX() && y == actors[j]->getY())
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 1)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 2)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 3)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 1)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 2)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 3)) return true;
+						else continue;
+					}
+					else if (actors[i]->getDirection() == GraphObject::Direction::down) {
+						if (   (x - 3 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x - 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x - 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							||     (x == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 3 == actors[j]->getX() && y == actors[j]->getY() + 4)) return true;
+						else continue;
+					}
+					else if (m_diggerman->getDirection() == GraphObject::Direction::up) {
+						if (  (x - 3 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||(x - 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||(x - 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||    (x == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||(x + 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||(x + 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							||(x + 3 == actors[j]->getX() && y + 4 == actors[j]->getY())) return true;
+						else continue;
+					}
+				}
+				if (typeid(*(actors[j])) == typeid(Boulder))
+				{
+					if (actors[i]->getDirection() == GraphObject::Direction::left) {
+						if ((x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY())
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 1)
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 2)
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 3)
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 1)
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 2)
+							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 3)) return true;
+						else continue;
+					}
+					else if (actors[i]->getDirection() == GraphObject::Direction::right) {
+						if ((x + 4 == actors[j]->getX() && y == actors[j]->getY())
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 1)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 2)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 3)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 1)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 2)
+							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 3)) return true;
+						else continue;
+					}
+					else if (actors[i]->getDirection() == GraphObject::Direction::down) {
+						if ((x - 3 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x - 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x - 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
+							|| (x + 3 == actors[j]->getX() && y == actors[j]->getY() + 4)) return true;
+						else continue;
+					}
+					else if (actors[i]->getDirection() == GraphObject::Direction::up) {
+						if ((x - 3 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x - 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x - 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x + 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x + 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
+							|| (x + 3 == actors[j]->getX() && y + 4 == actors[j]->getY())) return true;
+						else continue;
+					}
+				}
+			}
+			return false;
+		}
+		}
+			
+}
 void StudentWorld::addDirt() {
 	for (int i = 0; i < 64; i++)
 	{
@@ -465,7 +586,7 @@ void StudentWorld::removeDead(){
 
 void StudentWorld::setallVisible(){
 
-    for(int i = 0; i < actors.size(); i++){
+    for(unsigned int i = 0; i < actors.size(); i++){
         int x = actors[i]->getX();
         int y = actors[i]->getY();
         int digX = getDiggerman()->getX();

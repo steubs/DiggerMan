@@ -35,6 +35,8 @@ void Actor::setHealth(int health_)
 {
 	health = health_;
 }
+
+
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -335,95 +337,111 @@ bool RegularProtestor::getLeaveOilFieldState()
 {
 	return leaveOilFieldState;
 }
-
+void RegularProtestor::setTickCounter(int tickCounter_)
+{
+	tickCounter = tickCounter_;
+}
 void RegularProtestor::doSomething()
 {
+	
 	if (!getAlive()) return;//return if not alive
-	else if (getTickCounter() > 0)
+	
+	if (tickCounter > 0)
 	{
-		setTickCounter(getTickCounter() - 1);//decriment tick
+		tickCounter--;//decriment tick
 		return;
 	}
+	
 	//protestor is alive and able to move, therefore tick countrer should be set back to the level's correct value max(0,3-lvl)
-	setTickCounter(max(0, 3 - 0));//placehold value
-	if (!getLeaveOilFieldState())//protester moving freely
+	setTickCounter(max(0, 3));//placehold value
+	if (!getLeaveOilFieldState())//protester is moving freely
 	{
 		wander();
+		numSquaresToMoveInCurrentDirection--;
 	}
-	else
-		return;
+	else returnHome();
+		
 
 }
 
 void RegularProtestor::wander()
 {
-	//code taken from DiggerMan but will be changed to work for RegularProtestor, differences are adding randMove instead of getKey(), wait(), etc.... Not finished
-	//will keep code to check for walls, etc.
 	int x = getX();
 	int y = getY();
 
-	int ch = 0;//PLACEHOLDER
-	if (/*getWorld()->getKey(ch) == true*/1) {
-		switch (ch) {
-		case KEY_PRESS_LEFT:
-			if (getDirection() != left) {
-				setDirection(left);
+	if (numSquaresToMoveInCurrentDirection <= 0)//we need to switch directions
+	{
+		direction_integer = rand() % 4;
+		switchDirection(direction_integer);
+		numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
+		//setNumSquaresToMoveInCurrentDirection((rand() % 58) + 6);
+		return;
+	}
+	switch (direction_integer) {
+		case 0:
+			if (x < 1)
+			{
+				numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
 				break;
 			}
-			else {
-				setDirection(left);
-				if (x < 1)
-					break;
-				if (!getWorld()->isThere())
-					moveTo(x - 1, y);
+			if (!getWorld()->isThere())
+				moveTo(x - 1, y);
+			break;	
+		case 1:
+			if (x > 59)
+			{
+				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-		case KEY_PRESS_RIGHT:
-			if (getDirection() != right) {
-				setDirection(right);
+			if (!getWorld()->isThere())
+				moveTo(x + 1, y);
+			break;
+		case 2:
+			if (y > 59)
+			{
+				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-			else {
-				setDirection(right);
-				if (x > 59)
-					break;
-				if (!getWorld()->isThere())
-					moveTo(x + 1, y);
+			if (!getWorld()->isThere())
+				moveTo(x, y + 1);
+			break;
+			
+		case 3:
+			if (y < 1)
+			{
+				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-		case KEY_PRESS_UP:
-			if (getDirection() != up) {
-				setDirection(up);
-				break;
-			}
-			else {
-				setDirection(up);
-				if (y > 59)
-					break;
-				if (!getWorld()->isThere())
-					moveTo(x, y + 1);
-				break;
-			}
-		case KEY_PRESS_DOWN:
-			if (getDirection() != down) {
-				setDirection(down);
-				break;
-			}
-			else {
-				setDirection(down);
-				if (y < 1)
-					break;
-				if (!getWorld()->isThere())
-					moveTo(x, y - 1);
-				break;
-			}
-		}
+			if (!getWorld()->isThere())
+				moveTo(x, y - 1);
+			break;
+			
 	}
 }
 
-void RegularProtestor::setTickCounter(int newTickCounter)
+void RegularProtestor::switchDirection(int direction)
 {
-	tickCounter = newTickCounter;
+	switch (direction)
+	{
+	case 0:
+		setDirection(left);
+		break;
+	case 1:
+		setDirection(right);
+		break;
+	case 2:
+		setDirection(up);
+		break;
+	case 3:
+		setDirection(down);
+		break;
+	}
+}
+
+
+void RegularProtestor::returnHome()
+{
+
 }
 
 RegularProtestor::~RegularProtestor()
