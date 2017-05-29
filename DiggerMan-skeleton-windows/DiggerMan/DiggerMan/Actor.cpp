@@ -165,8 +165,8 @@ Boulder::~Boulder(){
 	
 }
 void Boulder::doSomething() {
-
-	if (getAlive()) {
+	if (getAlive())
+	{
 		int x = getX();
 		int y = getY(); 
 		if (y == 0) {
@@ -183,11 +183,18 @@ void Boulder::doSomething() {
 					if (fell==false)//if this is the first time the boulder has moved at all
 						getWorld()->playSound(SOUND_FALLING_ROCK);//play the sound once
 					moveTo(x, y - 1);
+					int BX = getWorld()->getDiggerman()->getX();
+					int BY = getWorld()->getDiggerman()->getY();
+					double SR = pow((pow(abs(x - BX), 2) + pow(y - BY, 2)), 0.5);
+					if (SR <= 3.0) {
+						getWorld()->getDiggerman()->setVisible(false);
+						getWorld()->getDiggerman()->setAlive(false);
+					}
+					//getWorld()->BoulderHitDig();
 					fell = true;//this also helps get rid of the boulder
 				}
 			}
 			else if (fell == true){ //if the boulder has fallen
-
 				setVisible(false);
 				setAlive(false);
 			}
@@ -198,7 +205,6 @@ void Boulder::doSomething() {
 	else 
 		return;
 }
-
 ////////////////////////////////////////////////////////////// GoldNugget  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 GoldNugget::GoldNugget(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth), pickUpProtestor(false), pickUpDiggerman(false)
 {
@@ -208,29 +214,27 @@ void GoldNugget::doSomething()
 {
 	if (getAlive())
 	{
-		if (!pickUpDiggerman && !pickUpProtestor) {
-			//getWorld()->isClose();
-			pickUpDiggerman = true;
-			return;
-		}
-		else if (pickUpDiggerman && (!pickUpProtestor)) {
-			//getWorld()->isClose();
 			int x = getX();
 			int y = getY();
 			int digX = getWorld()->getDiggerman()->getX();
 			int digY = getWorld()->getDiggerman()->getY();
 			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-            if (SR <= 10)
-                setVisible(true);
-			if (SR <= 3.0) {
+			if (SR <= 4.0 && !pickUpDiggerman) {
+				pickUpDiggerman = true;
+				setVisible(true);
+				return;
+			}
+			else if (SR > 4.0)
+				setVisible(false);
+			if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
+				setVisible(true);
 				setVisible(false);
 				setAlive(false);
 				getWorld()->increaseScore(10);
 				getWorld()->playSound(SOUND_GOT_GOODIE);
 				getWorld()->incGold();
+				pickUpDiggerman = false;
 			}
-			pickUpDiggerman = false;
-		}
 	}
 	else
 		return;
@@ -242,7 +246,7 @@ GoldNugget::~GoldNugget()
 
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),pick(false) {
 	setVisible(false);
 }
 
@@ -255,10 +259,17 @@ void Oil::doSomething() {
 		int digX = getWorld()->getDiggerman()->getX();
 		int digY = getWorld()->getDiggerman()->getY();
 		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-        if (SR <= 10)
-            setVisible(true);
-		if (SR <= 3.0) {
-
+		if (SR <= 4.0 && !pick) {
+			pick = true;
+			setVisible(true);
+			return;
+		}
+		else if (SR > 4.0) {
+			setVisible(false);
+			pick = false;
+		}
+		if (SR <= 3.0 &&pick) {
+			setVisible(true);
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decBarrels();
@@ -266,9 +277,9 @@ void Oil::doSomething() {
 			getWorld()->increaseScore(1000);
 		}
 	}
-	else return;
+	else 
+		return;
 }
-
 Oil::~Oil() {
 	
 }
