@@ -41,6 +41,10 @@ int StudentWorld::move()
 			return GWSTATUS_FINISHED_LEVEL;
 		
 	}
+		if (!m_diggerman->getAlive()) {
+		decLives();
+		return GWSTATUS_PLAYER_DIED;
+	}
 
 	removeDead();
 
