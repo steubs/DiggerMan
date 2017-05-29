@@ -224,8 +224,10 @@ void GoldNugget::doSomething()
 				setVisible(true);
 				return;
 			}
-			else if (SR > 4.0)
+			else if (SR > 4.0) {
+				pickUpDiggerman = false;
 				setVisible(false);
+			}
 			if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
 				setVisible(true);
 				setVisible(false);
@@ -275,6 +277,7 @@ void Oil::doSomething() {
 			getWorld()->decBarrels();
 			getWorld()->playSound(SOUND_FOUND_OIL);
 			getWorld()->increaseScore(1000);
+			pick = false;
 		}
 	}
 	else 
