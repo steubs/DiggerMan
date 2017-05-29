@@ -53,6 +53,7 @@ public:
 class Oil : public Actor
 {
 private:
+	bool pick;
 public:
 	Oil(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
 	void doSomething();
