@@ -219,15 +219,16 @@ void GoldNugget::doSomething()
 			int digX = getWorld()->getDiggerman()->getX();
 			int digY = getWorld()->getDiggerman()->getY();
 			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-			if (SR <= 4.0 && !pickUpDiggerman) {
+			if (SR <= 10.0  && !pickUpDiggerman) {// can we leave this value so its easier to see the objects when we get close
+													// you can change it back when we turn it in
 				pickUpDiggerman = true;
 				setVisible(true);
 				return;
 			}
-			else if (SR > 4.0) {
+			/*else if (SR > 4.0) { // this block of code messes up the sonar implementation, should remain visible once discovered 
 				pickUpDiggerman = false;
 				setVisible(false);
-			}
+			}*/
 			if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
 				setVisible(true);
 				setVisible(false);
@@ -255,21 +256,22 @@ Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, dou
 void Oil::doSomething() {
 	if (getAlive())
 	{
-		//getWorld()->isClose();
+		
 		int x = getX();
 		int y = getY();
 		int digX = getWorld()->getDiggerman()->getX();
 		int digY = getWorld()->getDiggerman()->getY();
 		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-		if (SR <= 4.0 && !pick) {
+		if (SR <= 10.0 && !pick) { // can we leave this value so its easier to see the objects when we get close
+									// you can change it back when we turn it in
 			pick = true;
 			setVisible(true);
 			return;
 		}
-		else if (SR > 4.0) {
+		/*else if (SR > 4.0) {  // this block of code messes up the sonar implementation, should remain visible once discovered
 			setVisible(false);
 			pick = false;
-		}
+		}*/
 		if (SR <= 3.0 &&pick) {
 			setVisible(true);
 			setVisible(false);
