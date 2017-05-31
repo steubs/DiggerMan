@@ -76,6 +76,8 @@ void StudentWorld::cleanUp()
 			delete dirtarr[i][j];
 		}
 	}
+	m_barrels = 0; // fixes count when you die
+	m_sonar = 1; // fixes count when you die
 	delete getDiggerman();
 	delete m_protestorTest;
 	delete m_protestorTest2;
