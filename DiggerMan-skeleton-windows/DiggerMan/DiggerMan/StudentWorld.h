@@ -19,12 +19,14 @@ private:
 	int m_barrels;
     int m_gold;
 	int m_sonar;
+	int m_protestors = 0;
 	int sonarInMap = 0;
 	Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
 	Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
+	int tickCount=0;
 public:
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0),m_gold(0),m_sonar(1)//starts with one sonar, specs
+		: GameWorld(assetDir),m_barrels(0),m_gold(3),m_sonar(1)//starts with one sonar, specs
 	{
 	}
 
@@ -38,7 +40,9 @@ public:
 
 	void addSonarKit();
 	
-	bool isThereProtestors();
+	bool isDirtThere();
+
+	bool isBoulderThere();
 	
 	void isClose();
 
@@ -81,7 +85,7 @@ public:
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();
 	void addBarrel();
-	void addRegularProtestors();
+	void addProtestors();
 
 };
 

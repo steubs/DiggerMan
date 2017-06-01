@@ -250,7 +250,7 @@ GoldNugget::~GoldNugget()
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),pick(false) {
-	setVisible(false);
+	setVisible(true);
 }
 
 void Oil::doSomething() {
@@ -302,9 +302,11 @@ void Sonar::doSomething() {
         double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
         int current_level = getWorld()->getLevel();
 		int a = max(100, 300 - 10 * current_level);
-		//int max = std::max(10,0);
-        if(SR <= 3)
-            
+		if (SR <= 3) {
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decSonarInMap();
+		}
 		if (count == a) {
 			setVisible(false);
 			setAlive(false);
@@ -400,7 +402,7 @@ void RegularProtestor::wander()
 				numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
 				break;
 			}
-			if (!getWorld()->isThere())
+			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x - 1, y);
 			break;	
 		case 1:
@@ -409,7 +411,7 @@ void RegularProtestor::wander()
 				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-			if (!getWorld()->isThere())
+			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x + 1, y);
 			break;
 		case 2:
@@ -418,7 +420,7 @@ void RegularProtestor::wander()
 				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-			if (!getWorld()->isThere())
+			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x, y + 1);
 			break;
 			
@@ -428,7 +430,7 @@ void RegularProtestor::wander()
 				numSquaresToMoveInCurrentDirection = 0;
 				break;
 			}
-			if (!getWorld()->isThere())
+			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x, y - 1);
 			break;
 			
