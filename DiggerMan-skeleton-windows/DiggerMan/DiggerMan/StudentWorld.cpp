@@ -44,8 +44,8 @@ int StudentWorld::move()
 		decLives();
 		return GWSTATUS_PLAYER_DIED;
 	}
-
-	int j = getLevel() + 3;//for some reason doesn't work when multiplying 
+		int current_level = getLevel();
+	int j = current_level * 1 +1;//for some reason doesn't work when multiplying 
 	//reduced to + 3 because takes forever to show up otherwise
 	int random = rand() % j;
 	if (1 == random) {//one in getLevel() * 25 + 300 chance to add these
@@ -77,6 +77,7 @@ void StudentWorld::cleanUp()
 	}
 	m_barrels = 0; // fixes count when you die
 	m_sonar = 1; // fixes count when you die
+	tickCount = 0;
 	delete getDiggerman();
 	//delete m_protestorTest;
 	//delete m_protestorTest2;
@@ -647,95 +648,142 @@ void StudentWorld::addDirt() {
 	}
 }
 
-void StudentWorld::removeDirt(){
+bool StudentWorld::removeDirt() {
 	int x = m_diggerman->getX();
 	int y = m_diggerman->getY();
 	if (m_diggerman->getDirection() == GraphObject::Direction::left) {
 		if (y == 59) {
-			dirtarr[x][y]->setVisible(false);
-			dirtarr[x][y]->setAlive(false);
+			if (dirtarr[x][y]->getAlive()) {
+				dirtarr[x][y]->setVisible(false);
+				dirtarr[x][y]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y == 58) {
-			dirtarr[x][y]->setVisible(false);
-			dirtarr[x][y + 1]->setVisible(false);
-			dirtarr[x][y]->setAlive(false);
-			dirtarr[x][y + 1]->setAlive(false);
+			if (dirtarr[x][y]->getAlive()
+				&& dirtarr[x][y + 1]->getAlive()) {
+				dirtarr[x][y]->setVisible(false);
+				dirtarr[x][y + 1]->setVisible(false);
+				dirtarr[x][y]->setAlive(false);
+				dirtarr[x][y + 1]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y == 57) {
-			dirtarr[x][y]->setVisible(false);
-			dirtarr[x][y + 1]->setVisible(false);
-			dirtarr[x][y + 2]->setVisible(false);
-			dirtarr[x][y]->setAlive(false);
-			dirtarr[x][y + 1]->setAlive(false);
-			dirtarr[x][y + 2]->setAlive(false);
+			if (dirtarr[x][y]->getAlive()
+				&& dirtarr[x][y + 1]->getAlive()
+				&& dirtarr[x][y + 2]->getAlive()) {
+				dirtarr[x][y]->setVisible(false);
+				dirtarr[x][y + 1]->setVisible(false);
+				dirtarr[x][y + 2]->setVisible(false);
+				dirtarr[x][y]->setAlive(false);
+				dirtarr[x][y + 1]->setAlive(false);
+				dirtarr[x][y + 2]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y < 57) {
-			dirtarr[x][y]->setVisible(false);
-			dirtarr[x][y + 1]->setVisible(false);
-			dirtarr[x][y + 2]->setVisible(false);
-			dirtarr[x][y + 3]->setVisible(false);
-			dirtarr[x][y]->setAlive(false);
-			dirtarr[x][y + 1]->setAlive(false);
-			dirtarr[x][y + 2]->setAlive(false);
-			dirtarr[x][y + 3]->setAlive(false);
+			if (dirtarr[x][y]->getAlive()
+				&& dirtarr[x][y + 1]->getAlive()
+				&& dirtarr[x][y + 2]->getAlive()
+				&& dirtarr[x][y + 3]->getAlive()) {
+				dirtarr[x][y]->setVisible(false);
+				dirtarr[x][y + 1]->setVisible(false);
+				dirtarr[x][y + 2]->setVisible(false);
+				dirtarr[x][y + 3]->setVisible(false);
+				dirtarr[x][y]->setAlive(false);
+				dirtarr[x][y + 1]->setAlive(false);
+				dirtarr[x][y + 2]->setAlive(false);
+				dirtarr[x][y + 3]->setAlive(false);
+				return true;
+			}
 		}
 	}
 	else if (m_diggerman->getDirection() == GraphObject::Direction::right)
 	{
 		if (y == 59) {
-			dirtarr[x + 3][y]->setVisible(false);
-			dirtarr[x + 3][y]->setAlive(false);
+			if (dirtarr[x + 3][y]->getAlive()) {
+				dirtarr[x + 3][y]->setVisible(false);
+				dirtarr[x + 3][y]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y == 58) {
-			dirtarr[x + 3][y]->setVisible(false);
-			dirtarr[x + 3][y + 1]->setVisible(false);
-			dirtarr[x + 3][y]->setAlive(false);
-			dirtarr[x + 3][y + 1]->setAlive(false);
+			if (dirtarr[x + 3][y]->getAlive()
+				&& dirtarr[x + 3][y + 1]->getAlive()) {
+				dirtarr[x + 3][y]->setVisible(false);
+				dirtarr[x + 3][y + 1]->setVisible(false);
+				dirtarr[x + 3][y]->setAlive(false);
+				dirtarr[x + 3][y + 1]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y == 57) {
-			dirtarr[x + 3][y]->setVisible(false);
-			dirtarr[x + 3][y + 1]->setVisible(false);
-			dirtarr[x + 3][y + 2]->setVisible(false);
-			dirtarr[x + 3][y]->setAlive(false);
-			dirtarr[x + 3][y + 1]->setAlive(false);
-			dirtarr[x + 3][y + 2]->setAlive(false);
+			if (dirtarr[x + 3][y]->getAlive()
+				&& dirtarr[x + 3][y + 1]->getAlive()
+				&& dirtarr[x + 3][y + 2]->getAlive()) {
+				dirtarr[x + 3][y]->setVisible(false);
+				dirtarr[x + 3][y + 1]->setVisible(false);
+				dirtarr[x + 3][y + 2]->setVisible(false);
+				dirtarr[x + 3][y]->setAlive(false);
+				dirtarr[x + 3][y + 1]->setAlive(false);
+				dirtarr[x + 3][y + 2]->setAlive(false);
+				return true;
+			}
 		}
 		else if (y < 57) {
-			dirtarr[x + 3][y]->setVisible(false);
-			dirtarr[x + 3][y + 1]->setVisible(false);
-			dirtarr[x + 3][y + 2]->setVisible(false);
-			dirtarr[x + 3][y + 3]->setVisible(false);
-			dirtarr[x + 3][y]->setAlive(false);
-			dirtarr[x + 3][y + 1]->setAlive(false);
-			dirtarr[x + 3][y + 2]->setAlive(false);
-			dirtarr[x + 3][y + 3]->setAlive(false);
+			if (dirtarr[x + 3][y]->getAlive()
+				&& dirtarr[x + 3][y + 1]->getAlive()
+				&& dirtarr[x + 3][y + 2]->getAlive()
+				&& dirtarr[x + 3][y + 3]->getAlive()) {
+				dirtarr[x + 3][y]->setVisible(false);
+				dirtarr[x + 3][y + 1]->setVisible(false);
+				dirtarr[x + 3][y + 2]->setVisible(false);
+				dirtarr[x + 3][y + 3]->setVisible(false);
+				dirtarr[x + 3][y]->setAlive(false);
+				dirtarr[x + 3][y + 1]->setAlive(false);
+				dirtarr[x + 3][y + 2]->setAlive(false);
+				dirtarr[x + 3][y + 3]->setAlive(false);
+				return true;
+			}
 		}
 	}
 	else if (m_diggerman->getDirection() == GraphObject::Direction::up) {
 		if (y < 57)
 		{
-			dirtarr[x][y + 3]->setVisible(false);
-			dirtarr[x + 1][y + 3]->setVisible(false);
-			dirtarr[x + 2][y + 3]->setVisible(false);
-			dirtarr[x + 3][y + 3]->setVisible(false);
-			dirtarr[x][y + 3]->setAlive(false);
-			dirtarr[x + 1][y + 3]->setAlive(false);
-			dirtarr[x + 2][y + 3]->setAlive(false);
-			dirtarr[x + 3][y + 3]->setAlive(false);
+			if (dirtarr[x][y + 3]->getAlive()
+				&& dirtarr[x + 1][y + 3]->getAlive()
+				&& dirtarr[x + 2][y + 3]->getAlive()
+				&& dirtarr[x + 3][y + 3]->getAlive()) {
+				dirtarr[x][y + 3]->setVisible(false);
+				dirtarr[x + 1][y + 3]->setVisible(false);
+				dirtarr[x + 2][y + 3]->setVisible(false);
+				dirtarr[x + 3][y + 3]->setVisible(false);
+				dirtarr[x][y + 3]->setAlive(false);
+				dirtarr[x + 1][y + 3]->setAlive(false);
+				dirtarr[x + 2][y + 3]->setAlive(false);
+				dirtarr[x + 3][y + 3]->setAlive(false);
+				return true;
+			}
 		}
 	}
 	else if (m_diggerman->getDirection() == GraphObject::Direction::down) {
-		dirtarr[x][y]->setVisible(false);
-		dirtarr[x + 1][y]->setVisible(false);
-		dirtarr[x + 2][y]->setVisible(false);
-		dirtarr[x + 3][y]->setVisible(false);
-		dirtarr[x][y]->setAlive(false);
-		dirtarr[x + 1][y]->setAlive(false);
-		dirtarr[x + 2][y]->setAlive(false);
-		dirtarr[x + 3][y]->setAlive(false);
+		if (dirtarr[x][y]->getAlive()
+			&& dirtarr[x + 1][y]->getAlive()
+			&& dirtarr[x + 2][y]->getAlive()
+			&& dirtarr[x + 3][y]->getAlive()) {
+			dirtarr[x][y]->setVisible(false);
+			dirtarr[x + 1][y]->setVisible(false);
+			dirtarr[x + 2][y]->setVisible(false);
+			dirtarr[x + 3][y]->setVisible(false);
+			dirtarr[x][y]->setAlive(false);
+			dirtarr[x + 1][y]->setAlive(false);
+			dirtarr[x + 2][y]->setAlive(false);
+			dirtarr[x + 3][y]->setAlive(false);
+			return true;
+		}
 	}
-	else
-		return;
+	return false;
 }
 
 void StudentWorld::setDisplayText(){
@@ -775,11 +823,9 @@ void StudentWorld::setallVisible(){
         int digY = getDiggerman()->getY();
         double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
 
-        if(actors[i]->getAlive()){
-            //if(SR <= 12)// not sure what radius should be, value not listed in specs
-                actors[i]->setVisible(true);
-    
-    
+		if (actors[i]->getAlive()) {
+			if (SR <= 12)// not sure what radius should be, value not listed in specs
+				actors[i]->setVisible(true);
         }
     }
     return;

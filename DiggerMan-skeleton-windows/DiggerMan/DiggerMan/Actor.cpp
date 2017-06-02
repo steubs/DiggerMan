@@ -84,10 +84,11 @@ void DiggerMan::doSomething()
 					if (x < 1)
 						break;
 					if (!getWorld()->isThere()) {
-						//getWorld()->playSound(SOUND_DIG); have to play this when digging through dirt
 						moveTo(x - 1, y);
 					}
-					getWorld()->removeDirt();
+					if (getWorld()->removeDirt()) {
+						getWorld()->playSound(SOUND_DIG);
+					}
 					break;
 				}
 			case KEY_PRESS_RIGHT:
@@ -100,10 +101,11 @@ void DiggerMan::doSomething()
 					if (x > 59)
 						break;
 					if (!getWorld()->isThere()) {
-						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x + 1, y);
 					}
-					getWorld()->removeDirt();
+					if (getWorld()->removeDirt()) {
+						getWorld()->playSound(SOUND_DIG);
+					}
 					break;
 				}
 			case KEY_PRESS_UP:
@@ -116,10 +118,10 @@ void DiggerMan::doSomething()
 					if (y > 59)
 						break;
 					if (!getWorld()->isThere()) {
-						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x, y + 1);
 					}
-					getWorld()->removeDirt();
+					if (getWorld()->removeDirt())
+						getWorld()->playSound(SOUND_DIG);
 					break;
 				}
 			case KEY_PRESS_DOWN:
@@ -132,10 +134,11 @@ void DiggerMan::doSomething()
 					if (y < 1)
 						break;
 					if (!getWorld()->isThere()) {
-						//getWorld()->playSound(SOUND_DIG);
 						moveTo(x, y - 1);
 					}
-					getWorld()->removeDirt();
+					if (getWorld()->removeDirt()) {
+						getWorld()->playSound(SOUND_DIG);
+					}
 					break;
 				}
             case 'z':
@@ -150,6 +153,8 @@ void DiggerMan::doSomething()
                     getWorld()->decSonar();
                 }
                     break;
+			case KEY_PRESS_ESCAPE:
+				setAlive(false);
 			}
 		}
 	}
@@ -306,6 +311,9 @@ void Sonar::doSomething() {
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decSonarInMap();
+			getWorld()->incSonar();
+			getWorld()->playSound(SOUND_GOT_GOODIE);
+			getWorld()->increaseScore(75);
 		}
 		if (count == a) {
 			setVisible(false);
@@ -317,6 +325,42 @@ void Sonar::doSomething() {
 }
 
 Sonar::~Sonar() {
+
+}
+
+//////////////////////////////////////////////////////////////  WATERPOOLS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+
+}
+
+void Water::doSomething() {
+	if (getAlive()) {
+		count++;
+		int x = getX();
+		int y = getY();
+		int digX = getWorld()->getDiggerman()->getX();
+		int digY = getWorld()->getDiggerman()->getY();
+		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+		int current_level = getWorld()->getLevel();
+		int a = max(100, 300 - 10 * current_level);
+		if (SR <= 3) {
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decWaterInMap();
+			getWorld()->incWater();
+			getWorld()->playSound(SOUND_GOT_GOODIE);
+			getWorld()->increaseScore(100);
+		}
+		if (count == a) {
+			setVisible(false);
+			setAlive(false);
+			getWorld()->decWaterInMap();
+		}
+	}
+	else return;
+}
+
+Water::~Water() {
 
 }
 

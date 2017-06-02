@@ -19,8 +19,10 @@ private:
 	int m_barrels;
     int m_gold;
 	int m_sonar;
+	int m_water;
 	int m_protestors = 0;
 	int sonarInMap = 0;
+	int waterInMap = 0;
 	Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
 	Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 	int tickCount=0;
@@ -43,18 +45,10 @@ public:
 	bool isDirtThere();
 
 	bool isBoulderThere();
-	
-	void isClose();
-
-	void pickBarrel();
-
-	void pickGold();
-
-	void pickSonar();
 
 	void addDirt();
 	
-	void removeDirt();
+	bool removeDirt();
 
 	bool checkUnder(Boulder * b);
 
@@ -80,8 +74,12 @@ public:
     
     void incGold(){ m_gold++; return; }
 	void decBarrels() { m_barrels-=1; return; }
+	void incSonar() { m_sonar++; }
 	void decSonar() { m_sonar--; }
 	void decSonarInMap() { sonarInMap--; }
+	void incWater() { m_water+=5; }
+	void decWater() { m_water--; }
+	void decWaterInMap() { waterInMap--; }
 	bool checkDistance(int x, int y);
 	void addGoldNuggets();
 	void addBarrel();

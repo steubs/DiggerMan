@@ -70,6 +70,16 @@ public:
 	~Sonar();
 };
 
+class Water :public Actor
+{
+private:
+	int count = 0;
+public:
+	Water(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
+	void doSomething();
+	~Water();
+};
+
 class Squirt : public Actor
 {
 private:
