@@ -661,7 +661,7 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y == 58) {
 			if (dirtarr[x][y]->getAlive()
-				&& dirtarr[x][y + 1]->getAlive()) {
+				|| dirtarr[x][y + 1]->getAlive()) {
 				dirtarr[x][y]->setVisible(false);
 				dirtarr[x][y + 1]->setVisible(false);
 				dirtarr[x][y]->setAlive(false);
@@ -671,8 +671,8 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y == 57) {
 			if (dirtarr[x][y]->getAlive()
-				&& dirtarr[x][y + 1]->getAlive()
-				&& dirtarr[x][y + 2]->getAlive()) {
+				|| dirtarr[x][y + 1]->getAlive()
+				|| dirtarr[x][y + 2]->getAlive()) {
 				dirtarr[x][y]->setVisible(false);
 				dirtarr[x][y + 1]->setVisible(false);
 				dirtarr[x][y + 2]->setVisible(false);
@@ -684,9 +684,9 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y < 57) {
 			if (dirtarr[x][y]->getAlive()
-				&& dirtarr[x][y + 1]->getAlive()
-				&& dirtarr[x][y + 2]->getAlive()
-				&& dirtarr[x][y + 3]->getAlive()) {
+				|| dirtarr[x][y + 1]->getAlive()
+				|| dirtarr[x][y + 2]->getAlive()
+				|| dirtarr[x][y + 3]->getAlive()) {
 				dirtarr[x][y]->setVisible(false);
 				dirtarr[x][y + 1]->setVisible(false);
 				dirtarr[x][y + 2]->setVisible(false);
@@ -710,7 +710,7 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y == 58) {
 			if (dirtarr[x + 3][y]->getAlive()
-				&& dirtarr[x + 3][y + 1]->getAlive()) {
+				|| dirtarr[x + 3][y + 1]->getAlive()) {
 				dirtarr[x + 3][y]->setVisible(false);
 				dirtarr[x + 3][y + 1]->setVisible(false);
 				dirtarr[x + 3][y]->setAlive(false);
@@ -720,8 +720,8 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y == 57) {
 			if (dirtarr[x + 3][y]->getAlive()
-				&& dirtarr[x + 3][y + 1]->getAlive()
-				&& dirtarr[x + 3][y + 2]->getAlive()) {
+				|| dirtarr[x + 3][y + 1]->getAlive()
+				|| dirtarr[x + 3][y + 2]->getAlive()) {
 				dirtarr[x + 3][y]->setVisible(false);
 				dirtarr[x + 3][y + 1]->setVisible(false);
 				dirtarr[x + 3][y + 2]->setVisible(false);
@@ -733,9 +733,9 @@ bool StudentWorld::removeDirt() {
 		}
 		else if (y < 57) {
 			if (dirtarr[x + 3][y]->getAlive()
-				&& dirtarr[x + 3][y + 1]->getAlive()
-				&& dirtarr[x + 3][y + 2]->getAlive()
-				&& dirtarr[x + 3][y + 3]->getAlive()) {
+				|| dirtarr[x + 3][y + 1]->getAlive()
+				|| dirtarr[x + 3][y + 2]->getAlive()
+				|| dirtarr[x + 3][y + 3]->getAlive()) {
 				dirtarr[x + 3][y]->setVisible(false);
 				dirtarr[x + 3][y + 1]->setVisible(false);
 				dirtarr[x + 3][y + 2]->setVisible(false);
@@ -752,9 +752,9 @@ bool StudentWorld::removeDirt() {
 		if (y < 57)
 		{
 			if (dirtarr[x][y + 3]->getAlive()
-				&& dirtarr[x + 1][y + 3]->getAlive()
-				&& dirtarr[x + 2][y + 3]->getAlive()
-				&& dirtarr[x + 3][y + 3]->getAlive()) {
+				|| dirtarr[x + 1][y + 3]->getAlive()
+				|| dirtarr[x + 2][y + 3]->getAlive()
+				|| dirtarr[x + 3][y + 3]->getAlive()) {
 				dirtarr[x][y + 3]->setVisible(false);
 				dirtarr[x + 1][y + 3]->setVisible(false);
 				dirtarr[x + 2][y + 3]->setVisible(false);
@@ -769,9 +769,9 @@ bool StudentWorld::removeDirt() {
 	}
 	else if (m_diggerman->getDirection() == GraphObject::Direction::down) {
 		if (dirtarr[x][y]->getAlive()
-			&& dirtarr[x + 1][y]->getAlive()
-			&& dirtarr[x + 2][y]->getAlive()
-			&& dirtarr[x + 3][y]->getAlive()) {
+			|| dirtarr[x + 1][y]->getAlive()
+			|| dirtarr[x + 2][y]->getAlive()
+			|| dirtarr[x + 3][y]->getAlive()) {
 			dirtarr[x][y]->setVisible(false);
 			dirtarr[x + 1][y]->setVisible(false);
 			dirtarr[x + 2][y]->setVisible(false);

@@ -86,6 +86,7 @@ private:
 public:
 	Squirt(StudentWorld *p, int imageID, int startX, int startY, Direction dir = down, double size = 1.0, unsigned int depth = 1);
 	void doSomething();
+
 	~Squirt();
 };
 
