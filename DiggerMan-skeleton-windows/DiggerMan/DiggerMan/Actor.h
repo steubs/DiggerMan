@@ -107,7 +107,7 @@ public:
 	int getTickCounter() { return tickCounter; }
 	void wander();
 	void switchDirection(int);
-	void returnHome();
+	void leaveOilField();
 	~RegularProtestor();
 };
 

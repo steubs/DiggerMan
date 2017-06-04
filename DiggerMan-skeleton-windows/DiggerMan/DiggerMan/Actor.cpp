@@ -403,11 +403,29 @@ void RegularProtestor::setTickCounter(int tickCounter_)
 {
 	tickCounter = tickCounter_;
 }
+
+void RegularProtestor::leaveOilField()
+{
+
+}
 void RegularProtestor::doSomething()
 {
 	
 	if (!getAlive()) return;//return if not alive
 	
+	if (leaveOilFieldState == true)
+	{
+		leaveOilField();
+		return;
+	}
+
+	if (health == 0)//this should only happen once in a protestor's life
+	{
+		leaveOilFieldState = true;
+		getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
+		tickCounter = 0;
+	}
+
 	if (tickCounter > 0)
 	{
 		tickCounter--;//decriment tick
@@ -421,7 +439,6 @@ void RegularProtestor::doSomething()
 		wander();
 		numSquaresToMoveInCurrentDirection--;
 	}
-	else returnHome();
 		
 
 }
@@ -448,6 +465,7 @@ void RegularProtestor::wander()
 			}
 			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x - 1, y);
+			else numSquaresToMoveInCurrentDirection = 0;
 			break;	
 		case 1:
 			if (x > 59)
@@ -457,6 +475,7 @@ void RegularProtestor::wander()
 			}
 			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x + 1, y);
+			else numSquaresToMoveInCurrentDirection = 0;
 			break;
 		case 2:
 			if (y > 59)
@@ -466,7 +485,9 @@ void RegularProtestor::wander()
 			}
 			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x, y + 1);
+			else numSquaresToMoveInCurrentDirection = 0;
 			break;
+
 			
 		case 3:
 			if (y < 1)
@@ -476,6 +497,7 @@ void RegularProtestor::wander()
 			}
 			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
 				moveTo(x, y - 1);
+			else numSquaresToMoveInCurrentDirection = 0;
 			break;
 			
 	}
@@ -501,10 +523,7 @@ void RegularProtestor::switchDirection(int direction)
 }
 
 
-void RegularProtestor::returnHome()
-{
 
-}
 
 RegularProtestor::~RegularProtestor()
 {
