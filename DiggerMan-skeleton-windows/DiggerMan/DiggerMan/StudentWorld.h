@@ -84,7 +84,7 @@ public:
 	void addGoldNuggets();
 	void addBarrel();
 	void addProtestors();
-
+	void dropGold();
 };
 
 #endif // STUDENTWORLD_H_
