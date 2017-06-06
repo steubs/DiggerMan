@@ -830,7 +830,16 @@ void StudentWorld::setallVisible(){
     }
     return;
 }
-
+void StudentWorld::dropGold() {
+	if (m_gold > 0) {
+		int x = m_diggerman->getX();
+		int y = m_diggerman->getY();
+		GoldNugget *newG = new GoldNugget(this, IMID_GOLD, x, y);
+		newG->setVisible(true);
+		actors.push_back(newG);
+		m_gold--;
+	}
+}
 
 
 
