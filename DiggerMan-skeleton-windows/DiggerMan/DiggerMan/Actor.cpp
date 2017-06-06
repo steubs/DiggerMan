@@ -228,7 +228,7 @@ void GoldNugget::doSomething()
 			int digY = getWorld()->getDiggerman()->getY();
 			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
 			if (SR != 0 && !pickUpProtestor) {
-				if (SR <= 10.0 && !pickUpDiggerman && !pickUpProtestor) {// can we leave this value so its easier to see the objects when we get close
+				if (SR <= 4.0 && !pickUpDiggerman && !pickUpProtestor) {// can we leave this value so its easier to see the objects when we get close
 														// you can change it back when we turn it in
 					pickUpDiggerman = true;
 					setVisible(true);
@@ -298,7 +298,7 @@ Oil::~Oil() {
 	
 }
 //////////////////////////////////////////////////////////////  SONAR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
 	
 }
 void Sonar::doSomething() {
@@ -333,7 +333,7 @@ Sonar::~Sonar() {
 }
 
 //////////////////////////////////////////////////////////////  WATERPOOLS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
 
 }
 
@@ -383,7 +383,7 @@ Squirt::~Squirt() {
 
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),tickCounter(0),direction_integer(1)
 {
 	leaveOilFieldState = false;
 	setHealth(5);
@@ -392,11 +392,6 @@ RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int
 void RegularProtestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
-}
-
-void RegularProtestor::setHealth(int health_)
-{
-	health = health_;
 }
 
 bool RegularProtestor::getLeaveOilFieldState()
@@ -423,7 +418,7 @@ void RegularProtestor::doSomething()
 		return;
 	}
 
-	if (health == 0)//this should only happen once in a protestor's life
+	if (getHealth()==0)//this should only happen once in a protestor's life
 	{
 		leaveOilFieldState = true;
 		getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
