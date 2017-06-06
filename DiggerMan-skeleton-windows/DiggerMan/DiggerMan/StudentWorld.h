@@ -23,8 +23,8 @@ private:
 	int m_protestors = 0;
 	int sonarInMap = 0;
 	int waterInMap = 0;
-	Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
-	Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
+	//Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
+	//Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 	int tickCount=0;
 public:
 	StudentWorld(std::string assetDir)

@@ -22,7 +22,7 @@ int StudentWorld::init()
 	addBoulders();
 	addGoldNuggets();
 	addBarrel();
-	
+	addProtestors();
 	return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -141,13 +141,13 @@ void StudentWorld::addProtestors()
 		actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 60, 60));//all protestors added to 60,60
 		m_protestors++;
 	}//add first protestor at beginning of each level
+	
 	tickCount++;
+
 	int current_level = getLevel();
-	int T = max(25, 200 - current_level);//at least this many ticks before another protestor added
-	int sub = current_level*1.5;
-	int numProtestors = min(15, sub);
-	//the max num of protestors is min(15,2+current_level*1.5);
-	if(tickCount==T && m_protestors<numProtestors){
+	int ticksUntilAdd = max(25, 200 - current_level);//at least this many ticks before another protestor added
+	int numProtestors = min(15, 2+(int)(current_level*1.5));
+	if(tickCount==ticksUntilAdd && m_protestors<numProtestors){
 		int G = current_level * 25 + 300;
 		if (1==rand()%G)
 			actors.push_back(new HardcoreProtestor(this, IMID_PROTESTER, 60, 60));
