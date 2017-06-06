@@ -63,7 +63,7 @@ public:
 class Sonar :public Actor
 {
 private:
-	int count = 0;
+	int count;
 public:
 	Sonar(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
 	void doSomething();
@@ -73,7 +73,7 @@ public:
 class Water :public Actor
 {
 private:
-	int count = 0;
+	int count;
 public:
 	Water(StudentWorld *p, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2);
 	void doSomething();
@@ -94,16 +94,14 @@ class RegularProtestor : public Actor
 {
 private:
 	bool leaveOilFieldState;
-	int health;
 	int numSquaresToMoveInCurrentDirection;
-	int tickCounter = 0;
-	int direction_integer = 1;
+	int tickCounter ;
+	int direction_integer;
 public:
 	RegularProtestor(StudentWorld *p, int imageID, int startX, int startY, Direction dir = left, double size = 1.0, unsigned int depth = 0);
 	void doSomething();
 	bool getLeaveOilFieldState();
 	void setLeaveOilFieldState(bool);
-	void setHealth(int);
 	void setTickCounter(int);
 	int getTickCounter() { return tickCounter; }
 	void wander();
