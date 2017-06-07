@@ -484,8 +484,6 @@ void RegularProtestor::leaveOilField()
 }
 void RegularProtestor::doSomething()
 {
-	
-	cout << getX()<< " "<<getY()<<endl ;
 	if (!getAlive()) return;//return if not alive
 	
 	if (leaveOilFieldState == true)
