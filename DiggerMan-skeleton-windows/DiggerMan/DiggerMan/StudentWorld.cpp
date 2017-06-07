@@ -640,5 +640,24 @@ void StudentWorld::dropGold() {
 		m_gold--;
 	}
 }
+bool StudentWorld::pickUPPRO(int x, int y){
+	//cout << "1" << endl;
+	for (auto it = actors.begin(); it != actors.end(); it++){
+		//cout << "2" << endl;
+		if (typeid(**it) == typeid(RegularProtestor)){
+			//cout << "13" << endl;
+			int PX = (*it)->getX();
+			int PY = (*it)->getY();
+			double SR = pow((pow(abs(x - PX), 2) + pow(y - PY, 2)), 0.5);
+			if (SR <= 3.0){
+				//cout << "14" << endl;
+				(*it)->setAlive(false);
+				(*it)->setVisible(false);//these two lines are just there to test code
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
