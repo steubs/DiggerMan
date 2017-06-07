@@ -344,7 +344,7 @@ GoldNugget::~GoldNugget()
 //////////////////////////////////////////////////////////////  OIL  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Oil::Oil(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),pick(false) {
-	setVisible(true);
+	setVisible(false);
 }
 
 void Oil::doSomething() {
@@ -356,7 +356,7 @@ void Oil::doSomething() {
 		int digX = getWorld()->getDiggerman()->getX();
 		int digY = getWorld()->getDiggerman()->getY();
 		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-		if (SR <= 10.0 && !pick) { // can we leave this value so its easier to see the objects when we get close
+		if (SR <= 4.0 && !pick) { // can we leave this value so its easier to see the objects when we get close
 									// you can change it back when we turn it in
 			pick = true;
 			setVisible(true);
