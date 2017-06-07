@@ -36,6 +36,82 @@ void Actor::setHealth(int health_)
 	health = health_;
 }
 
+bool Actor::isDirtThere() {
+	int x = getX(), y = getY();
+
+	if (getDirection() == GraphObject::Direction::left) {
+		if (y < 57)
+		{
+
+			if ((getWorld()->getDirt(x - 1, y)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::right) {
+		if (y < 57) {
+			if ((getWorld()->getDirt(x + 1, y)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::down) {
+		if (y - 1 < 60) {
+			if ((getWorld()->getDirt(x, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y - 1)->getAlive()))
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::up) {
+		if (y < 57)
+		{
+			if ((getWorld()->getDirt(x, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 4, y + 1)->getAlive()))
+				return true;
+		}
+	}
+	return false;
+}
 
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +143,6 @@ DiggerMan::~DiggerMan()
 }
 void DiggerMan::doSomething()
 {
-	
 	int x = getX();
 	int y = getY();
 	int ch;
@@ -410,6 +485,7 @@ void RegularProtestor::leaveOilField()
 void RegularProtestor::doSomething()
 {
 	
+	cout << getX()<< " "<<getY()<<endl ;
 	if (!getAlive()) return;//return if not alive
 	
 	if (leaveOilFieldState == true)
@@ -433,8 +509,10 @@ void RegularProtestor::doSomething()
 	
 	//protestor is alive and able to move, therefore tick countrer should be set back to the level's correct value max(0,3-lvl)
 	setTickCounter(max(0, 3));//placehold value
+	
 	if (!getLeaveOilFieldState())//protester is moving freely
 	{
+		if (canMovePerpendicular()) return;
 		wander();
 		numSquaresToMoveInCurrentDirection--;
 	}
@@ -442,83 +520,40 @@ void RegularProtestor::doSomething()
 
 }
 
-bool RegularProtestor::isDirtThere() {
+bool RegularProtestor::canMovePerpendicular()
+{
+	return 0;//temp
 	int x = getX(), y = getY();
 
-	if (getDirection() == GraphObject::Direction::left) {
-		if (y < 57)
+	if (getDirection() == left)
+	{
+		if ( !getWorld()->getDirt(getX()-1, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()-2, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()+1, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()+1, getY() - 1)->getAlive())
 		{
+			
+			moveTo(getX(), getY());
+			//moveTo(getX(), getY()-1);
+			setDirection(down);
+			numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
+			return 1;
+		}
+	}
+	else if (getDirection() == right)
+	{
 
-			if ((getWorld()->getDirt(x - 1, y)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
-				|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
-				return true;
-		}
-		if (y == 59) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive())
-				return true;
-		}
-		else if (y == 58) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
-				return true;
-		}
-		else if (y == 57) {
-			if (getWorld()->getDirt(x - 1, y)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
-				|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
-				return true;
-		}
 	}
-	else if (getDirection() == GraphObject::Direction::right) {
-		if (y < 57) {
-			if ((getWorld()->getDirt(x + 1, y)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
-				return true;
-		}
-		if (y == 59) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y)->getAlive())
-				return true;
-		}
-		else if (y == 58) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
-				return true;
-		}
-		else if (y == 57) {
-			if (getWorld()->getDirt(x + 1, y)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
-				|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
-				return true;
-		}
+	else if (getDirection() == up)
+	{
+
 	}
-	else if (getDirection() == GraphObject::Direction::down) {
-		if (y - 1 < 60) {
-			if ((getWorld()->getDirt(x, y - 1)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y - 1)->getAlive())
-				|| (getWorld()->getDirt(x + 2, y - 1)->getAlive())
-				|| (getWorld()->getDirt(x + 3, y - 1)->getAlive()))
-				return true;
-		}
+	else if (getDirection() == down)
+	{
+
 	}
-	else if (getDirection() == GraphObject::Direction::up) {
-		if (y < 57)
-		{
-			if ((getWorld()->getDirt(x, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 2, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive())
-				|| (getWorld()->getDirt(x + 4, y + 1)->getAlive()))
-				return true;
-		}
-	}
-	return false;
+	return 0;
 }
-
 
 void RegularProtestor::wander()
 {
@@ -584,6 +619,8 @@ void RegularProtestor::wander()
 
 	}
 }
+
+
 
 void RegularProtestor::switchDirection(int direction)
 {

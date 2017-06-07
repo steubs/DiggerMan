@@ -19,6 +19,7 @@ public:
 	StudentWorld * getWorld();
 	virtual ~Actor();
 	virtual void doSomething() = 0;
+	bool isDirtThere();
 };
 
 class Dirt : public Actor
@@ -107,7 +108,9 @@ public:
 	void wander();
 	void switchDirection(int);
 	void leaveOilField();
-	bool isDirtThere();
+	bool canMovePerpendicular();
+	//void movePerpendicular();
+	//bool isDirtThere();
 	~RegularProtestor();
 };
 

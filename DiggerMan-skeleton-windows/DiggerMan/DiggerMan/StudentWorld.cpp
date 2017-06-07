@@ -154,7 +154,7 @@ void StudentWorld::addProtestors()
 		//one in current_level * 25 + 300 chance it's a hardcore protestor(don't know if this works)
 		actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 60, 60));
 		m_protestors++;
-		tickCount = 0;
+		tickCount = 1;
 	}
 }
 void StudentWorld::addGoldNuggets() {
