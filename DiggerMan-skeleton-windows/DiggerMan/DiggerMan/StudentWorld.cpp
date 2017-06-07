@@ -11,18 +11,10 @@ GameWorld* createStudentWorld(string assetDir)
 int StudentWorld::init()
 {
 	addDirt();
-    
-    if(getLevel() > 0 && m_sonar == 0) // start each level with 1 sonar for every level
-        m_sonar++;
-
 	m_diggerman = new DiggerMan(this, IMID_PLAYER, 30, 60);
-	//m_protestorTest = new RegularProtestor(this, IMID_PROTESTER, 40, 60);//just for testing protestor functions, will be deleted later
-	//m_protestorTest2 = new RegularProtestor(this, IMID_PROTESTER, 50, 60);//just for testing protestor functions, will be deleted later
-	
 	addBoulders();
 	addGoldNuggets();
 	addBarrel();
-	
 	return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -31,12 +23,10 @@ int StudentWorld::move()
 	setDisplayText();
 	addProtestors();
     m_diggerman->doSomething();
-	//m_protestorTest->doSomething();
-//	m_protestorTest2->doSomething();
 	for (unsigned int i = 0; i < actors.size(); i++)
 	{
 		actors[i]->doSomething();
-		if (getBarrels() == 0)
+		if (m_barrels == 0)
 			return GWSTATUS_FINISHED_LEVEL;
 		
 	}
@@ -44,23 +34,20 @@ int StudentWorld::move()
 		decLives();
 		return GWSTATUS_PLAYER_DIED;
 	}
-		int current_level = getLevel();
-	int j = current_level * 1 +1;//for some reason doesn't work when multiplying 
-	//reduced to + 3 because takes forever to show up otherwise
-	int random = rand() % j;
-	if (1 == random) {//one in getLevel() * 25 + 300 chance to add these
+	int current_level = getLevel();
+	int j = current_level * 25 + 300;
+	if (1 == rand()% j) {//one in getLevel() * 25 + 300 chance to add these
 		int add = rand() % 5;
 		if (1 == add && sonarInMap == 0)//one in 5 chance
 		{
 			addSonarKit();
 			sonarInMap++;//create one sonar kit at a time
 		}
-		else if (add > 1) {// four in 5 chance
-						   //add Water
+		else if (add > 1 && waterInMap==0) {// four in 5 chance
+			addWater();
+			waterInMap++;
 		}
 	}
-	
-
 	removeDead();
     return GWSTATUS_CONTINUE_GAME;
 
@@ -79,8 +66,6 @@ void StudentWorld::cleanUp()
 	m_sonar = 1; // fixes count when you die
 	tickCount = 0;
 	delete getDiggerman();
-	//delete m_protestorTest;
-	//delete m_protestorTest2;
 	for (auto it = actors.begin(); it != actors.end(); ++it){
 		delete *it;
 	}
@@ -220,7 +205,22 @@ void StudentWorld::addSonarKit() {
 	actors.push_back(new Sonar(this, IMID_SONAR, 0, 60));//sonar kits are always added to 0,60
 }
 
-
+void StudentWorld::addWater() {
+	int x = rand() % 60;
+	int y = rand() % 56;
+	while (dirtarr[x][y]->getAlive() || dirtarr[x][y + 1]->getAlive()
+		|| dirtarr[x][y + 2]->getAlive() || dirtarr[x][y + 3]->getAlive()
+		|| dirtarr[x + 1][y]->getAlive() || dirtarr[x + 1][y + 1]->getAlive()
+		|| dirtarr[x + 1][y + 2]->getAlive() || dirtarr[x + 1][y + 3]->getAlive()
+		|| dirtarr[x + 2][y]->getAlive() || dirtarr[x + 2][y + 1]->getAlive()
+		|| dirtarr[x + 2][y + 2]->getAlive() || dirtarr[x + 2][y + 3]->getAlive()
+		|| dirtarr[x + 3][y]->getAlive() || dirtarr[x + 3][y + 1]->getAlive()
+		|| dirtarr[x + 3][y + 2]->getAlive() || dirtarr[x + 3][y + 3]->getAlive()) {
+		x = rand() % 60;
+		y = rand() % 56;
+	}
+		actors.push_back(new Water(this, IMID_WATER_POOL, x, y));
+}
 
 bool StudentWorld::checkUnder(Boulder* b){
 		
@@ -346,16 +346,12 @@ bool StudentWorld::isThere(){
 
 bool StudentWorld::isDirtThere() {
 	int x, y;
-	//std::cout << "reached 4 loop";
 	for (unsigned int i = 0; i < actors.size(); i++)
 	{
 		if (typeid(*(actors[i])) == typeid(RegularProtestor) || typeid(*(actors[i])) == typeid(HardcoreProtestor))
 		{
-			//std::cout << "reached 1 loop";
 			x = actors[i]->getX();
 			y = actors[i]->getY();
-
-			//std::cout << "reached 2 loop";
 			if (actors[i]->getDirection() == GraphObject::Direction::left) {
 				if (y < 57)
 				{
@@ -524,126 +520,17 @@ bool StudentWorld::isBoulderThere() {
 	}
 }
 
-//bool StudentWorld::isThereProtestors() 
-//{
-//	int x, y;
-//	std::cout << "reached 4 loop";
-//	for (unsigned int i = 0; i < actors.size(); i++)
-//	{
-//		if (typeid(*(actors[i])) == typeid(RegularProtestor) || typeid(*(actors[i])) == typeid(HardcoreProtestor))
-//		{
-//			std::cout << "reached 1 loop";
-//			x = actors[i]->getX();
-//			y = actors[i]->getY();
-//			
-//			for (unsigned int j = 0; j < actors.size(); j++) 
-//			{
-//				if (typeid(*(actors[j])) == typeid(Dirt))
-//				{
-//					std::cout << "reached 2 loop";
-//					if (actors[i]->getDirection() == GraphObject::Direction::left) {
-//						if (   (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY()) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 1) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 2) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 3) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 1) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 2) 
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 3)) return true;
-//						else continue;
-//					}
-//					else if (actors[i]->getDirection() == GraphObject::Direction::right) {
-//						if (   (x + 4 == actors[j]->getX() && y == actors[j]->getY())
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 1)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 2)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 3)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 1)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 2)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 3)) return true;
-//						else continue;
-//					}
-//					else if (actors[i]->getDirection() == GraphObject::Direction::down) {
-//						if (   (x - 3 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x - 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x - 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							||     (x == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 3 == actors[j]->getX() && y == actors[j]->getY() + 4)) return true;
-//						else continue;
-//					}
-//					else if (m_diggerman->getDirection() == GraphObject::Direction::up) {
-//						if (  (x - 3 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||(x - 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||(x - 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||    (x == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||(x + 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||(x + 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							||(x + 3 == actors[j]->getX() && y + 4 == actors[j]->getY())) return true;
-//						else continue;
-//					}
-//				}
-//				if (typeid(*(actors[j])) == typeid(Boulder))
-//				{
-//					if (actors[i]->getDirection() == GraphObject::Direction::left) {
-//						if ((x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY())
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 1)
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 2)
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() + 3)
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 1)
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 2)
-//							|| (x - 1 == actors[j]->getX() + 3 && y == actors[j]->getY() - 3)) return true;
-//						else continue;
-//					}
-//					else if (actors[i]->getDirection() == GraphObject::Direction::right) {
-//						if ((x + 4 == actors[j]->getX() && y == actors[j]->getY())
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 1)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 2)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() + 3)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 1)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 2)
-//							|| (x + 4 == actors[j]->getX() && y == actors[j]->getY() - 3)) return true;
-//						else continue;
-//					}
-//					else if (actors[i]->getDirection() == GraphObject::Direction::down) {
-//						if ((x - 3 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x - 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x - 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 1 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 2 == actors[j]->getX() && y == actors[j]->getY() + 4)
-//							|| (x + 3 == actors[j]->getX() && y == actors[j]->getY() + 4)) return true;
-//						else continue;
-//					}
-//					else if (actors[i]->getDirection() == GraphObject::Direction::up) {
-//						if ((x - 3 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x - 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x - 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x + 1 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x + 2 == actors[j]->getX() && y + 4 == actors[j]->getY())
-//							|| (x + 3 == actors[j]->getX() && y + 4 == actors[j]->getY())) return true;
-//						else continue;
-//					}
-//				}
-//			}
-//			return false;
-//		}
-//		}
-//			
-//}
-
 void StudentWorld::addDirt() {
 	for (int i = 0; i < 64; i++)
 	{
 		for (int j = 0; j < 60; j++)
 		{
 			dirtarr[i][j] = new Dirt(this, IMID_DIRT, i, j);
-			if (i <= 33 && i >= 30 && j <= 60 && j >= 8)//(Sharon)this is the mine shaft around the middle (josh) changed size of mineshaft to fit with spec p16
+			if (i <= 33 && i >= 30 && j <= 60 && j >= 8)
 			{
 				dirtarr[i][j]->setVisible(false);
 				dirtarr[i][j]->setAlive(false);
 			}
-			//(Sharon)create and put dirt objects in a container.
 		}
 	}
 }
@@ -791,15 +678,11 @@ void StudentWorld::setDisplayText(){
 	int level = getLevel();
 	int lives = getLives();
 	int health = m_diggerman->getHealth();
-	//int squirts = getSquirtsLeftInSquirtGun();
-	int gold = getGold();
-	int sonar = getSonar();
-	int barrelsLeft = getBarrels();
 	int score = getScore();
 
     string s = "Lvl: " + to_string(level) + " Lives: " + to_string(lives) + " Hlth: " 
-		+ to_string(health) + "%" + " Gld: " + to_string(gold) + " Sonar: " + to_string(sonar)
-		+ " Oil Left: " + to_string(barrelsLeft) + " Scr: " + to_string(score);
+		+ to_string(health) + "%" + " Water: " + to_string(m_water) + " Gld: " + to_string(m_gold) 
+		+ " Sonar: " + to_string(m_sonar) + " Oil Left: " + to_string(m_barrels) + " Scr: " + to_string(score);
 	setGameStatText(s);
 
 }
@@ -824,19 +707,10 @@ void StudentWorld::setallVisible(){
         double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
 
 		if (actors[i]->getAlive()) {
-			if (SR <= 12)// not sure what radius should be, value not listed in specs
+			if (SR <= 12)
 				actors[i]->setVisible(true);
         }
     }
     return;
 }
-
-
-
-
-
-
-
-
-
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp

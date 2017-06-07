@@ -155,6 +155,11 @@ void DiggerMan::doSomething()
                     break;
 			case KEY_PRESS_ESCAPE:
 				setAlive(false);
+				break;
+			case KEY_PRESS_SPACE:
+				getWorld()->decWater();
+				//supposed to also be squirt gun stuff
+				break;
 			}
 		}
 	}
@@ -230,10 +235,6 @@ void GoldNugget::doSomething()
 				setVisible(true);
 				return;
 			}
-			/*else if (SR > 4.0) { // this block of code messes up the sonar implementation, should remain visible once discovered 
-				pickUpDiggerman = false;
-				setVisible(false);
-			}*/
 			if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
 				setVisible(true);
 				setVisible(false);
@@ -273,10 +274,6 @@ void Oil::doSomething() {
 			setVisible(true);
 			return;
 		}
-		/*else if (SR > 4.0) {  // this block of code messes up the sonar implementation, should remain visible once discovered
-			setVisible(false);
-			pick = false;
-		}*/
 		if (SR <= 3.0 &&pick) {
 			setVisible(true);
 			setVisible(false);
@@ -315,7 +312,7 @@ void Sonar::doSomething() {
 			getWorld()->playSound(SOUND_GOT_GOODIE);
 			getWorld()->increaseScore(75);
 		}
-		if (count == a) {
+		else if (count == a) {
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decSonarInMap();
@@ -351,7 +348,7 @@ void Water::doSomething() {
 			getWorld()->playSound(SOUND_GOT_GOODIE);
 			getWorld()->increaseScore(100);
 		}
-		if (count == a) {
+		else if (count == a) {
 			setVisible(false);
 			setAlive(false);
 			getWorld()->decWaterInMap();

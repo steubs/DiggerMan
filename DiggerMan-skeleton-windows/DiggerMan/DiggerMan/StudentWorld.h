@@ -28,7 +28,7 @@ private:
 	int tickCount=0;
 public:
 	StudentWorld(std::string assetDir)
-		: GameWorld(assetDir),m_barrels(0),m_gold(3),m_sonar(1)//starts with one sonar, specs
+		: GameWorld(assetDir),m_barrels(0),m_gold(3),m_sonar(1), m_water(5)//starts with one sonar, specs
 	{
 	}
 
@@ -41,6 +41,8 @@ public:
 	void addBoulders();
 
 	void addSonarKit();
+
+	void addWater();
 	
 	bool isDirtThere();
 
@@ -66,14 +68,10 @@ public:
 
     Actor* getDiggerman(){ return m_diggerman; }
 
-    int getBarrels() { return m_barrels; }
-    
-    int getGold(){ return m_gold; }
-
 	int getSonar() { return m_sonar; }
     
     void incGold(){ m_gold++; return; }
-	void decBarrels() { m_barrels-=1; return; }
+	void decBarrels() { m_barrels--; return; }
 	void incSonar() { m_sonar++; }
 	void decSonar() { m_sonar--; }
 	void decSonarInMap() { sonarInMap--; }
