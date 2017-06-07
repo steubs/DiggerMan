@@ -51,7 +51,6 @@ int StudentWorld::move()
 	}
 	removeDead();
     return GWSTATUS_CONTINUE_GAME;
-
 }
 
 void StudentWorld::cleanUp()

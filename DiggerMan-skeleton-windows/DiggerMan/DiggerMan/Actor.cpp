@@ -233,7 +233,6 @@ void DiggerMan::doSomething()
 				break;
 			case KEY_PRESS_SPACE:
 				getWorld()->decWater();
-				//supposed to also be squirt gun stuff
 				break;
 				setAlive(false); 
 				break; 

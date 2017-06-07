@@ -41,8 +41,6 @@ public:
 	void addSonarKit();
 
 	void addWater();
-	
-	//bool isDirtThere();
 
 	bool isBoulderThere();
 
