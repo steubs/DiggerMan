@@ -107,6 +107,7 @@ public:
 	void wander();
 	void switchDirection(int);
 	void leaveOilField();
+	bool isDirtThere();
 	~RegularProtestor();
 };
 

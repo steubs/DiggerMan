@@ -344,92 +344,92 @@ bool StudentWorld::isThere(){
 	return false;
 }
 
-bool StudentWorld::isDirtThere() {
-	int x, y;
-	//std::cout << "reached 4 loop";
-	for (unsigned int i = 0; i < actors.size(); i++)
-	{
-		if (typeid(*(actors[i])) == typeid(RegularProtestor) || typeid(*(actors[i])) == typeid(HardcoreProtestor))
-		{
-			//std::cout << "reached 1 loop";
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-
-			//std::cout << "reached 2 loop";
-			if (actors[i]->getDirection() == GraphObject::Direction::left) {
-				if (y < 57)
-				{
-					if ((dirtarr[x-1][y]->getAlive())
-						|| (dirtarr[x-1][y + 1]->getAlive())
-						|| (dirtarr[x-1][y + 2]->getAlive())
-						|| (dirtarr[x-1][y + 3]->getAlive()))
-						return true;
-				}
-				if (y == 59) {
-					if (dirtarr[x-1][y]->getAlive())
-						return true;
-				}
-				else if (y == 58) {
-					if (dirtarr[x-1][y]->getAlive()
-						|| dirtarr[x-1][y + 1]->getAlive())
-						return true;
-				}
-				else if (y == 57) {
-					if (dirtarr[x-1][y]->getAlive()
-						|| dirtarr[x-1][y + 1]->getAlive()
-						|| dirtarr[x-1][y + 2]->getAlive())
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::right) {
-				if (y < 57) {
-					if ((dirtarr[x+1][y]->getAlive())
-						|| (dirtarr[x+1][y + 1]->getAlive())
-						|| (dirtarr[x+1][y + 2]->getAlive())
-						|| (dirtarr[x+1][y + 3]->getAlive()))
-						return true;
-				}
-				if (y == 59) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y]->getAlive())
-						return true;
-				}
-				else if (y == 58) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y + 1]->getAlive())
-						return true;
-				}
-				else if (y == 57) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y + 1]->getAlive()
-						|| dirtarr[x+1][y + 2]->getAlive())
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::down) {
-				if (y-1 < 60) {
-					if ((dirtarr[x][y-1]->getAlive())
-						|| (dirtarr[x + 1][y-1]->getAlive())
-						|| (dirtarr[x + 2][y-1]->getAlive())
-						|| (dirtarr[x + 3][y-1]->getAlive()))
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::up) {
-				if (y < 57)
-				{
-					if ((dirtarr[x][y+1]->getAlive())
-						|| (dirtarr[x + 1][y+1]->getAlive())
-						|| (dirtarr[x + 2][y+1]->getAlive())
-						|| (dirtarr[x + 3][y+1]->getAlive())
-						|| (dirtarr[x + 4][y+1]->getAlive()))
-						return true;
-				}
-			}
-			return false;
-		}
-	}
-}
+//bool StudentWorld::isDirtThere() {
+//	int x, y;
+//	//std::cout << "reached 4 loop";
+//	for (unsigned int i = 0; i < actors.size(); i++)
+//	{
+//		if (typeid(*(actors[i])) == typeid(RegularProtestor) || typeid(*(actors[i])) == typeid(HardcoreProtestor))
+//		{
+//			//std::cout << "reached 1 loop";
+//			x = actors[i]->getX();
+//			y = actors[i]->getY();
+//
+//			//std::cout << "reached 2 loop";
+//			if (actors[i]->getDirection() == GraphObject::Direction::left) {
+//				if (y < 57)
+//				{
+//					if ((dirtarr[x-1][y]->getAlive())
+//						|| (dirtarr[x-1][y + 1]->getAlive())
+//						|| (dirtarr[x-1][y + 2]->getAlive())
+//						|| (dirtarr[x-1][y + 3]->getAlive()))
+//						return true;
+//				}
+//				if (y == 59) {
+//					if (dirtarr[x-1][y]->getAlive())
+//						return true;
+//				}
+//				else if (y == 58) {
+//					if (dirtarr[x-1][y]->getAlive()
+//						|| dirtarr[x-1][y + 1]->getAlive())
+//						return true;
+//				}
+//				else if (y == 57) {
+//					if (dirtarr[x-1][y]->getAlive()
+//						|| dirtarr[x-1][y + 1]->getAlive()
+//						|| dirtarr[x-1][y + 2]->getAlive())
+//						return true;
+//				}
+//			}
+//			else if (actors[i]->getDirection() == GraphObject::Direction::right) {
+//				if (y < 57) {
+//					if ((dirtarr[x+1][y]->getAlive())
+//						|| (dirtarr[x+1][y + 1]->getAlive())
+//						|| (dirtarr[x+1][y + 2]->getAlive())
+//						|| (dirtarr[x+1][y + 3]->getAlive()))
+//						return true;
+//				}
+//				if (y == 59) {
+//					if (dirtarr[x+1][y]->getAlive()
+//						|| dirtarr[x+1][y]->getAlive())
+//						return true;
+//				}
+//				else if (y == 58) {
+//					if (dirtarr[x+1][y]->getAlive()
+//						|| dirtarr[x+1][y + 1]->getAlive())
+//						return true;
+//				}
+//				else if (y == 57) {
+//					if (dirtarr[x+1][y]->getAlive()
+//						|| dirtarr[x+1][y + 1]->getAlive()
+//						|| dirtarr[x+1][y + 2]->getAlive())
+//						return true;
+//				}
+//			}
+//			else if (actors[i]->getDirection() == GraphObject::Direction::down) {
+//				if (y-1 < 60) {
+//					if ((dirtarr[x][y-1]->getAlive())
+//						|| (dirtarr[x + 1][y-1]->getAlive())
+//						|| (dirtarr[x + 2][y-1]->getAlive())
+//						|| (dirtarr[x + 3][y-1]->getAlive()))
+//						return true;
+//				}
+//			}
+//			else if (actors[i]->getDirection() == GraphObject::Direction::up) {
+//				if (y < 57)
+//				{
+//					if ((dirtarr[x][y+1]->getAlive())
+//						|| (dirtarr[x + 1][y+1]->getAlive())
+//						|| (dirtarr[x + 2][y+1]->getAlive())
+//						|| (dirtarr[x + 3][y+1]->getAlive())
+//						|| (dirtarr[x + 4][y+1]->getAlive()))
+//						return true;
+//				}
+//			}
+//			return false;
+//		}
+//	}
+//}
 
 bool StudentWorld::isBoulderThere() {
 	for (unsigned int j = 0; j < actors.size(); j++)

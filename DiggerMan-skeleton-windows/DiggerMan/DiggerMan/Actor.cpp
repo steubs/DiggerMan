@@ -442,6 +442,84 @@ void RegularProtestor::doSomething()
 
 }
 
+bool RegularProtestor::isDirtThere() {
+	int x = getX(), y = getY();
+
+	if (getDirection() == GraphObject::Direction::left) {
+		if (y < 57)
+		{
+
+			if ((getWorld()->getDirt(x - 1, y)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::right) {
+		if (y < 57) {
+			if ((getWorld()->getDirt(x + 1, y)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::down) {
+		if (y - 1 < 60) {
+			if ((getWorld()->getDirt(x, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y - 1)->getAlive()))
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::up) {
+		if (y < 57)
+		{
+			if ((getWorld()->getDirt(x, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 4, y + 1)->getAlive()))
+				return true;
+		}
+	}
+	return false;
+}
+
+
 void RegularProtestor::wander()
 {
 	int x = getX();
@@ -449,56 +527,61 @@ void RegularProtestor::wander()
 
 	if (numSquaresToMoveInCurrentDirection <= 0)//we need to switch directions
 	{
+
 		direction_integer = rand() % 4;
 		switchDirection(direction_integer);
 		numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
-		//setNumSquaresToMoveInCurrentDirection((rand() % 58) + 6);
 		return;
 	}
-	switch (direction_integer) {
-		case 0:
-			if (x < 1)
-			{
-				numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x - 1, y);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;	
-		case 1:
-			if (x > 59)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x + 1, y);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;
-		case 2:
-			if (y > 59)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x, y + 1);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;
 
-			
-		case 3:
-			if (y < 1)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x, y - 1);
-			else numSquaresToMoveInCurrentDirection = 0;
+
+	switch (direction_integer) {
+
+	case 0:
+		if (x < 1 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
 			break;
-			
+		}
+		if (!isDirtThere())
+			moveTo(x - 1, y);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 1:
+		if (x > 59 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x + 1, y);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 2:
+		if (y > 59 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x, y + 1);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 3:
+		if (y < 1 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x, y - 1);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+
 	}
 }
 

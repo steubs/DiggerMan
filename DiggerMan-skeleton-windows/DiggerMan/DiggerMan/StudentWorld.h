@@ -42,7 +42,7 @@ public:
 
 	void addSonarKit();
 	
-	bool isDirtThere();
+	//bool isDirtThere();
 
 	bool isBoulderThere();
 
@@ -53,6 +53,10 @@ public:
 	bool checkUnder(Boulder * b);
 
 	bool isThere();
+	Dirt* getDirt(int x, int y)
+	{
+		return dirtarr[x][y];
+	}
 
 	vector<Actor*> getActors() {
 		return actors;
