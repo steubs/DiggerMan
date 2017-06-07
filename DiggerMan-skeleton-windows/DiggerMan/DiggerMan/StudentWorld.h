@@ -23,8 +23,6 @@ private:
 	int m_protestors = 0;
 	int sonarInMap = 0;
 	int waterInMap = 0;
-	Actor* m_protestorTest;//for testing protestor funtions, will be deleted later
-	Actor* m_protestorTest2;//for testing protestor funtions, will be deleted later
 	int tickCount=0;
 public:
 	StudentWorld(std::string assetDir)
@@ -44,7 +42,7 @@ public:
 
 	void addWater();
 	
-	bool isDirtThere();
+	//bool isDirtThere();
 
 	bool isBoulderThere();
 
@@ -55,6 +53,10 @@ public:
 	bool checkUnder(Boulder * b);
 
 	bool isThere();
+	Dirt* getDirt(int x, int y)
+	{
+		return dirtarr[x][y];
+	}
 
 	vector<Actor*> getActors() {
 		return actors;
@@ -82,7 +84,7 @@ public:
 	void addGoldNuggets();
 	void addBarrel();
 	void addProtestors();
-
+	void dropGold();
 };
 
 #endif // STUDENTWORLD_H_

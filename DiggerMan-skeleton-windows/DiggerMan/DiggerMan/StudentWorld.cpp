@@ -15,6 +15,7 @@ int StudentWorld::init()
 	addBoulders();
 	addGoldNuggets();
 	addBarrel();
+	addProtestors();
 	return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -126,20 +127,20 @@ void StudentWorld::addProtestors()
 		actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 60, 60));//all protestors added to 60,60
 		m_protestors++;
 	}//add first protestor at beginning of each level
+	
 	tickCount++;
+
 	int current_level = getLevel();
-	int T = max(25, 200 - current_level);//at least this many ticks before another protestor added
-	int sub = current_level*1.5;
-	int numProtestors = min(15, sub);
-	//the max num of protestors is min(15,2+current_level*1.5);
-	if(tickCount==T && m_protestors<numProtestors){
+	int ticksUntilAdd = max(25, 200 - current_level);//at least this many ticks before another protestor added
+	int numProtestors = min(15, 2+(int)(current_level*1.5));
+	if(tickCount==ticksUntilAdd && m_protestors<numProtestors){
 		int G = current_level * 25 + 300;
 		if (1==rand()%G)
 			actors.push_back(new HardcoreProtestor(this, IMID_PROTESTER, 60, 60));
 		//one in current_level * 25 + 300 chance it's a hardcore protestor(don't know if this works)
 		actors.push_back(new RegularProtestor(this, IMID_PROTESTER, 60, 60));
 		m_protestors++;
-		tickCount = 0;
+		tickCount = 1;
 	}
 }
 void StudentWorld::addGoldNuggets() {
@@ -342,89 +343,6 @@ bool StudentWorld::isThere(){
 		}
 	}
 	return false;
-}
-
-bool StudentWorld::isDirtThere() {
-	int x, y;
-	for (unsigned int i = 0; i < actors.size(); i++)
-	{
-		if (typeid(*(actors[i])) == typeid(RegularProtestor) || typeid(*(actors[i])) == typeid(HardcoreProtestor))
-		{
-			x = actors[i]->getX();
-			y = actors[i]->getY();
-			if (actors[i]->getDirection() == GraphObject::Direction::left) {
-				if (y < 57)
-				{
-					if ((dirtarr[x-1][y]->getAlive())
-						|| (dirtarr[x-1][y + 1]->getAlive())
-						|| (dirtarr[x-1][y + 2]->getAlive())
-						|| (dirtarr[x-1][y + 3]->getAlive()))
-						return true;
-				}
-				if (y == 59) {
-					if (dirtarr[x-1][y]->getAlive())
-						return true;
-				}
-				else if (y == 58) {
-					if (dirtarr[x-1][y]->getAlive()
-						|| dirtarr[x-1][y + 1]->getAlive())
-						return true;
-				}
-				else if (y == 57) {
-					if (dirtarr[x-1][y]->getAlive()
-						|| dirtarr[x-1][y + 1]->getAlive()
-						|| dirtarr[x-1][y + 2]->getAlive())
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::right) {
-				if (y < 57) {
-					if ((dirtarr[x+1][y]->getAlive())
-						|| (dirtarr[x+1][y + 1]->getAlive())
-						|| (dirtarr[x+1][y + 2]->getAlive())
-						|| (dirtarr[x+1][y + 3]->getAlive()))
-						return true;
-				}
-				if (y == 59) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y]->getAlive())
-						return true;
-				}
-				else if (y == 58) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y + 1]->getAlive())
-						return true;
-				}
-				else if (y == 57) {
-					if (dirtarr[x+1][y]->getAlive()
-						|| dirtarr[x+1][y + 1]->getAlive()
-						|| dirtarr[x+1][y + 2]->getAlive())
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::down) {
-				if (y-1 < 60) {
-					if ((dirtarr[x][y-1]->getAlive())
-						|| (dirtarr[x + 1][y-1]->getAlive())
-						|| (dirtarr[x + 2][y-1]->getAlive())
-						|| (dirtarr[x + 3][y-1]->getAlive()))
-						return true;
-				}
-			}
-			else if (actors[i]->getDirection() == GraphObject::Direction::up) {
-				if (y < 57)
-				{
-					if ((dirtarr[x][y+1]->getAlive())
-						|| (dirtarr[x + 1][y+1]->getAlive())
-						|| (dirtarr[x + 2][y+1]->getAlive())
-						|| (dirtarr[x + 3][y+1]->getAlive())
-						|| (dirtarr[x + 4][y+1]->getAlive()))
-						return true;
-				}
-			}
-			return false;
-		}
-	}
 }
 
 bool StudentWorld::isBoulderThere() {
@@ -713,4 +631,15 @@ void StudentWorld::setallVisible(){
     }
     return;
 }
+void StudentWorld::dropGold() {
+	if (m_gold > 0) {
+		int x = m_diggerman->getX();
+		int y = m_diggerman->getY();
+		GoldNugget *newG = new GoldNugget(this, IMID_GOLD, x, y);
+		newG->setVisible(true);
+		actors.push_back(newG);
+		m_gold--;
+	}
+}
+
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp

@@ -36,6 +36,82 @@ void Actor::setHealth(int health_)
 	health = health_;
 }
 
+bool Actor::isDirtThere() {
+	int x = getX(), y = getY();
+
+	if (getDirection() == GraphObject::Direction::left) {
+		if (y < 57)
+		{
+
+			if ((getWorld()->getDirt(x - 1, y)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x - 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x - 1, y)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x - 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::right) {
+		if (y < 57) {
+			if ((getWorld()->getDirt(x + 1, y)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 3)->getAlive()))
+				return true;
+		}
+		if (y == 59) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y)->getAlive())
+				return true;
+		}
+		else if (y == 58) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				return true;
+		}
+		else if (y == 57) {
+			if (getWorld()->getDirt(x + 1, y)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 1)->getAlive()
+				|| getWorld()->getDirt(x + 1, y + 2)->getAlive())
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::down) {
+		if (y - 1 < 60) {
+			if ((getWorld()->getDirt(x, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y - 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y - 1)->getAlive()))
+				return true;
+		}
+	}
+	else if (getDirection() == GraphObject::Direction::up) {
+		if (y < 57)
+		{
+			if ((getWorld()->getDirt(x, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 1, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 2, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 3, y + 1)->getAlive())
+				|| (getWorld()->getDirt(x + 4, y + 1)->getAlive()))
+				return true;
+		}
+	}
+	return false;
+}
 
 //////////////////////////////////////////////////////////////  DIRT    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +143,6 @@ DiggerMan::~DiggerMan()
 }
 void DiggerMan::doSomething()
 {
-	
 	int x = getX();
 	int y = getY();
 	int ch;
@@ -160,6 +235,10 @@ void DiggerMan::doSomething()
 				getWorld()->decWater();
 				//supposed to also be squirt gun stuff
 				break;
+				setAlive(false); 
+				break; 
+			case KEY_PRESS_TAB:
+				getWorld()->dropGold();
 			}
 		}
 	}
@@ -224,18 +303,19 @@ void GoldNugget::doSomething()
 {
 	if (getAlive())
 	{
-			int x = getX();
-			int y = getY();
-			int digX = getWorld()->getDiggerman()->getX();
-			int digY = getWorld()->getDiggerman()->getY();
-			double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
-			if (SR <= 10.0  && !pickUpDiggerman) {// can we leave this value so its easier to see the objects when we get close
+		int x = getX();
+		int y = getY();
+		int digX = getWorld()->getDiggerman()->getX();
+		int digY = getWorld()->getDiggerman()->getY();
+		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
+		if (SR != 0 && !pickUpProtestor) {
+			if (SR <= 4.0 && !pickUpDiggerman && !pickUpProtestor) {// can we leave this value so its easier to see the objects when we get close
 													// you can change it back when we turn it in
 				pickUpDiggerman = true;
 				setVisible(true);
 				return;
 			}
-			if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
+			if (SR <= 3.0 && pickUpDiggerman && !pickUpProtestor) {
 				setVisible(true);
 				setVisible(false);
 				setAlive(false);
@@ -244,9 +324,22 @@ void GoldNugget::doSomething()
 				getWorld()->incGold();
 				pickUpDiggerman = false;
 			}
+		}
+		if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
+			setVisible(true);
+			setVisible(false);
+			setAlive(false);
+			getWorld()->increaseScore(10);
+			getWorld()->playSound(SOUND_GOT_GOODIE);
+			getWorld()->incGold();
+			pickUpDiggerman = false;
+		}
+		else {
+			pickUpProtestor = true;
+		}
 	}
-	else
-		return;
+		else
+			return;
 }
 GoldNugget::~GoldNugget()
 {
@@ -291,7 +384,7 @@ Oil::~Oil() {
 	
 }
 //////////////////////////////////////////////////////////////  SONAR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+Sonar::Sonar(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
 	
 }
 void Sonar::doSomething() {
@@ -326,7 +419,7 @@ Sonar::~Sonar() {
 }
 
 //////////////////////////////////////////////////////////////  WATERPOOLS  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth) {
+Water::Water(StudentWorld*p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),count(0) {
 
 }
 
@@ -376,7 +469,7 @@ Squirt::~Squirt() {
 
 ////////////////////////////////////////////////////////////// PROTESTOR  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth)
+RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int startY, Direction dir, double size, unsigned int depth) :Actor(p, imageID, startX, startY, dir, size, depth),tickCounter(0),direction_integer(1)
 {
 	leaveOilFieldState = false;
 	setHealth(5);
@@ -385,11 +478,6 @@ RegularProtestor::RegularProtestor(StudentWorld* p, int imageID, int startX, int
 void RegularProtestor::setLeaveOilFieldState(bool state)
 {
 	leaveOilFieldState = state;
-}
-
-void RegularProtestor::setHealth(int health_)
-{
-	health = health_;
 }
 
 bool RegularProtestor::getLeaveOilFieldState()
@@ -407,7 +495,6 @@ void RegularProtestor::leaveOilField()
 }
 void RegularProtestor::doSomething()
 {
-	
 	if (!getAlive()) return;//return if not alive
 	
 	if (leaveOilFieldState == true)
@@ -416,7 +503,7 @@ void RegularProtestor::doSomething()
 		return;
 	}
 
-	if (health == 0)//this should only happen once in a protestor's life
+	if (getHealth()==0)//this should only happen once in a protestor's life
 	{
 		leaveOilFieldState = true;
 		getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
@@ -431,13 +518,50 @@ void RegularProtestor::doSomething()
 	
 	//protestor is alive and able to move, therefore tick countrer should be set back to the level's correct value max(0,3-lvl)
 	setTickCounter(max(0, 3));//placehold value
+	
 	if (!getLeaveOilFieldState())//protester is moving freely
 	{
+		if (canMovePerpendicular()) return;
 		wander();
 		numSquaresToMoveInCurrentDirection--;
 	}
 		
 
+}
+
+bool RegularProtestor::canMovePerpendicular()
+{
+	return 0;//temp
+	int x = getX(), y = getY();
+
+	if (getDirection() == left)
+	{
+		if ( !getWorld()->getDirt(getX()-1, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()-2, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()+1, getY() - 1)->getAlive()
+		  && !getWorld()->getDirt(getX()+1, getY() - 1)->getAlive())
+		{
+			
+			moveTo(getX(), getY());
+			//moveTo(getX(), getY()-1);
+			setDirection(down);
+			numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
+			return 1;
+		}
+	}
+	else if (getDirection() == right)
+	{
+
+	}
+	else if (getDirection() == up)
+	{
+
+	}
+	else if (getDirection() == down)
+	{
+
+	}
+	return 0;
 }
 
 void RegularProtestor::wander()
@@ -447,58 +571,65 @@ void RegularProtestor::wander()
 
 	if (numSquaresToMoveInCurrentDirection <= 0)//we need to switch directions
 	{
+
 		direction_integer = rand() % 4;
 		switchDirection(direction_integer);
 		numSquaresToMoveInCurrentDirection = rand() % 58 + 6;
-		//setNumSquaresToMoveInCurrentDirection((rand() % 58) + 6);
 		return;
 	}
-	switch (direction_integer) {
-		case 0:
-			if (x < 1)
-			{
-				numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x - 1, y);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;	
-		case 1:
-			if (x > 59)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x + 1, y);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;
-		case 2:
-			if (y > 59)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x, y + 1);
-			else numSquaresToMoveInCurrentDirection = 0;
-			break;
 
-			
-		case 3:
-			if (y < 1)
-			{
-				numSquaresToMoveInCurrentDirection = 0;
-				break;
-			}
-			if (!getWorld()->isDirtThere() && !getWorld()->isBoulderThere())
-				moveTo(x, y - 1);
-			else numSquaresToMoveInCurrentDirection = 0;
+
+	switch (direction_integer) {
+
+	case 0:
+		if (x < 1 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;//has hit a wall, switch directions and reset numSquaresTo...
 			break;
-			
+		}
+		if (!isDirtThere())
+			moveTo(x - 1, y);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 1:
+		if (x > 59 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x + 1, y);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 2:
+		if (y > 59 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x, y + 1);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+	case 3:
+		if (y < 1 || isDirtThere())
+		{
+
+			numSquaresToMoveInCurrentDirection = 0;
+			break;
+		}
+		if (!isDirtThere())
+			moveTo(x, y - 1);
+		else numSquaresToMoveInCurrentDirection = 0;
+		break;
+
 	}
 }
+
+
 
 void RegularProtestor::switchDirection(int direction)
 {
