@@ -83,6 +83,7 @@ public:
 	void addBarrel();
 	void addProtestors();
 	void dropGold();
+	bool pickUPPRO(int x, int y);
 };
 
 #endif // STUDENTWORLD_H_
