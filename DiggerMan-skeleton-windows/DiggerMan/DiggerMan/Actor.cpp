@@ -309,7 +309,7 @@ void GoldNugget::doSomething()
 		double SR = pow((pow(abs(x - digX), 2) + pow(y - digY, 2)), 0.5);
 		if (SR != 0 && !pickUpProtestor) {
 			if (SR <= 4.0 && !pickUpDiggerman && !pickUpProtestor) {// can we leave this value so its easier to see the objects when we get close
-													// you can change it back when we turn it in
+				// you can change it back when we turn it in
 				pickUpDiggerman = true;
 				setVisible(true);
 				return;
@@ -324,17 +324,13 @@ void GoldNugget::doSomething()
 				pickUpDiggerman = false;
 			}
 		}
-		if (SR <= 3.0 && pickUpDiggerman && (!pickUpProtestor)) {
-			setVisible(true);
-			setVisible(false);
-			setAlive(false);
-			getWorld()->increaseScore(10);
-			getWorld()->playSound(SOUND_GOT_GOODIE);
-			getWorld()->incGold();
-			pickUpDiggerman = false;
-		}
 		else {
 			pickUpProtestor = true;
+			if (getWorld()->pickUPPRO(x, y)){
+				getWorld()->playSound(SOUND_PROTESTER_FOUND_GOLD);
+				setVisible(false);
+				setAlive(false);
+			}
 		}
 	}
 		else
